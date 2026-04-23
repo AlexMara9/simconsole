@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import java.net.URL?>
 
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.ConsoleController">
     <stylesheets>
-        <URL value="@style.css"/>
+        <URL value="@style.css" />
     </stylesheets>
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <Label fx:id="welcomeText"/>
-    <Label fx:id="volume"/>
-    <Button onAction="#onHelloButtonClick" text="Hello!"/>
+    <Label fx:id="volume" text="volume 0%" />
     <HBox alignment="CENTER" spacing="10.0">
-        <Slider onMouseDragged="#onVolumeSliderSlide" onMouseReleased="#onVolumeSliderRelease" orientation="VERTICAL" value="50" prefHeight="200" styleClass="dj-slider"/>
+        <Slider fx:id="volumeSlider" minorTickCount="1" orientation="VERTICAL" prefHeight="200" showTickLabels="true" showTickMarks="true" styleClass="dj-slider" />
 <!--        <Label fx:id="percentLabel" text="40%\n50%"/>-->
     </HBox>
 </VBox>
