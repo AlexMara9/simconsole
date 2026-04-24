@@ -5,70 +5,48 @@
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
 
-<GridPane prefHeight="305.0" prefWidth="494.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="grid" prefHeight="450.0" prefWidth="496.0" style="-fx-border-color: #ff0000;" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.HelloController">
     <columnConstraints>
-        <ColumnConstraints />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="50.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="50.0" />
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="142.0" minHeight="0.0" prefHeight="27.5" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="176.0" minHeight="10.0" prefHeight="153.5" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="129.0" minHeight="0.0" prefHeight="124.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="ALWAYS" />
+        <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="ALWAYS" />
     </rowConstraints>
     <children>
-        <Circle fill="DODGERBLUE" radius="43.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
-        <Canvas height="144.0" width="248.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <ListView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="129.0" prefWidth="130.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <Label prefHeight="16.0" prefWidth="129.0" text="lista" GridPane.columnIndex="1" GridPane.rowIndex="2">
-            <GridPane.margin>
-                <Insets bottom="112.0" />
-            </GridPane.margin>
+        <Circle fx:id="vinyl" fill="DODGERBLUE" radius="43.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
+      <StackPane fx:id="songListContainer" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1">
+         <children>
+              <ListView fx:id="songList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" />
+         </children>
+      </StackPane>
+        <Label text="lista" GridPane.rowIndex="1">
+
         </Label>
-        <Slider orientation="VERTICAL" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-        <Spinner prefHeight="27.0" prefWidth="146.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-            <GridPane.margin>
-                <Insets bottom="100.0" left="50.0" />
-            </GridPane.margin>
+        <Slider orientation="VERTICAL" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Spinner GridPane.columnIndex="1" GridPane.rowIndex="1">
+
         </Spinner>
-        <ProgressIndicator progress="0.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+        <ProgressIndicator progress="0.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
             <GridPane.margin>
                 <Insets left="20.0" />
             </GridPane.margin>
         </ProgressIndicator>
-        <MenuBar GridPane.columnIndex="1" GridPane.columnSpan="2">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Close" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Delete" />
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About" />
-                    </items>
-                </Menu>
-            </menus>
-            <GridPane.margin>
-                <Insets bottom="65.0" top="65.0" />
-            </GridPane.margin>
-        </MenuBar>
-        <PointLight color="CHARTREUSE" lightOn="true" />
+        <PointLight color="CHARTREUSE" lightOn="true" GridPane.rowIndex="1" />
+      <StackPane fx:id="graphContainer" minHeight="0.0" minWidth="0.0">
+         <children>
+            <Canvas fx:id="graph" />
+         </children>
+      </StackPane>
     </children>
 </GridPane>
