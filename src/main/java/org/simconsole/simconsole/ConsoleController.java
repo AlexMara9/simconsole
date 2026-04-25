@@ -40,12 +40,14 @@ public class ConsoleController {
 	@FXML private Button skipButton;
 	@FXML private Button unskipButton;
 
+	private Deck deck;
+
 	/**
 	 * init function that sets the responsivity
 	 */
 	public void initialize(){
 		initResponsiveness();
-
+		initControls();
 
 		//setDebug();
 	}
@@ -169,6 +171,19 @@ public class ConsoleController {
 		gc.fillText(text, x, y);
 	}
 
+	public void setDeck(Deck deck) {
+		this.deck = deck;
+	}
+
+	private void initControls(){
+		playButton.setOnAction(e -> {
+			if(!deck.isPlaying()){
+				deck.getPlayer().play();
+			}else {
+				deck.pause();
+			}
+		});
+	}
 	private void setDebug(){
 		grid.setStyle("-fx-border-color: #FF0000;");
 		slidersGrill.setStyle("-fx-border-color: #00FF00;");

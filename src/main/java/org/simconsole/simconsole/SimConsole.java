@@ -20,7 +20,11 @@ public class SimConsole extends Application {
 		stage.setMinWidth((int)(1920/6));
 		stage.setScene(scene);
 		stage.show();
+		Tracks t1 = new Tracks("C:\\Users\\Pietro\\Downloads\\Someone You Loved.wav");
+		Deck d1 = new Deck();
+		d1.loadTrack(t1);
 
+		consoleController.setDeck(d1);
 		//consoleController.initialize();
 	}
 }
