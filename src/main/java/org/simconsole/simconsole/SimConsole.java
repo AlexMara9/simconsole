@@ -7,15 +7,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class SimConsole extends Application {
 	@Override
 	public void start(Stage stage) throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("console-view.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(SimConsole.class.getResource("console-view.fxml"));
 		Scene scene = new Scene(fxmlLoader.load(), (int)(1920/3), (int)(1080/3));
-		HelloController consoleController = fxmlLoader.getController();
+		ConsoleController consoleController = fxmlLoader.getController();
 
 		stage.setTitle("SimConsole");
 		//stage.resizableProperty().setValue(false);
+		stage.setMinHeight((int)(1080/6));
+		stage.setMinWidth((int)(1920/6));
 		stage.setScene(scene);
 		stage.show();
 
