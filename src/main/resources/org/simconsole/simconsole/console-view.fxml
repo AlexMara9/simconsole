@@ -2,7 +2,6 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -14,7 +13,6 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <Label fx:id="volume" text="volume 0%" />
     <HBox alignment="CENTER" spacing="10.0">
         <Slider fx:id="volumeSlider" minorTickCount="1" orientation="VERTICAL" prefHeight="200" showTickLabels="true" showTickMarks="true" styleClass="dj-slider" />
 <!--        <Label fx:id="percentLabel" text="40%\n50%"/>-->
