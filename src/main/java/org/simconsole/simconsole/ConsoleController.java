@@ -7,8 +7,10 @@ import javafx.scene.control.Slider;
 public class ConsoleController {
 	@FXML private Label volume;
 	@FXML private Slider volumeSlider;
-
-	public void initListeners(){
+	@FXML public void initialize(){
+		initListeners();
+	}
+	private void initListeners(){
 		volumeSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->{
 			volume.setText("volume: " + newValue.intValue() + "%");
 		});

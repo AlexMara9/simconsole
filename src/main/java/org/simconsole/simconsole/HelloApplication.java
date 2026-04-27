@@ -15,7 +15,5 @@ public class HelloApplication extends Application {
 		stage.setTitle("SimConsole");
 		stage.setScene(scene);
 		stage.show();
-		ConsoleController consoleController = fxmlLoader.getController();
-		consoleController.initListeners();
 	}
 }
