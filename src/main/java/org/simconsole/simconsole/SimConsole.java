@@ -20,9 +20,14 @@ public class SimConsole extends Application {
 		stage.setMinWidth((int)(1920/6));
 		stage.setScene(scene);
 		stage.show();
-		Tracks t1 = new Tracks("C:\\Users\\Pietro\\Downloads\\Someone You Loved.wav");
+
+
+		Tracks trackA = new Tracks("C:\\Users\\Pietro\\Downloads\\boro.wav");
+		Tracks trackB = new Tracks("C:\\Users\\Pietro\\Downloads\\Lacrimosa.wav");
 		Deck d1 = new Deck();
-		d1.loadTrack(t1);
+		d1.loadTrack(trackA);
+		System.out.println("Test: Traccia A partita.");
+
 
 		consoleController.setDeck(d1);
 		//consoleController.initialize();

@@ -4,6 +4,9 @@ module org.simconsole.simconsole {
     requires javafx.media;
 
 
+    requires java.desktop;
+
+
     opens org.simconsole.simconsole to javafx.fxml;
 	exports org.simconsole.simconsole;
 }

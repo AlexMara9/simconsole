@@ -178,7 +178,7 @@ public class ConsoleController {
 	private void initControls(){
 		playButton.setOnAction(e -> {
 			if(!deck.isPlaying()){
-				deck.getPlayer().play();
+				deck.play();
 			}else {
 				deck.pause();
 			}
