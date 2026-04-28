@@ -1,6 +1,6 @@
 /* track */
 .dj-slider .track {
-    -fx-background-color: linear-gradient(#444, #222);
+    -fx-background-color: linear-gradient(#777, #222);
     -fx-pref-width: 8;
     -fx-background-insets: 0;
     -fx-background-radius: 4;
