@@ -16,6 +16,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.control.Slider;
 
 /**
  * Controller that connects the UI to the app logic
@@ -40,12 +41,14 @@ public class ConsoleController {
 	@FXML private Button skipButton;
 	@FXML private Button unskipButton;
 
+	@FXML private Slider volumeSlider;
+
 	/**
 	 * init function that sets the responsivity
 	 */
 	public void initialize(){
 		initResponsiveness();
-
+		initListeners();
 
 		//setDebug();
 	}
@@ -167,6 +170,12 @@ public class ConsoleController {
 		double x = (w - textWidth) / 2.0;
 		double y = (h + textHeight / 2.0) / 2.0;
 		gc.fillText(text, x, y);
+	}
+
+	private void initListeners(){
+		volumeSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->{
+			// volume slider action
+		});
 	}
 
 	private void setDebug(){

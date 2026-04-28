@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.PointLight?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
@@ -15,6 +16,9 @@
 <?import javafx.scene.text.Font?>
 
 <GridPane fx:id="grid" prefHeight="450.0" prefWidth="496.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.ConsoleController">
+    <stylesheets>
+        <URL value="@style.css" />
+    </stylesheets>
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="50.0" />
         <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="50.0" />
@@ -55,7 +59,7 @@
                 <RowConstraints percentHeight="100.0" valignment="CENTER" vgrow="ALWAYS" />
               </rowConstraints>
                <children>
-                    <Slider orientation="VERTICAL" />
+                   <Slider fx:id="volumeSlider" minorTickCount="1" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" styleClass="default-slider" />
                   <Slider orientation="VERTICAL" GridPane.columnIndex="1" />
                   <Slider orientation="VERTICAL" GridPane.columnIndex="2" />
                   <Slider orientation="VERTICAL" GridPane.columnIndex="3" />
