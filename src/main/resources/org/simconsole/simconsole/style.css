@@ -1,15 +1,15 @@
-/* track */
-.dj-slider .track {
+/*default slider track format */
+.default-slider .track {
     -fx-background-color: linear-gradient(#777, #222);
     -fx-pref-width: 8;
     -fx-background-insets: 0;
     -fx-background-radius: 4;
 }
 
-/* thumb: pallino rosso */
-.dj-slider .thumb {
+/* default slider thumb format */
+.default-slider .thumb {
     -fx-background-color: red;
-    -fx-background-radius: 50%;       /* circle */
+    -fx-background-radius: 50%;
     -fx-pref-width: 20;
     -fx-pref-height: 20;
     -fx-border-color: #660000;
@@ -18,7 +18,7 @@
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 4, 0.0, 0, 1);
 }
 
-/* opzionale: colore quando hover */
-.dj-slider .thumb:hover {
+/* default slider thumb color*/
+.default-slider .thumb:hover {
     -fx-background-color: #ff4d4d;
 }
