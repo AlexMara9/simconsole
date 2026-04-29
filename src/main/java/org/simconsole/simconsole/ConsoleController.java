@@ -1,6 +1,10 @@
 package org.simconsole.simconsole;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.beans.binding.DoubleBinding;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -25,6 +29,7 @@ public class ConsoleController {
 	@FXML private GridPane grid;
 
 	@FXML private Circle vinyl;
+	@FXML private Circle vinylCenter;
 
 	@FXML private StackPane graphContainer;
 	@FXML private Canvas graph;
@@ -66,17 +71,22 @@ public class ConsoleController {
 		double seekButtonsFontContainerScaleFactor = 0.5;
 
 
-		// vinyl
+		// vinyl & general UI scale
 		grid.heightProperty().addListener((o,n,j)->{
 			if (grid.getWidth() > j.doubleValue()){
 				vinyl.setRadius(j.doubleValue()* vinylRadiusSceneScaleFactor);
 			}
+			updateGridFontSize();
 		});
 		grid.widthProperty().addListener((o,n,j)->{
 			if (grid.getHeight() > j.doubleValue()){
 				vinyl.setRadius(j.doubleValue()* vinylRadiusSceneScaleFactor);
 			}
+			updateGridFontSize();
 		});
+		vinylCenter.radiusProperty().bind(Bindings.multiply(vinyl.radiusProperty(),0.2));
+		vinylCenter.strokeWidthProperty().bind(Bindings.multiply(vinyl.radiusProperty(),0.04));
+
 
 		// graph
 		graph.heightProperty().bind(graphContainer.heightProperty());
@@ -116,6 +126,17 @@ public class ConsoleController {
 							buttonsBoundSize
 					)
 			);
+		}
+	}
+
+
+	private void updateGridFontSize() {
+		double minDim = Math.min(grid.getWidth(), grid.getHeight());
+		if (minDim > 0) {
+			// scale factor to keep font size proportional
+			double fontSize = minDim / 50.0;
+			fontSize = Math.max(0, Math.min(fontSize, 1000000));
+			grid.setStyle(String.format(java.util.Locale.US, "-fx-font-size: %.2fpx;", fontSize));
 		}
 	}
 
@@ -175,6 +196,13 @@ public class ConsoleController {
 	private void initListeners(){
 		volumeSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->{
 			// volume slider action
+		});
+
+		// vinyl animation
+		vinyl.setOnScroll(event -> {
+			double delta = event.getDeltaY();
+			// rotate vinyl
+			vinyl.setRotate(vinyl.getRotate() + delta * 0.3);
 		});
 	}
 

@@ -13,9 +13,10 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
-<GridPane fx:id="grid" prefHeight="450.0" prefWidth="496.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.ConsoleController">
+<GridPane fx:id="grid" prefHeight="450.0" prefWidth="496.0" styleClass="main-container" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.ConsoleController">
     <stylesheets>
         <URL value="@style.css" />
     </stylesheets>
@@ -25,12 +26,17 @@
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="ALWAYS" />
-      <RowConstraints percentHeight="10.0" vgrow="ALWAYS" />
+      <RowConstraints percentHeight="15.0" vgrow="ALWAYS" />
         <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="ALWAYS" />
     </rowConstraints>
     <children>
-        <Circle fx:id="vinyl" fill="DODGERBLUE" radius="43.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
-      <StackPane fx:id="songListContainer" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="2">
+      <StackPane styleClass="card" GridPane.columnIndex="1">
+         <children>
+            <Circle fx:id="vinyl" radius="43.0" stroke="#111111" strokeType="INSIDE" />
+            <Circle fx:id="vinylCenter" fill="#1a1a1a" radius="10.0" stroke="#007aff" strokeType="INSIDE" strokeWidth="2.0" />
+         </children>
+      </StackPane>
+      <StackPane fx:id="songListContainer" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="2" styleClass="card">
          <children>
               <ListView fx:id="songList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" StackPane.alignment="BOTTOM_CENTER" />
               <Label fx:id="songListLabel" text="lista" wrapText="true" StackPane.alignment="TOP_CENTER">
