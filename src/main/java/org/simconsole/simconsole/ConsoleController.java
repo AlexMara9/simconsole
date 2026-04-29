@@ -150,10 +150,10 @@ public class ConsoleController {
 		gc.clearRect(0, 0, w, h);
 
 		// colors
-		Color bg = Color.web("#f5f5f5");
-		Color border = Color.web("#cccccc");
-		Color cross = Color.web("#dddddd");
-		Color textColor = Color.web("#888888");
+		Color bg = Color.web("#1e1e1e");
+		Color border = Color.web("#2b2b2b");
+		Color cross = Color.web("#333333");
+		Color textColor = Color.web("#a0a0a0");
 
 		// background
 		gc.setFill(bg);
@@ -178,10 +178,10 @@ public class ConsoleController {
 		gc.strokeLine(margin, h - margin, w - margin, margin);
 
 		// central text: scale the font compared to the dimension of the canvas
-		String text = "Canvas placeholder";
+		String text = "Signal Visualizer";
 		double fontSize = Math.max(10, minDim * 0.07); // responsive dimension
 		gc.setFill(textColor);
-		gc.setFont(Font.font("System", FontWeight.NORMAL, fontSize));
+		gc.setFont(Font.font("Segoe UI", FontWeight.BOLD, fontSize));
 
 		Text meas = new Text(text);
 		meas.setFont(gc.getFont());
