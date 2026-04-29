@@ -39,15 +39,15 @@
       <StackPane fx:id="songListContainer" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="2" styleClass="card">
          <children>
               <ListView fx:id="songList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" StackPane.alignment="BOTTOM_CENTER" />
-              <Label fx:id="songListLabel" text="lista" wrapText="true" StackPane.alignment="TOP_CENTER">
+              <Label fx:id="songListLabel" text="PLAYLIST" wrapText="true" StackPane.alignment="TOP_CENTER" styleClass="section-label">
                <font>
-                  <Font size="16.0" />
+                  <Font name="System Bold" size="16.0" />
                </font>
             </Label>
          </children>
       </StackPane>
         <PointLight color="CHARTREUSE" lightOn="true" GridPane.rowIndex="2" />
-      <StackPane fx:id="graphContainer" minHeight="0.0" minWidth="0.0">
+      <StackPane fx:id="graphContainer" minHeight="0.0" minWidth="0.0" styleClass="card">
          <children>
             <Canvas fx:id="graph" />
          </children>
