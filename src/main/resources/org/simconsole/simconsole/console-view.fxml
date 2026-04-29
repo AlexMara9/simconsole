@@ -87,20 +87,23 @@
               </rowConstraints>
                <children>
                   <Slider GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-                  <HBox fx:id="trackButtonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1">
+                  <HBox fx:id="trackButtonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1" spacing="15.0">
                      <children>
-                        <Button fx:id="unskipButton" alignment="CENTER" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="&lt;" textAlignment="CENTER">
-                           <font>
-                              <Font size="10.0" />
-                           </font></Button>
-                        <Button fx:id="playButton" alignment="CENTER" contentDisplay="CENTER" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="||" textAlignment="CENTER">
-                           <font>
-                              <Font size="10.0" />
-                           </font></Button>
-                        <Button fx:id="skipButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="&gt;" textAlignment="CENTER">
-                           <font>
-                              <Font size="10.0" />
-                           </font></Button>
+                        <Button fx:id="unskipButton" alignment="CENTER" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button" contentDisplay="GRAPHIC_ONLY">
+                           <graphic>
+                              <javafx.scene.layout.Region styleClass="icon, icon-unskip" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="playButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button, play-button">
+                           <graphic>
+                              <javafx.scene.layout.Region styleClass="icon, icon-play" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="skipButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button" contentDisplay="GRAPHIC_ONLY">
+                           <graphic>
+                              <javafx.scene.layout.Region styleClass="icon, icon-skip" />
+                           </graphic>
+                        </Button>
                      </children>
                   </HBox>
                </children>
