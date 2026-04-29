@@ -172,7 +172,6 @@
     -fx-background-radius: 4;
 }
 
-/* default slider thumb color*/
-.default-slider .thumb:hover {
-    -fx-background-color: #ff4d4d;
+.list-view .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #666666;
 }
