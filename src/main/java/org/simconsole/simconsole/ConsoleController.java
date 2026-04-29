@@ -1,6 +1,10 @@
 package org.simconsole.simconsole;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.geometry.Orientation;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.beans.binding.DoubleBinding;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -25,6 +29,7 @@ public class ConsoleController {
 	@FXML private GridPane grid;
 
 	@FXML private Circle vinyl;
+	@FXML private Circle vinylCenter;
 
 	@FXML private StackPane graphContainer;
 	@FXML private Canvas graph;
@@ -49,6 +54,7 @@ public class ConsoleController {
 	public void initialize(){
 		initResponsiveness();
 		initListeners();
+		initDynamicSliderStyles();
 
 		//setDebug();
 	}
@@ -66,17 +72,22 @@ public class ConsoleController {
 		double seekButtonsFontContainerScaleFactor = 0.5;
 
 
-		// vinyl
+		// vinyl & general UI scale
 		grid.heightProperty().addListener((o,n,j)->{
 			if (grid.getWidth() > j.doubleValue()){
 				vinyl.setRadius(j.doubleValue()* vinylRadiusSceneScaleFactor);
 			}
+			updateGridFontSize();
 		});
 		grid.widthProperty().addListener((o,n,j)->{
 			if (grid.getHeight() > j.doubleValue()){
 				vinyl.setRadius(j.doubleValue()* vinylRadiusSceneScaleFactor);
 			}
+			updateGridFontSize();
 		});
+		vinylCenter.radiusProperty().bind(Bindings.multiply(vinyl.radiusProperty(),0.2));
+		vinylCenter.strokeWidthProperty().bind(Bindings.multiply(vinyl.radiusProperty(),0.04));
+
 
 		// graph
 		graph.heightProperty().bind(graphContainer.heightProperty());
@@ -119,6 +130,17 @@ public class ConsoleController {
 		}
 	}
 
+
+	private void updateGridFontSize() {
+		double minDim = Math.min(grid.getWidth(), grid.getHeight());
+		if (minDim > 0) {
+			// scale factor to keep font size proportional
+			double fontSize = minDim / 50.0;
+			fontSize = Math.max(0, Math.min(fontSize, 1000000));
+			grid.setStyle(String.format(java.util.Locale.US, "-fx-font-size: %.2fpx;", fontSize));
+		}
+	}
+
 	private void drawPlaceholder(Canvas canvas) {
 		double w = Math.max(1, canvas.getWidth());
 		double h = Math.max(1, canvas.getHeight());
@@ -128,10 +150,10 @@ public class ConsoleController {
 		gc.clearRect(0, 0, w, h);
 
 		// colors
-		Color bg = Color.web("#f5f5f5");
-		Color border = Color.web("#cccccc");
-		Color cross = Color.web("#dddddd");
-		Color textColor = Color.web("#888888");
+		Color bg = Color.web("#1e1e1e");
+		Color border = Color.web("#2b2b2b");
+		Color cross = Color.web("#333333");
+		Color textColor = Color.web("#a0a0a0");
 
 		// background
 		gc.setFill(bg);
@@ -156,10 +178,10 @@ public class ConsoleController {
 		gc.strokeLine(margin, h - margin, w - margin, margin);
 
 		// central text: scale the font compared to the dimension of the canvas
-		String text = "Canvas placeholder";
+		String text = "Signal Visualizer";
 		double fontSize = Math.max(10, minDim * 0.07); // responsive dimension
 		gc.setFill(textColor);
-		gc.setFont(Font.font("System", FontWeight.NORMAL, fontSize));
+		gc.setFont(Font.font("Segoe UI", FontWeight.BOLD, fontSize));
 
 		Text meas = new Text(text);
 		meas.setFont(gc.getFont());
@@ -176,12 +198,94 @@ public class ConsoleController {
 		volumeSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->{
 			// volume slider action
 		});
+
+		// vinyl animation
+		vinyl.setOnScroll(event -> {
+			double delta = event.getDeltaY();
+			// rotate vinyl
+			vinyl.setRotate(vinyl.getRotate() + delta * 0.3);
+		});
 	}
 
 	private void setDebug(){
 		grid.setStyle("-fx-border-color: #FF0000;");
 		slidersGrill.setStyle("-fx-border-color: #00FF00;");
 		trackButtonsContainer.setStyle("-fx-border-color: #0000FF;");
+	}
+
+	private void initDynamicSliderStyles() {
+		applyDynamicStyle(grid);
+	}
+
+	private void applyDynamicStyle(Parent root) {
+		for (Node node : root.getChildrenUnmodifiable()) {
+			if (node instanceof Slider s) {
+				applyDynamicStyleToSlider(s);
+			} else if (node instanceof Parent p) {
+				applyDynamicStyle(p);
+			}
+		}
+	}
+
+	private void applyDynamicStyleToSlider(Slider slider) {
+		slider.skinProperty().addListener((obs, old, skin) -> {
+			if (skin == null) return;
+
+			Node track = slider.lookup(".track");
+			Node thumb = slider.lookup(".thumb");
+			if (track == null || thumb == null) return;
+
+			ChangeListener<Object> listener = (o, ov, nv) -> updateSliderTrack(slider, track, thumb);
+			track.layoutBoundsProperty().addListener(listener);
+			thumb.layoutBoundsProperty().addListener(listener);
+			slider.valueProperty().addListener(listener);
+
+			updateSliderTrack(slider, track, thumb);
+		});
+	}
+
+	private void updateSliderTrack(Slider slider, Node track, Node thumb) {
+		double min = slider.getMin();
+		double max = slider.getMax();
+		double val = slider.getValue();
+		double percentage = (max == min) ? 0 : (val - min) / (max - min);
+
+		String colorFilled = "#007aff"; // modern blue accent
+		String colorEmpty = "#2b2b2b";  // dark grey / almost black
+
+		if (slider.getOrientation() == Orientation.VERTICAL) {
+			double trackHeight = track.getLayoutBounds().getHeight();
+			double thumbHeight = thumb.getLayoutBounds().getHeight();
+			if (trackHeight > 0 && thumbHeight > 0) {
+				double thumbRadius = thumbHeight / 2.0;
+				double usableTrack = trackHeight - thumbHeight;
+				double centerFromTop = thumbRadius + (1.0 - percentage) * usableTrack;
+				double stopPercentage = (centerFromTop / trackHeight) * 100.0;
+
+				String style = String.format(
+						java.util.Locale.US,
+						"-fx-background-color: linear-gradient(to bottom, %s %.1f%%, %s %.1f%%);",
+						colorEmpty, stopPercentage, colorFilled, stopPercentage
+				);
+				track.setStyle(style);
+			}
+		} else {
+			double trackWidth = track.getLayoutBounds().getWidth();
+			double thumbWidth = thumb.getLayoutBounds().getWidth();
+			if (trackWidth > 0 && thumbWidth > 0) {
+				double thumbRadius = thumbWidth / 2.0;
+				double usableTrack = trackWidth - thumbWidth;
+				double centerFromLeft = thumbRadius + percentage * usableTrack;
+				double stopPercentage = (centerFromLeft / trackWidth) * 100.0;
+
+				String style = String.format(
+						java.util.Locale.US,
+						"-fx-background-color: linear-gradient(to right, %s %.1f%%, %s %.1f%%);",
+						colorFilled, stopPercentage, colorEmpty, stopPercentage
+				);
+				track.setStyle(style);
+			}
+		}
 	}
 
 }
