@@ -52,7 +52,7 @@
             <Canvas fx:id="graph" />
          </children>
       </StackPane>
-      <StackPane fx:id="slidersGrillContainer" minHeight="0.0" minWidth="0.0" prefWidth="239.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <StackPane fx:id="slidersGrillContainer" minHeight="0.0" minWidth="0.0" prefWidth="239.0" GridPane.columnIndex="1" GridPane.rowIndex="2" styleClass="card">
          <children>
             <GridPane fx:id="slidersGrill" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0">
               <columnConstraints>
@@ -65,7 +65,7 @@
                 <RowConstraints percentHeight="100.0" valignment="CENTER" vgrow="ALWAYS" />
               </rowConstraints>
                <children>
-                   <Slider fx:id="volumeSlider" minorTickCount="1" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" styleClass="default-slider" />
+                   <Slider fx:id="volumeSlider" minorTickCount="1" orientation="VERTICAL" showTickLabels="false" showTickMarks="false" />
                   <Slider orientation="VERTICAL" GridPane.columnIndex="1" />
                   <Slider orientation="VERTICAL" GridPane.columnIndex="2" />
                   <Slider orientation="VERTICAL" GridPane.columnIndex="3" />
@@ -73,7 +73,7 @@
             </GridPane>
          </children>
       </StackPane>
-      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1" styleClass="card, controls-card">
          <children>
             <GridPane minHeight="0.0" minWidth="0.0">
               <columnConstraints>

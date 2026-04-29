@@ -54,6 +54,7 @@ public class ConsoleController {
 	public void initialize(){
 		initResponsiveness();
 		initListeners();
+		initDynamicSliderStyles();
 
 		//setDebug();
 	}
@@ -210,6 +211,81 @@ public class ConsoleController {
 		grid.setStyle("-fx-border-color: #FF0000;");
 		slidersGrill.setStyle("-fx-border-color: #00FF00;");
 		trackButtonsContainer.setStyle("-fx-border-color: #0000FF;");
+	}
+
+	private void initDynamicSliderStyles() {
+		applyDynamicStyle(grid);
+	}
+
+	private void applyDynamicStyle(Parent root) {
+		for (Node node : root.getChildrenUnmodifiable()) {
+			if (node instanceof Slider s) {
+				applyDynamicStyleToSlider(s);
+			} else if (node instanceof Parent p) {
+				applyDynamicStyle(p);
+			}
+		}
+	}
+
+	private void applyDynamicStyleToSlider(Slider slider) {
+		slider.skinProperty().addListener((obs, old, skin) -> {
+			if (skin == null) return;
+
+			Node track = slider.lookup(".track");
+			Node thumb = slider.lookup(".thumb");
+			if (track == null || thumb == null) return;
+
+			ChangeListener<Object> listener = (o, ov, nv) -> updateSliderTrack(slider, track, thumb);
+			track.layoutBoundsProperty().addListener(listener);
+			thumb.layoutBoundsProperty().addListener(listener);
+			slider.valueProperty().addListener(listener);
+
+			updateSliderTrack(slider, track, thumb);
+		});
+	}
+
+	private void updateSliderTrack(Slider slider, Node track, Node thumb) {
+		double min = slider.getMin();
+		double max = slider.getMax();
+		double val = slider.getValue();
+		double percentage = (max == min) ? 0 : (val - min) / (max - min);
+
+		String colorFilled = "#007aff"; // modern blue accent
+		String colorEmpty = "#2b2b2b";  // dark grey / almost black
+
+		if (slider.getOrientation() == Orientation.VERTICAL) {
+			double trackHeight = track.getLayoutBounds().getHeight();
+			double thumbHeight = thumb.getLayoutBounds().getHeight();
+			if (trackHeight > 0 && thumbHeight > 0) {
+				double thumbRadius = thumbHeight / 2.0;
+				double usableTrack = trackHeight - thumbHeight;
+				double centerFromTop = thumbRadius + (1.0 - percentage) * usableTrack;
+				double stopPercentage = (centerFromTop / trackHeight) * 100.0;
+
+				String style = String.format(
+						java.util.Locale.US,
+						"-fx-background-color: linear-gradient(to bottom, %s %.1f%%, %s %.1f%%);",
+						colorEmpty, stopPercentage, colorFilled, stopPercentage
+				);
+				track.setStyle(style);
+			}
+		} else {
+			double trackWidth = track.getLayoutBounds().getWidth();
+			double thumbWidth = thumb.getLayoutBounds().getWidth();
+			if (trackWidth > 0 && thumbWidth > 0) {
+				double thumbRadius = thumbWidth / 2.0;
+				double usableTrack = trackWidth - thumbWidth;
+				double centerFromLeft = thumbRadius + percentage * usableTrack;
+				double stopPercentage = (centerFromLeft / trackWidth) * 100.0;
+
+				String style = String.format(
+						java.util.Locale.US,
+						"-fx-background-color: linear-gradient(to right, %s %.1f%%, %s %.1f%%);",
+						colorFilled, stopPercentage, colorEmpty, stopPercentage
+				);
+				track.setStyle(style);
+			}
+		}
 	}
 
 }
