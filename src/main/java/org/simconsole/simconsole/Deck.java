@@ -5,14 +5,12 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
-public class Deck {
+public class Deck extends DeckControls {
     private double[] audioData;
     private volatile int playhead = 0;
     private volatile boolean isPlaying = false;
 
-    // Volumi gestiti come thread-safe
     private volatile double internalVolume = 0.0;
-    private volatile double targetVolume = 0.0;
 
     private SourceDataLine speakerLine;
     private Thread playbackThread;
@@ -21,7 +19,6 @@ public class Deck {
     private static final double FADE_SPEED = 0.0005;
 
     public void loadTrack(Tracks track) {
-        targetVolume = 0.0;
         isPlaying = false;
 
         double[] newData = AudioDecoder.readWavFileAsDoubles(track.getFilePath());
@@ -52,16 +49,15 @@ public class Deck {
 
     public void play() {
         if (audioData == null) return;
-        targetVolume = 1.0;
         isPlaying = true;
     }
 
     public void pause() {
-        targetVolume = 0.0;
+        isPlaying = false;
     }
 
     public boolean isPlaying() {
-        return isPlaying && internalVolume > 0.1;
+        return isPlaying;
     }
 
     private void startPlaybackThread() {
@@ -74,24 +70,27 @@ public class Deck {
 
                 for (int i = 0; i < framesPerWrite; i++) {
                     // 1. SMOOTH VOLUME RAMPING
+                    double targetVolume = isPlaying ? getVolume() : 0.0;
                     if (internalVolume < targetVolume) {
                         internalVolume = Math.min(targetVolume, internalVolume + FADE_SPEED);
                     } else if (internalVolume > targetVolume) {
                         internalVolume = Math.max(targetVolume, internalVolume - FADE_SPEED);
                     }
 
-                    // Se il volume è zero e non dobbiamo suonare, isPlaying si spegne
-                    if (targetVolume == 0 && internalVolume <= 0) {
-                        isPlaying = false;
-                    }
-
                     double left = 0, right = 0;
 
-                    // 2. GENERAZIONE SEGNALE (Audio o Silenzio)
-                    if (internalVolume > 0 && playhead < audioData.length - 2) {
+                    boolean advancing = (isPlaying || internalVolume > 0);
+
+                    // 2. GENERAZIONE SEGNALE E APPLICAZIONE CONTROLLI
+                    if (advancing && playhead < audioData.length - 2) {
                         left = audioData[playhead] * internalVolume;
                         right = audioData[playhead + 1] * internalVolume;
                         playhead += 2;
+
+                        left = processLeft(left);
+                        right = processRight(right);
+                    } else if (advancing && playhead >= audioData.length - 2) {
+                        isPlaying = false;
                     }
 
                     // 3. HARD LIMITER (Evita la distorsione da clipping)

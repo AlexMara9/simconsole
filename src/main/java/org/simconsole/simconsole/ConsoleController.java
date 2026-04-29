@@ -8,6 +8,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -49,7 +50,7 @@ public class ConsoleController {
 		initResponsiveness();
 		initControls();
 
-		//setDebug();
+		setDebug();
 	}
 
 	private void initResponsiveness(){
@@ -188,6 +189,15 @@ public class ConsoleController {
 		grid.setStyle("-fx-border-color: #FF0000;");
 		slidersGrill.setStyle("-fx-border-color: #00FF00;");
 		trackButtonsContainer.setStyle("-fx-border-color: #0000FF;");
+		Slider s = (Slider) slidersGrill.getChildren().get(0);
+		s.valueProperty().addListener((o, oldVal, newVal) -> {
+			deck.setVolume(newVal.doubleValue());
+		});
+
+		Slider s1 = (Slider) slidersGrill.getChildren().get(1);
+		s.valueProperty().addListener((o, oldVal, newVal) -> {
+			deck.setEqLow(newVal.doubleValue());
+		});
 	}
 
 }
