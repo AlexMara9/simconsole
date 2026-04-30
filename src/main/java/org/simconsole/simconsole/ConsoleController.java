@@ -195,9 +195,27 @@ public class ConsoleController {
 		});
 
 		Slider s1 = (Slider) slidersGrill.getChildren().get(1);
-		s.valueProperty().addListener((o, oldVal, newVal) -> {
+		s1.valueProperty().addListener((o, oldVal, newVal) -> {
 			deck.setEqLow(newVal.doubleValue());
+			System.out.println(newVal.doubleValue());
 		});
+		Slider s2 = (Slider) slidersGrill.getChildren().get(2);
+		s2.valueProperty().addListener((o, oldVal, newVal) -> {
+			deck.setEqMid(newVal.doubleValue());
+			System.out.println(newVal.doubleValue());
+		});
+		Slider s3 = (Slider) slidersGrill.getChildren().get(3);
+		s3.valueProperty().addListener((o, oldVal, newVal) -> {
+			deck.setEqHigh(newVal.doubleValue());
+			System.out.println(newVal.doubleValue());
+		});
+
+		Slider s4 = (Slider) slidersGrill.getChildren().get(4);
+		s4.valueProperty().addListener((o, oldVal, newVal) -> {
+			deck.setPan(newVal.doubleValue());
+			System.out.println(newVal.doubleValue());
+		});
+
 	}
 
 }

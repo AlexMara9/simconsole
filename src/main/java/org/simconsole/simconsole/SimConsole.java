@@ -22,14 +22,11 @@ public class SimConsole extends Application {
 		stage.show();
 
 
-		Tracks trackA = new Tracks("C:\\Users\\Pietro\\Downloads\\Queen – Bohemian Rhapsody (Official Video Remastered).wav");
+		Tracks trackA = new Tracks("C:\\Users\\Pietro\\Downloads\\boro.wav");
 		Tracks trackB = new Tracks("C:\\Users\\Pietro\\Downloads\\Lacrimosa.wav");
 		Deck d1 = new Deck();
 		d1.loadTrack(trackA);
 		System.out.println("Test: Traccia A partita.");
-
-
-		d1.setVolume(1);
 		d1.setEqHigh(-12);
 		d1.setEqMid(0);
 		d1.setEqLow(12);
