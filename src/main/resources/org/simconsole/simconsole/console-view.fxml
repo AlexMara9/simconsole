@@ -20,8 +20,9 @@
         <URL value="@style.css" />
     </stylesheets>
     <columnConstraints>
-        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="50.0" />
-        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="50.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="35.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="30.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="35.0" prefWidth="100.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="ALWAYS" />
@@ -29,13 +30,13 @@
         <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="ALWAYS" />
     </rowConstraints>
     <children>
-      <StackPane styleClass="card" GridPane.columnIndex="1">
+      <StackPane styleClass="card">
          <children>
             <Circle fx:id="vinyl" radius="43.0" stroke="#111111" strokeType="INSIDE" />
             <Circle fx:id="vinylCenter" fill="#1a1a1a" radius="10.0" stroke="#007aff" strokeType="INSIDE" strokeWidth="2.0" />
          </children>
       </StackPane>
-      <StackPane fx:id="songListContainer" minHeight="0.0" minWidth="0.0" styleClass="card" GridPane.rowIndex="2">
+      <StackPane fx:id="songListContainer" minHeight="0.0" minWidth="0.0" styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
               <ListView fx:id="songList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" StackPane.alignment="BOTTOM_CENTER" />
               <Label fx:id="songListLabel" styleClass="section-label" text="PLAYLIST" wrapText="true" StackPane.alignment="TOP_CENTER">
@@ -45,12 +46,12 @@
             </Label>
          </children>
       </StackPane>
-      <StackPane fx:id="graphContainer" minHeight="0.0" minWidth="0.0" styleClass="card">
+      <StackPane fx:id="graphContainer" minHeight="0.0" minWidth="0.0" styleClass="card" GridPane.columnIndex="1">
          <children>
             <Canvas fx:id="graph" />
          </children>
       </StackPane>
-      <StackPane fx:id="slidersGrillContainer" minHeight="0.0" minWidth="0.0" prefWidth="239.0" styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <StackPane fx:id="slidersGrillContainer" minHeight="0.0" minWidth="0.0" prefWidth="239.0" styleClass="card" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <children>
             <GridPane fx:id="slidersGrill" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0">
               <columnConstraints>
@@ -71,7 +72,7 @@
             </GridPane>
          </children>
       </StackPane>
-      <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="card, controls-card" GridPane.columnSpan="2" GridPane.rowIndex="1">
+      <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="card, controls-card" GridPane.columnSpan="3" GridPane.rowIndex="1">
          <children>
             <GridPane minHeight="0.0" minWidth="0.0">
               <columnConstraints>
@@ -104,6 +105,33 @@
                         </Button>
                      </children>
                   </HBox>
+               </children>
+            </GridPane>
+         </children>
+      </StackPane>
+      <StackPane styleClass="card" GridPane.columnIndex="2">
+         <children>
+            <Circle fx:id="vinyl1" radius="43.0" stroke="#111111" strokeType="INSIDE" />
+            <Circle fx:id="vinylCenter1" fill="#1a1a1a" radius="10.0" stroke="#007aff" strokeType="INSIDE" strokeWidth="2.0" />
+         </children>
+      </StackPane>
+      <StackPane fx:id="slidersGrillContainer1" minHeight="0.0" minWidth="0.0" prefWidth="239.0" styleClass="card" GridPane.rowIndex="2">
+         <children>
+            <GridPane fx:id="slidersGrill1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="50.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="50.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="50.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="50.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints percentHeight="100.0" valignment="CENTER" vgrow="ALWAYS" />
+               </rowConstraints>
+               <children>
+                  <Slider fx:id="volumeSlider1" minorTickCount="1" orientation="VERTICAL" showTickLabels="false" showTickMarks="false" />
+                  <Slider orientation="VERTICAL" GridPane.columnIndex="1" />
+                  <Slider orientation="VERTICAL" GridPane.columnIndex="2" />
+                  <Slider orientation="VERTICAL" GridPane.columnIndex="3" />
                </children>
             </GridPane>
          </children>
