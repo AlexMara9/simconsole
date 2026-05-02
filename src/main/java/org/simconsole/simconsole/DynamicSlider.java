@@ -40,8 +40,8 @@ public class DynamicSlider extends Slider {
         double val = this.getValue();
         double percentage = (max == min) ? 0 : (val - min) / (max - min);
 
-        String colorFilled = "#007aff"; // modern blue accent
-        String colorEmpty = "#2b2b2b";  // dark grey / almost black
+        String colorFilled = "-track-filled";
+        String colorEmpty = "-track-empty";
 
         if (this.getOrientation() == Orientation.VERTICAL) {
             double trackHeight = track.getLayoutBounds().getHeight();

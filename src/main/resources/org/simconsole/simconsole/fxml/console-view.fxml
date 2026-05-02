@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -36,45 +33,7 @@
       <!-- Left Deck -->
       <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
       <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" GridPane.columnSpan="2" />
-
-      <!-- Center Controls -->
-      <StackPane minHeight="0.0" minWidth="0.0" styleClass="card, controls-card" GridPane.columnSpan="2" GridPane.rowIndex="1">
-         <children>
-            <GridPane minHeight="0.0" minWidth="0.0">
-              <columnConstraints>
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="33.0" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="33.0" />
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" percentWidth="33.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
-                <RowConstraints percentHeight="50.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <DynamicSlider GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-                  <HBox alignment="CENTER" minHeight="0.0" minWidth="0.0" spacing="15.0" GridPane.columnIndex="1">
-                     <children>
-                        <Button fx:id="unskipButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button">
-                           <graphic>
-                              <Region styleClass="icon, icon-unskip" />
-                           </graphic>
-                        </Button>
-                        <Button fx:id="playButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button, play-button">
-                           <graphic>
-                              <Region styleClass="icon, icon-play" />
-                           </graphic>
-                        </Button>
-                        <Button fx:id="skipButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button">
-                           <graphic>
-                              <Region styleClass="icon, icon-skip" />
-                           </graphic>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </GridPane>
-         </children>
-      </StackPane>
+      <fx:include source="PlaybackControlsController.fxml" GridPane.columnSpan="2" GridPane.rowIndex="1" />
 
       <!-- Left Sliders Grill -->
       <StackPane styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="2">
@@ -110,43 +69,7 @@
       <!-- Right Deck -->
       <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="0" />
       <fx:include source="signal-graph.fxml" GridPane.columnIndex="2" GridPane.columnSpan="2" />
-      <StackPane minHeight="0.0" minWidth="0.0" styleClass="card, controls-card" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
-         <children>
-            <GridPane minHeight="0.0" minWidth="0.0">
-               <columnConstraints>
-                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="33.0" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="33.0" />
-                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" percentWidth="33.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
-                  <RowConstraints percentHeight="50.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-               <children>
-                  <DynamicSlider GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
-                  <HBox alignment="CENTER" minHeight="0.0" minWidth="0.0" spacing="15.0" GridPane.columnIndex="1">
-                     <children>
-                        <Button fx:id="unskipButton1" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button">
-                           <graphic>
-                              <Region styleClass="icon, icon-unskip" />
-                           </graphic>
-                        </Button>
-                        <Button fx:id="playButton1" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button, play-button">
-                           <graphic>
-                              <Region styleClass="icon, icon-play" />
-                           </graphic>
-                        </Button>
-                        <Button fx:id="skipButton1" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button">
-                           <graphic>
-                              <Region styleClass="icon, icon-skip" />
-                           </graphic>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </GridPane>
-         </children>
-      </StackPane>
+      <fx:include source="PlaybackControlsController.fxml" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
 
       <!-- Right Sliders Grill -->
       <StackPane styleClass="card" GridPane.columnIndex="3" GridPane.rowIndex="2">
