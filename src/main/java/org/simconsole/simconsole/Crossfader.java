@@ -2,12 +2,12 @@ package org.simconsole.simconsole;
 
 public class Crossfader {
 
-    private Deck deckA;
-    private Deck deckB;
+    private DeckControls deckAControls;
+    private DeckControls deckBControls;
 
-    public Crossfader(Deck deckA, Deck deckB) {
-        this.deckA = deckA;
-        this.deckB = deckB;
+    public Crossfader(DeckControls deckAControls, DeckControls deckBControls) {
+        this.deckAControls = deckAControls;
+        this.deckBControls = deckBControls;
     }
 
 
@@ -22,20 +22,20 @@ public class Crossfader {
         double gainA = Math.cos(angle);
         double gainB = Math.sin(angle);
         
-        if (deckA != null) {
-            deckA.setCrossfaderGain(gainA);
+        if (deckAControls != null) {
+            deckAControls.setCrossfaderGain(gainA);
         }
         
-        if (deckB != null) {
-            deckB.setCrossfaderGain(gainB);
+        if (deckBControls != null) {
+            deckBControls.setCrossfaderGain(gainB);
         }
     }
 
-    public void setDeckA(Deck deckA) {
-        this.deckA = deckA;
+    public void setDeckAControls(DeckControls deckAControls) {
+        this.deckAControls = deckAControls;
     }
 
-    public void setDeckB(Deck deckB) {
-        this.deckB = deckB;
+    public void setDeckBControls(DeckControls deckBControls) {
+        this.deckBControls = deckBControls;
     }
 }

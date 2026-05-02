@@ -1,6 +1,28 @@
 package org.simconsole.simconsole;
 
 public class DeckControls {
+    private Deck deck;
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+
+    public void play() {
+        if (deck != null) {
+            deck.play();
+        }
+    }
+
+    public void pause() {
+        if (deck != null) {
+            deck.pause();
+        }
+    }
+
+    public boolean isPlaying() {
+        return deck != null && deck.isPlaying();
+    }
+
     private volatile double volume = 0.2;
     private volatile double crossfaderGain = 1.0; // Moltiplicatore assegnato dal crossfader
     private volatile double pan = 0.0; // 1.0 = tutto a sinistra, -1.0 = tutto a destra

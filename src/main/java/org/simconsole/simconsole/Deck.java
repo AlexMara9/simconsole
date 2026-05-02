@@ -5,7 +5,12 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
-public class Deck extends DeckControls {
+public class Deck {
+    private DeckControls controls;
+
+    public void setControls(DeckControls controls) {
+        this.controls = controls;
+    }
     private double[] audioData;
     private volatile int playhead = 0;
     private volatile boolean isPlaying = false;
@@ -70,7 +75,7 @@ public class Deck extends DeckControls {
 
                 for (int i = 0; i < framesPerWrite; i++) {
                     // 1. SMOOTH VOLUME RAMPING
-                    double targetVolume = isPlaying ? getVolume() : 0.0;
+                    double targetVolume = isPlaying && controls != null ? controls.getVolume() : 0.0;
                     if (internalVolume < targetVolume) {
                         internalVolume = Math.min(targetVolume, internalVolume + FADE_SPEED);
                     } else if (internalVolume > targetVolume) {
@@ -87,8 +92,10 @@ public class Deck extends DeckControls {
                         right = audioData[playhead + 1] * internalVolume;
                         playhead += 2;
 
-                        left = processLeft(left);
-                        right = processRight(right);
+                        if (controls != null) {
+                            left = controls.processLeft(left);
+                            right = controls.processRight(right);
+                        }
                     } else if (advancing && playhead >= audioData.length - 2) {
                         isPlaying = false;
                     }
