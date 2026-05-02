@@ -1,5 +1,6 @@
 package org.simconsole.simconsole;
 
+import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
@@ -8,28 +9,29 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class SignalVisualizer extends StackPane {
-    private final Canvas canvas;
+public class SignalGraphController {
+    @FXML private StackPane signalGraphContainer;
+    @FXML private Canvas signalGraph;
 
-    public SignalVisualizer() {
-        this.getStyleClass().add("card");
-        
-        canvas = new Canvas();
-        this.getChildren().add(canvas);
+    @FXML
+    public void initialize(){
+        responsive();
+    }
 
+    private void responsive(){
         // Bind canvas size to parent size
-        canvas.widthProperty().bind(this.widthProperty());
-        canvas.heightProperty().bind(this.heightProperty());
+        signalGraph.widthProperty().bind(signalGraphContainer.widthProperty());
+        signalGraph.heightProperty().bind(signalGraphContainer.heightProperty());
 
         // Redraw on resize
-        canvas.widthProperty().addListener((o, oldV, newV) -> drawPlaceholder());
-        canvas.heightProperty().addListener((o, oldV, newV) -> drawPlaceholder());
+        signalGraph.widthProperty().addListener((val, oldWidth, newWidth) -> drawPlaceholder());
+        signalGraph.heightProperty().addListener((val, oldHeight, newHeight) -> drawPlaceholder());
     }
 
     private void drawPlaceholder() {
-        double w = Math.max(1, canvas.getWidth());
-        double h = Math.max(1, canvas.getHeight());
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        double w = Math.max(1, signalGraph.getWidth());
+        double h = Math.max(1, signalGraph.getHeight());
+        GraphicsContext gc = signalGraph.getGraphicsContext2D();
 
         gc.clearRect(0, 0, w, h);
 

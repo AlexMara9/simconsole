@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.simconsole.simconsole.DynamicSlider?>
-<?import org.simconsole.simconsole.SignalVisualizer?>
 
 <!-- Import Custom Components -->
 
@@ -58,9 +57,7 @@
             </GridPane>
          </children>
       </StackPane>
-
-      <!-- Center Graph -->
-      <SignalVisualizer GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" GridPane.columnIndex="1" />
 
       <!-- Center Controls -->
       <StackPane styleClass="card, controls-card" GridPane.columnSpan="3" GridPane.rowIndex="1">
