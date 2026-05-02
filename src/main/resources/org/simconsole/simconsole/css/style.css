@@ -10,29 +10,12 @@
     -fx-vgap: 15;
 }
 
-/* ── Cards ───────────────────────────────────────────────────── */
-.card {
-    -fx-background-color: #1e1e1e;
-    -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 4);
-    -fx-padding: 10;
-}
-
-#vinyl {
-    -fx-fill: linear-gradient(from 0% 0% to 100% 100%, #1a1a1a 0%, #3a3a3a 50%, #1a1a1a 100%);
-}
-
-.controls-card {
-    -fx-background-color: transparent;
-    -fx-effect: none;
-    -fx-padding: 0;
-}
-
 /* ── Typography ──────────────────────────────────────────────── */
 .section-label {
     -fx-text-fill: #ffffff;
-    -fx-padding: 5;
+    -fx-padding: 0.5em;
     -fx-font-weight: bold;
+    -fx-font-size: 1.2em;
 }
 
 /* ── Sliders ─────────────────────────────────────────────────── */

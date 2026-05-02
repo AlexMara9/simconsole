@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+
+<StackPane fx:id="deckContainer" minHeight="0.0" minWidth="0.0" onMouseDragged="#onMouseMoved" onMousePressed="#onMousePressed" onScroll="#onScroll" onTouchMoved="#onTouchMoved" onTouchPressed="#onTouchPressed" styleClass="card" stylesheets="@../css/deck.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.DeckController">
+    <children>
+        <Circle fx:id="vinyl" radius="50.0" stroke="#111111" strokeType="INSIDE" styleClass="vinyl" />
+        <Circle fx:id="vinylCenter" fill="#1a1a1a" radius="15.0" stroke="#007aff" strokeType="INSIDE" strokeWidth="3.0" />
+    </children>
+</StackPane>

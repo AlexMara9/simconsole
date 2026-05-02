@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.simconsole.simconsole.DynamicSlider?>
+<?import org.simconsole.simconsole.SignalVisualizer?>
+
+<!-- Import Custom Components -->
+
+<GridPane fx:id="grid" prefHeight="450.0" prefWidth="496.0" styleClass="main-container" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.ConsoleController">
+    <stylesheets>
+        <URL value="@../css/style.css" />
+      <URL value="@../css/card.css" />
+    </stylesheets>
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="35.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="30.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="35.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="ALWAYS" />
+        <RowConstraints percentHeight="15.0" vgrow="ALWAYS" />
+        <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="ALWAYS" />
+    </rowConstraints>
+    <children>
+    
+      <!-- Left Deck -->
+      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+
+      <!-- Left Sliders Grill -->
+      <StackPane styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="2">
+         <children>
+            <GridPane alignment="CENTER">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
+                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints percentHeight="100.0" valignment="CENTER" vgrow="ALWAYS" />
+               </rowConstraints>
+               <children>
+                  <DynamicSlider fx:id="volumeSlider1" minorTickCount="1" orientation="VERTICAL" showTickLabels="false" showTickMarks="false" />
+                  <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="1" />
+                  <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="2" />
+                  <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="3" />
+               </children>
+            </GridPane>
+         </children>
+      </StackPane>
+
+      <!-- Center Graph -->
+      <SignalVisualizer GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+      <!-- Center Controls -->
+      <StackPane styleClass="card, controls-card" GridPane.columnSpan="3" GridPane.rowIndex="1">
+         <children>
+            <GridPane minHeight="0.0" minWidth="0.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="33.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="33.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" percentWidth="33.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints percentHeight="50.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <DynamicSlider GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                  <HBox alignment="CENTER" minHeight="0.0" minWidth="0.0" spacing="15.0" GridPane.columnIndex="1">
+                     <children>
+                        <Button fx:id="unskipButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button">
+                           <graphic>
+                              <Region styleClass="icon, icon-unskip" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="playButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button, play-button">
+                           <graphic>
+                              <Region styleClass="icon, icon-play" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="skipButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button">
+                           <graphic>
+                              <Region styleClass="icon, icon-skip" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+         </children>
+      </StackPane>
+
+      <!-- Center Song List -->
+      <VBox alignment="TOP_CENTER" styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <Label alignment="CENTER" maxWidth="Infinity" styleClass="section-label" text="PLAYLIST" />
+            <ListView fx:id="songList" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+
+      <!-- Right Deck -->
+      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+      <!-- Right Sliders Grill -->
+      <StackPane styleClass="card" GridPane.columnIndex="2" GridPane.rowIndex="2">
+         <children>
+            <GridPane alignment="CENTER">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints percentHeight="100.0" valignment="CENTER" vgrow="ALWAYS" />
+              </rowConstraints>
+               <children>
+                  <DynamicSlider fx:id="volumeSlider" minorTickCount="1" orientation="VERTICAL" showTickLabels="false" showTickMarks="false" />
+                  <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="1" />
+                  <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="2" />
+                  <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="3" />
+               </children>
+            </GridPane>
+         </children>
+      </StackPane>
+
+    </children>
+</GridPane>
