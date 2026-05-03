@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import org.simconsole.simconsole.DynamicSlider?>
 
-<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.PlaybackController">
+<StackPane fx:id="playbackContainer" minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.PlaybackController">
    <children>
-      <GridPane minHeight="0.0" minWidth="0.0">
+      <GridPane fx:id="playbackControlsContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="33.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="34.0" />
