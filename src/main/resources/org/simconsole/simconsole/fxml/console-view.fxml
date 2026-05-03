@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
+<?import java.lang.String?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -12,11 +12,7 @@
 
 <!-- Import Custom Components -->
 
-<GridPane fx:id="grid" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="496.0" styleClass="main-container" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.ConsoleController">
-    <stylesheets>
-        <URL value="@../css/style.css" />
-      <URL value="@../css/card.css" />
-    </stylesheets>
+<GridPane fx:id="grid" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="496.0" styleClass="main-container" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.ConsoleController">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="30.0" />
         <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="20.0" />
@@ -36,7 +32,7 @@
       <fx:include source="Playback.fxml" GridPane.columnSpan="2" GridPane.rowIndex="1" />
 
       <!-- Left Sliders Grill -->
-      <StackPane styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="2">
+      <StackPane GridPane.columnIndex="0" GridPane.rowIndex="2">
          <children>
             <GridPane alignment="CENTER">
                <columnConstraints>
@@ -56,6 +52,10 @@
                </children>
             </GridPane>
          </children>
+         <styleClass>
+            <String fx:value="card" />
+            <String fx:value="controls-card" />
+         </styleClass>
       </StackPane>
 
       <!-- Center Song List -->
@@ -72,7 +72,7 @@
       <fx:include source="Playback.fxml" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
 
       <!-- Right Sliders Grill -->
-      <StackPane styleClass="card" GridPane.columnIndex="3" GridPane.rowIndex="2">
+      <StackPane GridPane.columnIndex="3" GridPane.rowIndex="2">
          <children>
             <GridPane alignment="CENTER">
               <columnConstraints>
@@ -92,6 +92,10 @@
                </children>
             </GridPane>
          </children>
+         <styleClass>
+            <String fx:value="card" />
+            <String fx:value="controls-card" />
+         </styleClass>
       </StackPane>
 
     </children>
