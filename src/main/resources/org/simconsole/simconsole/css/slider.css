@@ -4,27 +4,11 @@
 }
 .slider .track {
     -fx-background-color: #2b2b2b;
-    -fx-background-radius: 0.4em;
-    -fx-border-radius: 0.4em;
-    -fx-border-color: transparent;
-}
-
-.slider:horizontal .track {
-    -fx-pref-height: 0.6em;
-}
-
-.slider:vertical .track {
-    -fx-pref-width: 0.6em;
 }
 
 .slider .thumb {
-    -fx-padding: 0.8em;
     -fx-background-color: #007aff;
-    -fx-background-radius: 10em;
     -fx-border-color: #ffffff;
-    -fx-border-width: 0.2em;
-    -fx-border-radius: 10em;
-    /*-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 0.4em, 0, 0, 0.2em);*/
 }
 
 .slider .thumb:hover {

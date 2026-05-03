@@ -4,6 +4,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.Region;
 
 public class DynamicSlider extends Slider {
 
@@ -25,12 +26,53 @@ public class DynamicSlider extends Slider {
             Node thumb = this.lookup(".thumb");
             if (track == null || thumb == null) return;
 
+            initResponsive(track, thumb);
+
             ChangeListener<Object> listener = (o, ov, nv) -> updateSliderTrack(track, thumb);
             track.layoutBoundsProperty().addListener(listener);
             thumb.layoutBoundsProperty().addListener(listener);
             this.valueProperty().addListener(listener);
 
             updateSliderTrack(track, thumb);
+        });
+    }
+
+    private void initResponsive(Node track, Node thumb) {
+        if (!(track instanceof Region trackRegion) || !(thumb instanceof Region thumbRegion)) return;
+        if (this.getOrientation() == Orientation.VERTICAL) {
+            this.maxWidthProperty().bind(this.heightProperty().multiply(0.15));
+            trackRegion.prefWidthProperty().bind(this.widthProperty().multiply(0.3));
+            thumbRegion.prefWidthProperty().bind(this.widthProperty().multiply(0.9));
+            thumbRegion.prefHeightProperty().bind(this.widthProperty().multiply(0.9));
+        } else {
+            this.maxHeightProperty().bind(this.widthProperty().multiply(0.15));
+            trackRegion.prefHeightProperty().bind(this.heightProperty().multiply(0.3));
+            thumbRegion.prefWidthProperty().bind(this.heightProperty().multiply(0.9));
+            thumbRegion.prefHeightProperty().bind(this.heightProperty().multiply(0.9));
+        }
+
+        // Update thumb border-radius and border-width dynamically whenever its size changes
+        // Only set geometry — colors remain in CSS so hover/pressed states still work
+        thumb.layoutBoundsProperty().addListener((obs, old, bounds) -> {
+            double size = Math.min(bounds.getWidth(), bounds.getHeight());
+            double r = size / 2.0;
+            double borderWidth = size * 0.08; // border = 5% of thumb size
+            thumb.setStyle(String.format(java.util.Locale.US,
+                    "-fx-background-radius: %.1fpx;" +
+                    "-fx-border-radius: %.1fpx;" +
+                    "-fx-border-width: %.1fpx;",
+                    r, r, borderWidth));
+        });
+        track.layoutBoundsProperty().addListener((obs,old,bounds)->{
+            double trackWidth  = track.getLayoutBounds().getWidth();
+            double radius = trackWidth / 2.0; // pill shape: half the thin dimension
+            String style = String.format(
+                    java.util.Locale.US,
+                     "-fx-background-radius: %.1fpx;" +
+                            "-fx-border-radius: %.1fpx;",
+                    radius, radius
+            );
+            track.setStyle(style);
         });
     }
 

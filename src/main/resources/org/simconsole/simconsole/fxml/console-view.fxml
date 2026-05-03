@@ -34,7 +34,7 @@
       <!-- Left Sliders Grill -->
       <StackPane GridPane.columnIndex="0" GridPane.rowIndex="2">
          <children>
-            <GridPane alignment="CENTER">
+            <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
@@ -74,7 +74,7 @@
       <!-- Right Sliders Grill -->
       <StackPane GridPane.columnIndex="3" GridPane.rowIndex="2">
          <children>
-            <GridPane alignment="CENTER">
+            <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0">
               <columnConstraints>
                 <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
                 <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="25.0" />
