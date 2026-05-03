@@ -1,5 +1,6 @@
 .control-button {
     -fx-background-color: transparent;
+    -fx-padding: 0;
 }
 
 .control-button:hover {

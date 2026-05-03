@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -24,17 +25,20 @@
           <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <HBox fx:id="buttonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1">
+            <HBox fx:id="buttonsContainer" alignment="CENTER" fillHeight="false" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1">
                <children>
                   <Button fx:id="unskipButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" styleClass="control-button">
                      <graphic>
-                        <Region minHeight="0.0" minWidth="0.0">
+                        <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="15.0" prefWidth="20.0">
                            <styleClass>
                               <String fx:value="icon" />
                               <String fx:value="icon-unskip" />
                            </styleClass>
                         </Region>
                      </graphic>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </Button>
                   <Button fx:id="playButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0">
                      <styleClass>
@@ -42,7 +46,7 @@
                         <String fx:value="play-button" />
                      </styleClass>
                      <graphic>
-                        <Region minHeight="0.0" minWidth="0.0">
+                        <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="15.0" prefWidth="20.0">
                            <styleClass>
                               <String fx:value="icon" />
                               <String fx:value="icon-play" />
@@ -52,7 +56,7 @@
                   </Button>
                   <Button fx:id="skipButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" styleClass="control-button">
                      <graphic>
-                        <Region minHeight="0.0" minWidth="0.0">
+                        <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="15.0" prefWidth="20.0">
                            <styleClass>
                               <String fx:value="icon" />
                               <String fx:value="icon-skip" />
