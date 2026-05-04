@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import org.simconsole.simconsole.DynamicSlider?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
 
-</AnchorPane>
+<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" StackPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="0.0" percentHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <DynamicSlider orientation="VERTICAL" />
+            <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="1" />
+            <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="2" />
+            <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="3" />
+         </children>
+      </GridPane>
+   </children>
+   <stylesheets>
+      <URL value="@../css/card.css" />
+      <URL value="@../css/slider.css" />
+   </stylesheets>
+</StackPane>
