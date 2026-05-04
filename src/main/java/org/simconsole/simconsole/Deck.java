@@ -12,8 +12,9 @@ public class Deck {
         this.controls = controls;
     }
     private double[] audioData;
-    private volatile int playhead = 0;
+    private volatile double playhead = 0.0;
     private volatile boolean isPlaying = false;
+    private Tracks currentTrack;
 
     private volatile double internalVolume = 0.0;
 
@@ -29,9 +30,15 @@ public class Deck {
         double[] newData = AudioDecoder.readWavFileAsDoubles(track.getFilePath());
 
         if (newData != null) {
+            this.currentTrack = track;
             this.audioData = newData;
-            this.playhead = 0;
+            this.playhead = 0.0;
             this.internalVolume = 0.0;
+            
+            // Chiamata ASINCRONA a TarsosDSP per il calcolo del BPM
+            BPMAnalyzer.detectBpmAsync(track, () -> {
+                System.out.println("Deck pronto: Analisi asincrona terminata per " + track.getFilePath());
+            });
             try {
                 if (speakerLine == null) {
                     AudioFormat format = new AudioFormat(44100, 16, 2, true, false);
@@ -87,16 +94,28 @@ public class Deck {
                     boolean advancing = (isPlaying || internalVolume > 0);
 
                     // 2. GENERAZIONE SEGNALE E APPLICAZIONE CONTROLLI
-                    if (advancing && playhead < audioData.length - 2) {
-                        left = audioData[playhead] * internalVolume;
-                        right = audioData[playhead + 1] * internalVolume;
-                        playhead += 2;
+                    if (advancing && playhead < audioData.length - 3) {
+                        int index = (int) playhead;
+                        if (index % 2 != 0) index--; // Allineamento stereofonico (canale sinistro)
+                        
+                        double frac = (playhead - index) / 2.0;
+
+                        double left1 = audioData[index];
+                        double right1 = audioData[index + 1];
+                        double left2 = audioData[index + 2];
+                        double right2 = audioData[index + 3];
+
+                        left = (left1 + (left2 - left1) * frac) * internalVolume;
+                        right = (right1 + (right2 - right1) * frac) * internalVolume;
+
+                        double pitch = controls != null ? controls.getPitch() : 1.0;
+                        playhead += 2.0 * pitch;
 
                         if (controls != null) {
                             left = controls.processLeft(left);
                             right = controls.processRight(right);
                         }
-                    } else if (advancing && playhead >= audioData.length - 2) {
+                    } else if (advancing && playhead >= audioData.length - 3) {
                         isPlaying = false;
                     }
 
@@ -129,6 +148,12 @@ public class Deck {
         return audioData;
     }
     public int getPlayhead() {
-        return playhead;
+        return (int) playhead;
+    }
+
+    public double getCurrentBpm() {
+        if (currentTrack == null || controls == null) return 0.0;
+        // Calcola il BPM in tempo reale in base alla posizione del pitchfader
+        return currentTrack.getOriginalBpm() * controls.getPitch();
     }
 }

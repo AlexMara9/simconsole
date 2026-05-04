@@ -26,14 +26,17 @@ public class DeckControls {
     private volatile double volume = 0.2;
     private volatile double crossfaderGain = 1.0; // Moltiplicatore assegnato dal crossfader
     private volatile double pan = 0.0; // 1.0 = tutto a sinistra, -1.0 = tutto a destra
+    private volatile double pitch = 1.0; // Moltiplicatore di velocità (1.0 = originale)
 
-    private final BiquadFilter eqLowL = new BiquadFilter(BiquadFilter.FilterType.LOW_SHELF, 44100, 150, 0.707, 0.0);
-    private final BiquadFilter eqLowR = new BiquadFilter(BiquadFilter.FilterType.LOW_SHELF, 44100, 150, 0.707, 0.0);
-    private final BiquadFilter eqMidL = new BiquadFilter(BiquadFilter.FilterType.PEAKING, 44100, 1000, 0.707, 0.0);
-    private final BiquadFilter eqMidR = new BiquadFilter(BiquadFilter.FilterType.PEAKING, 44100, 1000, 0.707, 0.0);
-    private final BiquadFilter eqHighL = new BiquadFilter(BiquadFilter.FilterType.HIGH_SHELF, 44100, 4000, 0.707, 0.0);
-    private final BiquadFilter eqHighR = new BiquadFilter(BiquadFilter.FilterType.HIGH_SHELF, 44100, 4000, 0.707, 0.0);
+    public void setPitch(double pitch) {
+        this.pitch = Math.max(0.1, Math.min(3.0, pitch)); // range di sicurezza 10% - 300%
+    }
 
+    public double getPitch() {
+        return pitch;
+    }
+
+    
     public void setVolume(double volume) {
         this.volume = Math.max(0.0, Math.min(1.0, volume));
     }
@@ -55,8 +58,17 @@ public class DeckControls {
         return pan;
     }
 
+    //biquad filters for eq
+    private final BiquadFilter eqLowL = new BiquadFilter(BiquadFilter.FilterType.LOW_SHELF, 44100, 150, 0.707, 0.0);
+    private final BiquadFilter eqLowR = new BiquadFilter(BiquadFilter.FilterType.LOW_SHELF, 44100, 150, 0.707, 0.0);
+    private final BiquadFilter eqMidL = new BiquadFilter(BiquadFilter.FilterType.PEAKING, 44100, 1000, 0.707, 0.0);
+    private final BiquadFilter eqMidR = new BiquadFilter(BiquadFilter.FilterType.PEAKING, 44100, 1000, 0.707, 0.0);
+    private final BiquadFilter eqHighL = new BiquadFilter(BiquadFilter.FilterType.HIGH_SHELF, 44100, 4000, 0.707, 0.0);
+    private final BiquadFilter eqHighR = new BiquadFilter(BiquadFilter.FilterType.HIGH_SHELF, 44100, 4000, 0.707, 0.0);
+
+
     private static final double MAX_EQ_GAIN_DB = 12.0;
-    private static final double MAX_EQ_LOW_GAIN_DB = 6.0; // Bassi limitati a +6dB per evitare clipping eccessivo
+    private static final double MAX_EQ_LOW_GAIN_DB = 6.0; 
 
     public void setEqLow(double gainDb) {
         // I bassi possono scendere a -12dB ma salire massimo a +6dB

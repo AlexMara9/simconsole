@@ -216,6 +216,12 @@ public class ConsoleController {
 			System.out.println(newVal.doubleValue());
 		});
 
+		Slider s5 = (Slider) slidersGrill.getChildren().get(5);
+		s5.valueProperty().addListener((o, oldVal, newVal) -> {
+			controls.setPitch(newVal.doubleValue());
+			System.out.println(newVal.doubleValue());
+		});
+
 	}
 
 }

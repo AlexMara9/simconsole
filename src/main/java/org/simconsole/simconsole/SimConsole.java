@@ -22,8 +22,8 @@ public class SimConsole extends Application {
 		stage.show();
 
 
-		Tracks trackA = new Tracks("C:\\Users\\Pietro\\Downloads\\boro.wav");
-		Tracks trackB = new Tracks("C:\\Users\\Pietro\\Downloads\\Lacrimosa.wav");
+		Tracks trackA = new Tracks("C:\\Users\\Pietro\\Downloads\\bassi.wav");
+		Tracks trackB = new Tracks("C:\\Users\\Pietro\\Downloads\\mixaggio.wav");
 		Deck d1 = new Deck();
 		DeckControls c1 = new DeckControls();
 		d1.setControls(c1);

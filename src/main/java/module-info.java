@@ -2,9 +2,8 @@ module org.simconsole.simconsole {
 	requires javafx.controls;
 	requires javafx.fxml;
     requires javafx.media;
-
-
     requires java.desktop;
+    requires TarsosDSP;
 
 
     opens org.simconsole.simconsole to javafx.fxml;
