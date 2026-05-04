@@ -8,6 +8,10 @@ import javafx.scene.layout.Region;
 
 public class DynamicSlider extends Slider {
 
+    // Track style parts — kept separate for clean logic, combined in applyTrackStyle()
+    private String trackGradientStyle = "";
+    private String trackRadiusStyle   = "";
+
     public DynamicSlider() {
         super();
         initDynamicStyle();
@@ -37,8 +41,14 @@ public class DynamicSlider extends Slider {
         });
     }
 
+    // Combines the two track style parts and applies them in a single setStyle() call
+    private void applyTrackStyle(Node track) {
+        track.setStyle(trackGradientStyle + trackRadiusStyle);
+    }
+
     private void initResponsive(Node track, Node thumb) {
         if (!(track instanceof Region trackRegion) || !(thumb instanceof Region thumbRegion)) return;
+
         if (this.getOrientation() == Orientation.VERTICAL) {
             this.maxWidthProperty().bind(this.heightProperty().multiply(0.15));
             trackRegion.prefWidthProperty().bind(this.widthProperty().multiply(0.3));
@@ -51,28 +61,26 @@ public class DynamicSlider extends Slider {
             thumbRegion.prefHeightProperty().bind(this.heightProperty().multiply(0.9));
         }
 
-        // Update thumb border-radius and border-width dynamically whenever its size changes
-        // Only set geometry — colors remain in CSS so hover/pressed states still work
+        // Track radius: separate listener, updates its own part and re-applies combined style
+        track.layoutBoundsProperty().addListener((obs, old, bounds) -> {
+            double shortSide = Math.min(bounds.getWidth(), bounds.getHeight());
+            double radius = shortSide / 2.0;
+            trackRadiusStyle = String.format(java.util.Locale.US,
+                    "-fx-background-radius: %.1fpx; -fx-border-radius: %.1fpx;",
+                    radius, radius);
+            applyTrackStyle(track);
+        });
+
+        // Thumb geometry: radius + border-width, colors stay in CSS (hover/pressed preserved)
         thumb.layoutBoundsProperty().addListener((obs, old, bounds) -> {
             double size = Math.min(bounds.getWidth(), bounds.getHeight());
             double r = size / 2.0;
-            double borderWidth = size * 0.08; // border = 5% of thumb size
+            double borderWidth = size * 0.08;
             thumb.setStyle(String.format(java.util.Locale.US,
                     "-fx-background-radius: %.1fpx;" +
                     "-fx-border-radius: %.1fpx;" +
                     "-fx-border-width: %.1fpx;",
                     r, r, borderWidth));
-        });
-        track.layoutBoundsProperty().addListener((obs,old,bounds)->{
-            double trackWidth  = track.getLayoutBounds().getWidth();
-            double radius = trackWidth / 2.0; // pill shape: half the thin dimension
-            String style = String.format(
-                    java.util.Locale.US,
-                     "-fx-background-radius: %.1fpx;" +
-                            "-fx-border-radius: %.1fpx;",
-                    radius, radius
-            );
-            track.setStyle(style);
         });
     }
 
@@ -94,12 +102,10 @@ public class DynamicSlider extends Slider {
                 double centerFromTop = thumbRadius + (1.0 - percentage) * usableTrack;
                 double stopPercentage = (centerFromTop / trackHeight) * 100.0;
 
-                String style = String.format(
-                        java.util.Locale.US,
+                trackGradientStyle = String.format(java.util.Locale.US,
                         "-fx-background-color: linear-gradient(to bottom, %s %.1f%%, %s %.1f%%);",
-                        colorEmpty, stopPercentage, colorFilled, stopPercentage
-                );
-                track.setStyle(style);
+                        colorEmpty, stopPercentage, colorFilled, stopPercentage);
+                applyTrackStyle(track);
             }
         } else {
             double trackWidth = track.getLayoutBounds().getWidth();
@@ -110,12 +116,10 @@ public class DynamicSlider extends Slider {
                 double centerFromLeft = thumbRadius + percentage * usableTrack;
                 double stopPercentage = (centerFromLeft / trackWidth) * 100.0;
 
-                String style = String.format(
-                        java.util.Locale.US,
+                trackGradientStyle = String.format(java.util.Locale.US,
                         "-fx-background-color: linear-gradient(to right, %s %.1f%%, %s %.1f%%);",
-                        colorFilled, stopPercentage, colorEmpty, stopPercentage
-                );
-                track.setStyle(style);
+                        colorFilled, stopPercentage, colorEmpty, stopPercentage);
+                applyTrackStyle(track);
             }
         }
     }
