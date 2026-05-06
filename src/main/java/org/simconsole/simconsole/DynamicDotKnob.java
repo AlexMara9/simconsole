@@ -6,11 +6,9 @@ import javafx.geometry.Bounds;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
 
-public class DynamicKnob extends StackPane {
-    private final DoubleProperty value = new SimpleDoubleProperty(0.5);
+public class DynamicDotKnob extends StackPane {
+    private final DoubleProperty value = new SimpleDoubleProperty(0.0);
     private final DoubleProperty min = new SimpleDoubleProperty(0.0);
     private final DoubleProperty max = new SimpleDoubleProperty(1.0);
 
@@ -18,35 +16,30 @@ public class DynamicKnob extends StackPane {
     private final Circle middleRing = new Circle();
     private final Circle innerKnob = new Circle();
     private final Pane indicatorPane = new Pane();
-    private final Line indicator = new Line();
-    private final Pane ticksPane = new Pane();
+    private final Circle indicator = new Circle();
+    private final Pane dotsPane = new Pane();
 
-    private final Text leftText = new Text("L");
-    private final Text rightText = new Text("R");
-    private final Line[] ticks = new Line[5];
+    private final Circle[] dots = new Circle[11];
 
-    public DynamicKnob() {
-        this.getStyleClass().add("dynamic-knob");
+    public DynamicDotKnob() {
+        this.getStyleClass().add("dynamic-dot-knob");
         
         outerRing.getStyleClass().add("knob-outer-ring");
         middleRing.getStyleClass().add("knob-middle-ring");
         innerKnob.getStyleClass().add("knob-inner-knob");
-        indicator.getStyleClass().add("knob-indicator-line");
-        leftText.getStyleClass().add("knob-text");
-        rightText.getStyleClass().add("knob-text");
-
-        for (int i = 0; i < 5; i++) {
-            ticks[i] = new Line();
-            ticks[i].getStyleClass().add("knob-tick");
-            ticksPane.getChildren().add(ticks[i]);
+        indicator.getStyleClass().add("knob-indicator-dot");
+        
+        for (int i = 0; i < dots.length; i++) {
+            dots[i] = new Circle();
+            dots[i].getStyleClass().add("knob-dot");
+            dotsPane.getChildren().add(dots[i]);
         }
-        ticksPane.getChildren().addAll(leftText, rightText);
         
         indicatorPane.getChildren().add(indicator);
         indicatorPane.setPickOnBounds(false);
-        ticksPane.setPickOnBounds(false);
+        dotsPane.setPickOnBounds(false);
 
-        this.getChildren().addAll(ticksPane, outerRing, middleRing, innerKnob, indicatorPane);
+        this.getChildren().addAll(dotsPane, outerRing, middleRing, innerKnob, indicatorPane);
 
         initResponsive();
         initInteractivity();
@@ -57,10 +50,7 @@ public class DynamicKnob extends StackPane {
         middleRing.radiusProperty().bind(javafx.beans.binding.Bindings.min(this.widthProperty(), this.heightProperty()).multiply(0.26));
         innerKnob.radiusProperty().bind(javafx.beans.binding.Bindings.min(this.widthProperty(), this.heightProperty()).multiply(0.24));
 
-        this.layoutBoundsProperty().addListener((obs, old, bounds) -> {
-            updateLayout(bounds);
-        });
-
+        this.layoutBoundsProperty().addListener((obs, old, bounds) -> updateLayout(bounds));
         value.addListener((obs, old, val) -> updateIndicator());
     }
 
@@ -71,45 +61,26 @@ public class DynamicKnob extends StackPane {
         double cx = w / 2;
         double cy = h / 2;
 
-        double textRadius = size * 0.40;
+        double dotRadius = size * 0.38;
+        double startAngle = -135;
+        double endAngle = 135;
+        double step = (endAngle - startAngle) / (dots.length - 1);
         
-        positionText(leftText, cx, cy, textRadius, -135);
-        positionText(rightText, cx, cy, textRadius, 135);
+        double singleDotRadius = size * 0.018; 
 
-        double tickRadiusInner = size * 0.32;
-        double tickRadiusOuter = size * 0.36;
-        double startAngle = -100;
-        double endAngle = 100;
-        double step = (endAngle - startAngle) / 4;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < dots.length; i++) {
             double angle = startAngle + step * i;
-            positionLine(ticks[i], cx, cy, tickRadiusInner, tickRadiusOuter, angle);
+            double angleRad = Math.toRadians(angle - 90);
+            dots[i].setCenterX(cx + dotRadius * Math.cos(angleRad));
+            dots[i].setCenterY(cy + dotRadius * Math.sin(angleRad));
+            dots[i].setRadius(singleDotRadius);
         }
 
-        double indicatorR1 = size * 0.12;
-        double indicatorR2 = size * 0.22;
-        indicator.setStartX(cx);
-        indicator.setStartY(cy - indicatorR1);
-        indicator.setEndX(cx);
-        indicator.setEndY(cy - indicatorR2);
+        indicator.setRadius(singleDotRadius * 1.5);
+        indicator.setCenterX(cx);
+        indicator.setCenterY(cy - size * 0.18); 
         
         updateIndicator();
-    }
-
-    private void positionText(Text text, double cx, double cy, double radius, double angleDeg) {
-        double angleRad = Math.toRadians(angleDeg - 90);
-        double tw = text.getLayoutBounds().getWidth();
-        double th = text.getLayoutBounds().getHeight();
-        text.setLayoutX(cx + radius * Math.cos(angleRad) - tw / 2);
-        text.setLayoutY(cy + radius * Math.sin(angleRad) + th / 4);
-    }
-
-    private void positionLine(Line line, double cx, double cy, double rInner, double rOuter, double angleDeg) {
-        double angleRad = Math.toRadians(angleDeg - 90);
-        line.setStartX(cx + rInner * Math.cos(angleRad));
-        line.setStartY(cy + rInner * Math.sin(angleRad));
-        line.setEndX(cx + rOuter * Math.cos(angleRad));
-        line.setEndY(cy + rOuter * Math.sin(angleRad));
     }
 
     private void updateIndicator() {
@@ -118,8 +89,20 @@ public class DynamicKnob extends StackPane {
         double maxVal = max.get();
         double percentage = (val - minVal) / (maxVal - minVal);
         percentage = Math.max(0, Math.min(1, percentage));
-        double angle = -135 + percentage * 270; 
+        
+        double angle = -135 + percentage * 270;
         indicatorPane.setRotate(angle);
+
+        int activeDots = (int) Math.round(percentage * (dots.length - 1));
+        for (int i = 0; i < dots.length; i++) {
+            if (i <= activeDots) {
+                if (!dots[i].getStyleClass().contains("knob-dot-active")) {
+                    dots[i].getStyleClass().add("knob-dot-active");
+                }
+            } else {
+                dots[i].getStyleClass().remove("knob-dot-active");
+            }
+        }
     }
 
     private double startY;

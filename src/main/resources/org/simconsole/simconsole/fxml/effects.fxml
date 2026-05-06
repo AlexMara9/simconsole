@@ -5,17 +5,20 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import org.simconsole.simconsole.DynamicSlider?>
+<?import org.simconsole.simconsole.DynamicKnob?>
+<?import org.simconsole.simconsole.DynamicDotKnob?>
 
 <StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" StackPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="25.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="0.0" percentHeight="100.0" valignment="CENTER" vgrow="SOMETIMES" />
@@ -25,11 +28,18 @@
             <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="1" />
             <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="2" />
             <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="3" />
+            <VBox alignment="CENTER" spacing="20.0" GridPane.columnIndex="4">
+               <children>
+                  <DynamicKnob VBox.vgrow="ALWAYS" />
+                  <DynamicDotKnob VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
          </children>
       </GridPane>
    </children>
    <stylesheets>
       <URL value="@../css/card.css" />
       <URL value="@../css/slider.css" />
+      <URL value="@../css/knob.css" />
    </stylesheets>
 </StackPane>
