@@ -27,13 +27,29 @@ public class DeckControls {
     private volatile double crossfaderGain = 1.0; // Moltiplicatore assegnato dal crossfader
     private volatile double pan = 0.0; // 1.0 = tutto a sinistra, -1.0 = tutto a destra
     private volatile double pitch = 1.0; // Moltiplicatore di velocità (1.0 = originale)
+    
+    // Funzionalità Key Lock (Master Tempo)
+    private boolean keyLock = false;
 
     public void setPitch(double pitch) {
-        this.pitch = Math.max(0.1, Math.min(3.0, pitch)); // range di sicurezza 10% - 300%
+        this.pitch = Math.max(0.1, Math.min(3.0, pitch)); // Range 10% - 300%
     }
 
     public double getPitch() {
         return pitch;
+    }
+
+    public void setKeyLock(boolean keyLock) {
+        this.keyLock = keyLock;
+        System.out.println("Key Lock " + (keyLock ? "ATTIVATO" : "DISATTIVATO"));
+    }
+
+    public boolean isKeyLock() {
+        return keyLock;
+    }
+
+    public void toggleKeyLock() {
+        setKeyLock(!this.keyLock);
     }
 
     
@@ -68,11 +84,9 @@ public class DeckControls {
 
 
     private static final double MAX_EQ_GAIN_DB = 12.0;
-    private static final double MAX_EQ_LOW_GAIN_DB = 6.0; 
 
     public void setEqLow(double gainDb) {
-        // I bassi possono scendere a -12dB ma salire massimo a +6dB
-        gainDb = Math.max(-MAX_EQ_GAIN_DB, Math.min(MAX_EQ_LOW_GAIN_DB, gainDb));
+        gainDb = Math.max(-MAX_EQ_GAIN_DB, Math.min(MAX_EQ_GAIN_DB, gainDb));
         eqLowL.setGain(gainDb);
         eqLowR.setGain(gainDb);
     }

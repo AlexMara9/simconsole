@@ -24,16 +24,13 @@ public class SimConsole extends Application {
 
 		Tracks trackA = new Tracks("C:\\Users\\Pietro\\Downloads\\bassi.wav");
 		Tracks trackB = new Tracks("C:\\Users\\Pietro\\Downloads\\mixaggio.wav");
+		Tracks trackC = new Tracks("C:\\Users\\Pietro\\Downloads\\LosingIt.wav");
 		Deck d1 = new Deck();
 		DeckControls c1 = new DeckControls();
 		d1.setControls(c1);
 		c1.setDeck(d1);
-
-		d1.loadTrack(trackA);
+		d1.loadTrack(trackB);
 		System.out.println("Test: Traccia A partita.");
-		c1.setEqHigh(-12);
-		c1.setEqMid(0);
-		c1.setEqLow(12);
 
 		consoleController.setControls(c1);
 	}

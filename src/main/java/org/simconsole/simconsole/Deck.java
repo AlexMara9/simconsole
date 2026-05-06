@@ -4,6 +4,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
+import org.simconsole.simconsole.audio.external.Sonic;
 
 public class Deck {
     private DeckControls controls;
@@ -35,10 +36,7 @@ public class Deck {
             this.playhead = 0.0;
             this.internalVolume = 0.0;
             
-            // Chiamata ASINCRONA a TarsosDSP per il calcolo del BPM
-            BPMAnalyzer.detectBpmAsync(track, () -> {
-                System.out.println("Deck pronto: Analisi asincrona terminata per " + track.getFilePath());
-            });
+
             try {
                 if (speakerLine == null) {
                     AudioFormat format = new AudioFormat(44100, 16, 2, true, false);
@@ -76,66 +74,99 @@ public class Deck {
         playbackThread = new Thread(() -> {
             int framesPerWrite = 512;
             byte[] outputBuffer = new byte[framesPerWrite * 4];
+            float[] inputFloatBuffer = new float[framesPerWrite * 2];
+            float[] outputFloatBuffer = new float[framesPerWrite * 2];
+            Sonic sonic = new Sonic(44100, 2);
 
             while (!Thread.currentThread().isInterrupted()) {
-                int bufferIndex = 0;
+                double targetPitch = controls != null ? controls.getPitch() : 1.0;
+                boolean keyLock = controls != null && controls.isKeyLock();
+                
+                // Configura Sonic: se Key Lock è acceso cambia la 'speed', altrimenti il 'rate' (effetto vinile)
+                if (keyLock) {
+                    sonic.setSpeed((float) targetPitch);
+                    sonic.setRate(1.0f);
+                } else {
+                    sonic.setSpeed(1.0f);
+                    sonic.setRate((float) targetPitch);
+                }
 
-                for (int i = 0; i < framesPerWrite; i++) {
-                    // 1. SMOOTH VOLUME RAMPING
-                    double targetVolume = isPlaying && controls != null ? controls.getVolume() : 0.0;
-                    if (internalVolume < targetVolume) {
-                        internalVolume = Math.min(targetVolume, internalVolume + FADE_SPEED);
-                    } else if (internalVolume > targetVolume) {
-                        internalVolume = Math.max(targetVolume, internalVolume - FADE_SPEED);
-                    }
+                // Continua a dare in pasto audio a Sonic finché non ha abbastanza campioni per la cassa
+                while (sonic.samplesAvailable() < framesPerWrite && (isPlaying || internalVolume > 0)) {
+                    int inputFramesRead = 0;
+                    
+                    for (int i = 0; i < framesPerWrite && playhead < audioData.length - 3; i++) {
+                        // 1. SMOOTH VOLUME RAMPING
+                        double targetVolume = isPlaying && controls != null ? controls.getVolume() : 0.0;
+                        if (internalVolume < targetVolume) {
+                            internalVolume = Math.min(targetVolume, internalVolume + FADE_SPEED);
+                        } else if (internalVolume > targetVolume) {
+                            internalVolume = Math.max(targetVolume, internalVolume - FADE_SPEED);
+                        }
 
-                    double left = 0, right = 0;
-
-                    boolean advancing = (isPlaying || internalVolume > 0);
-
-                    // 2. GENERAZIONE SEGNALE E APPLICAZIONE CONTROLLI
-                    if (advancing && playhead < audioData.length - 3) {
                         int index = (int) playhead;
-                        if (index % 2 != 0) index--; // Allineamento stereofonico (canale sinistro)
+                        if (index % 2 != 0) index--; // Allineamento stereo
                         
-                        double frac = (playhead - index) / 2.0;
+                        double left = audioData[index];
+                        double right = audioData[index + 1];
+                        
+                        // Avanziamo SEMPRE di 2 (1 frame = L+R). Il pitch/speed lo gestisce Sonic!
+                        playhead += 2.0; 
 
-                        double left1 = audioData[index];
-                        double right1 = audioData[index + 1];
-                        double left2 = audioData[index + 2];
-                        double right2 = audioData[index + 3];
-
-                        left = (left1 + (left2 - left1) * frac) * internalVolume;
-                        right = (right1 + (right2 - right1) * frac) * internalVolume;
-
-                        double pitch = controls != null ? controls.getPitch() : 1.0;
-                        playhead += 2.0 * pitch;
+                        // 2. APPLICAZIONE CONTROLLI
+                        left *= internalVolume;
+                        right *= internalVolume;
 
                         if (controls != null) {
                             left = controls.processLeft(left);
                             right = controls.processRight(right);
                         }
-                    } else if (advancing && playhead >= audioData.length - 3) {
-                        isPlaying = false;
+
+                        // 3. HARD LIMITER
+                        left = Math.max(-1.0, Math.min(1.0, left));
+                        right = Math.max(-1.0, Math.min(1.0, right));
+
+                        inputFloatBuffer[inputFramesRead * 2] = (float) left;
+                        inputFloatBuffer[inputFramesRead * 2 + 1] = (float) right;
+                        inputFramesRead++;
                     }
 
-                    // 3. HARD LIMITER (Evita la distorsione da clipping)
-                    left = Math.max(-1.0, Math.min(1.0, left));
-                    right = Math.max(-1.0, Math.min(1.0, right));
-
-                    // 4. CONVERSIONE PCM 16-BIT
-                    short pcmL = (short) (left * 32767.0);
-                    short pcmR = (short) (right * 32767.0);
-
-                    outputBuffer[bufferIndex++] = (byte) (pcmL & 0xFF);
-                    outputBuffer[bufferIndex++] = (byte) ((pcmL >> 8) & 0xFF);
-                    outputBuffer[bufferIndex++] = (byte) (pcmR & 0xFF);
-                    outputBuffer[bufferIndex++] = (byte) ((pcmR >> 8) & 0xFF);
+                    if (inputFramesRead > 0) {
+                        sonic.writeFloatToStream(inputFloatBuffer, inputFramesRead);
+                    } else {
+                        break; // Fine file o deck fermo
+                    }
                 }
 
-                // Scriviamo SEMPRE, anche se sono zeri. Mantiene la scheda audio "calda".
-                if (speakerLine != null && speakerLine.isOpen()) {
-                    speakerLine.write(outputBuffer, 0, outputBuffer.length);
+                if (playhead >= audioData.length - 3 && isPlaying) {
+                    isPlaying = false;
+                    sonic.flushStream();
+                }
+
+                // 4. ESTRAZIONE DA SONIC E CONVERSIONE PCM
+                int framesToRead = Math.min(framesPerWrite, sonic.samplesAvailable());
+                if (framesToRead > 0) {
+                    int read = sonic.readFloatFromStream(outputFloatBuffer, framesToRead);
+                    int bufferIndex = 0;
+                    
+                    for (int i = 0; i < read * 2; i += 2) {
+                        short pcmL = (short) (outputFloatBuffer[i] * 32767.0f);
+                        short pcmR = (short) (outputFloatBuffer[i + 1] * 32767.0f);
+
+                        outputBuffer[bufferIndex++] = (byte) (pcmL & 0xFF);
+                        outputBuffer[bufferIndex++] = (byte) ((pcmL >> 8) & 0xFF);
+                        outputBuffer[bufferIndex++] = (byte) (pcmR & 0xFF);
+                        outputBuffer[bufferIndex++] = (byte) ((pcmR >> 8) & 0xFF);
+                    }
+                    
+                    if (speakerLine != null && speakerLine.isOpen()) {
+                        speakerLine.write(outputBuffer, 0, bufferIndex);
+                    }
+                } else {
+                    // Scriviamo zeri se il lettore è in pausa per mantenere la scheda audio "calda"
+                    if (speakerLine != null && speakerLine.isOpen()) {
+                        speakerLine.write(new byte[framesPerWrite * 4], 0, framesPerWrite * 4);
+                    }
                 }
             }
         });
@@ -153,7 +184,6 @@ public class Deck {
 
     public double getCurrentBpm() {
         if (currentTrack == null || controls == null) return 0.0;
-        // Calcola il BPM in tempo reale in base alla posizione del pitchfader
         return currentTrack.getOriginalBpm() * controls.getPitch();
     }
 }

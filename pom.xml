@@ -46,11 +46,6 @@
             <version>21.0.6</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.github.axet</groupId>
-            <artifactId>TarsosDSP</artifactId>
-            <version>2.4-1</version>
-        </dependency>
     </dependencies>
 
     <build>

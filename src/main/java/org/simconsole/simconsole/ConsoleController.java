@@ -9,6 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -185,6 +187,7 @@ public class ConsoleController {
 			}
 		});
 	}
+	
 	private void setDebug(){
 		grid.setStyle("-fx-border-color: #FF0000;");
 		slidersGrill.setStyle("-fx-border-color: #00FF00;");
@@ -222,6 +225,9 @@ public class ConsoleController {
 			System.out.println(newVal.doubleValue());
 		});
 
+		Button keyLockButton = (Button) slidersGrill.getChildren().get(6);
+		keyLockButton.setOnAction(e -> {
+			controls.toggleKeyLock();
+		});
 	}
-
 }
