@@ -14,6 +14,9 @@ public class DynamicKnob extends StackPane {
     private final DoubleProperty min = new SimpleDoubleProperty(0.0);
     private final DoubleProperty max = new SimpleDoubleProperty(1.0);
 
+    private final javafx.beans.property.StringProperty leftLabel = new javafx.beans.property.SimpleStringProperty("L");
+    private final javafx.beans.property.StringProperty rightLabel = new javafx.beans.property.SimpleStringProperty("R");
+
     private final Circle outerRing = new Circle();
     private final Circle middleRing = new Circle();
     private final Circle innerKnob = new Circle();
@@ -21,8 +24,8 @@ public class DynamicKnob extends StackPane {
     private final Line indicator = new Line();
     private final Pane ticksPane = new Pane();
 
-    private final Text leftText = new Text("L");
-    private final Text rightText = new Text("R");
+    private final Text leftText = new Text();
+    private final Text rightText = new Text();
     private final Line[] ticks = new Line[5];
 
     public DynamicKnob() {
@@ -34,6 +37,9 @@ public class DynamicKnob extends StackPane {
         indicator.getStyleClass().add("knob-indicator-line");
         leftText.getStyleClass().add("knob-text");
         rightText.getStyleClass().add("knob-text");
+        
+        leftText.textProperty().bind(leftLabel);
+        rightText.textProperty().bind(rightLabel);
 
         for (int i = 0; i < 5; i++) {
             ticks[i] = new Line();
@@ -70,6 +76,13 @@ public class DynamicKnob extends StackPane {
         double size = Math.min(w, h);
         double cx = w / 2;
         double cy = h / 2;
+
+        double fontSize = size * 0.08;
+        String fontStyle = String.format(java.util.Locale.US, "-fx-font-size: %.1fpx;", fontSize);
+        leftText.setStyle(fontStyle);
+        rightText.setStyle(fontStyle);
+        leftText.applyCss();
+        rightText.applyCss();
 
         double textRadius = size * 0.40;
         
@@ -142,4 +155,20 @@ public class DynamicKnob extends StackPane {
     public DoubleProperty valueProperty() { return value; }
     public double getValue() { return value.get(); }
     public void setValue(double val) { value.set(val); }
+
+    public DoubleProperty minProperty() { return min; }
+    public double getMin() { return min.get(); }
+    public void setMin(double val) { min.set(val); }
+
+    public DoubleProperty maxProperty() { return max; }
+    public double getMax() { return max.get(); }
+    public void setMax(double val) { max.set(val); }
+
+    public javafx.beans.property.StringProperty leftLabelProperty() { return leftLabel; }
+    public String getLeftLabel() { return leftLabel.get(); }
+    public void setLeftLabel(String val) { leftLabel.set(val); }
+
+    public javafx.beans.property.StringProperty rightLabelProperty() { return rightLabel; }
+    public String getRightLabel() { return rightLabel.get(); }
+    public void setRightLabel(String val) { rightLabel.set(val); }
 }
