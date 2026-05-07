@@ -22,10 +22,11 @@
         <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="ALWAYS" />
     </rowConstraints>
     <children>
+      <fx:include source="master.fxml" GridPane.columnIndex="1" GridPane.columnSpan="2" />
     
       <!-- Left Deck -->
-      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-      <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" GridPane.columnSpan="2" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" />
       <fx:include source="Playback.fxml" GridPane.columnSpan="2" GridPane.rowIndex="1" />
       <fx:include source="effects.fxml" GridPane.rowIndex="2" />
 
@@ -38,9 +39,10 @@
       </VBox>
 
       <!-- Right Deck -->
-      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="0" />
-      <fx:include source="signal-graph.fxml" GridPane.columnIndex="2" GridPane.columnSpan="2" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+      <fx:include source="signal-graph.fxml" GridPane.columnIndex="3" />
       <fx:include source="Playback.fxml" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+      <fx:include source="effects.fxml" GridPane.columnIndex="3" GridPane.rowIndex="2" />
 
     </children>
 </GridPane>
