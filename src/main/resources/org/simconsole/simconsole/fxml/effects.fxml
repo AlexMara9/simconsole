@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import org.simconsole.simconsole.DynamicDotKnob?>
-<?import org.simconsole.simconsole.DynamicKnob?>
 <?import org.simconsole.simconsole.DynamicSlider?>
 
 <StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
@@ -31,7 +30,6 @@
                   <DynamicSlider orientation="VERTICAL" />
                </children>
             </VBox>
-            <DynamicKnob />
             <Button mnemonicParsing="false" text="Eco" GridPane.columnIndex="3" />
             <VBox alignment="CENTER" GridPane.rowIndex="1">
                <children>

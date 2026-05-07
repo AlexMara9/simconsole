@@ -11,10 +11,14 @@
 
 <GridPane fx:id="grid" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="496.0" styleClass="main-container" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.ConsoleController">
     <columnConstraints>
-        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="30.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="5.0" />
         <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="20.0" />
-        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="20.0" />
-      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="10.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="15.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="15.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="10.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="20.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="5.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="0.0" percentHeight="35.0" vgrow="ALWAYS" />
@@ -22,16 +26,17 @@
         <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="ALWAYS" />
     </rowConstraints>
     <children>
-      <fx:include source="master.fxml" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="master.fxml" GridPane.columnIndex="2" GridPane.columnSpan="4" />
     
       <!-- Left Deck -->
-      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-      <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" />
-      <fx:include source="Playback.fxml" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-      <fx:include source="effects.fxml" GridPane.rowIndex="2" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" GridPane.columnIndex="1" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="Playback.fxml" GridPane.columnSpan="4" GridPane.rowIndex="1" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <fx:include source="pitch.fxml" />
 
       <!-- Center Song List -->
-      <VBox alignment="TOP_CENTER" styleClass="card" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2">
+      <VBox alignment="TOP_CENTER" styleClass="card" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2">
          <children>
             <Label alignment="CENTER" maxWidth="Infinity" styleClass="section-label" text="PLAYLIST" />
             <ListView fx:id="songList" VBox.vgrow="ALWAYS" />
@@ -39,10 +44,11 @@
       </VBox>
 
       <!-- Right Deck -->
-      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="3" GridPane.rowIndex="0" />
-      <fx:include source="signal-graph.fxml" GridPane.columnIndex="3" />
-      <fx:include source="Playback.fxml" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
-      <fx:include source="effects.fxml" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" GridPane.columnIndex="6" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="Playback.fxml" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="1" />
+      <fx:include source="effects.fxml" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <fx:include source="pitch.fxml" GridPane.columnIndex="7" />
 
     </children>
 </GridPane>

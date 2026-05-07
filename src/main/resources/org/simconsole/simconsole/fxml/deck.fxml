@@ -1,35 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
-<?import org.simconsole.simconsole.DynamicSlider?>
 
-<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.DeckController">
+<StackPane fx:id="deckContainer" minHeight="0.0" minWidth="0.0" onMouseDragged="#onMouseMoved" onMousePressed="#onMousePressed" onScroll="#onScroll" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.DeckController">
     <children>
-      <GridPane>
-         <columnConstraints>
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="50.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="25.0" />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-         </rowConstraints>
-         <children>
-            <StackPane fx:id="deckContainer" onMouseDragged="#onMouseMoved" onMousePressed="#onMousePressed" onScroll="#onScroll" onTouchMoved="#onTouchMoved" onTouchPressed="#onTouchPressed" GridPane.columnIndex="1">
-               <children>
-                    <Circle fx:id="vinyl" radius="50.0" stroke="#111111" strokeType="INSIDE" styleClass="vinyl" />
-                    <Circle fx:id="vinylCenter" fill="#1a1a1a" radius="15.0" stroke="#007aff" strokeType="INSIDE" strokeWidth="3.0" />
-               </children>
-            </StackPane>
-            <DynamicSlider orientation="VERTICAL" />
-            <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="2" />
-         </children>
-      </GridPane>
+        <Circle fx:id="vinyl" radius="50.0" stroke="#111111" strokeType="INSIDE" styleClass="vinyl" />
+        <Circle fx:id="vinylCenter" fill="#1a1a1a" radius="15.0" stroke="#007aff" strokeType="INSIDE" strokeWidth="3.0" />
     </children>
    <stylesheets>
       <URL value="@../css/deck.css" />

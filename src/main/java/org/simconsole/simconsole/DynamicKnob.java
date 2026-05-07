@@ -51,6 +51,7 @@ public class DynamicKnob extends StackPane {
         indicatorPane.getChildren().add(indicator);
         indicatorPane.setPickOnBounds(false);
         ticksPane.setPickOnBounds(false);
+        this.setPickOnBounds(false);
 
         this.getChildren().addAll(ticksPane, outerRing, middleRing, innerKnob, indicatorPane);
 
