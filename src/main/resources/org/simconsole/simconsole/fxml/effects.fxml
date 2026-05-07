@@ -14,41 +14,35 @@
    <children>
       <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" StackPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="20.0" prefWidth="100.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="33.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="34.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="33.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="0.0" percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" percentHeight="50.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <VBox alignment="CENTER" spacing="20.0" GridPane.columnIndex="4">
-               <children>
-                  <DynamicSlider orientation="VERTICAL" />
-               </children>
-            </VBox>
-            <Button mnemonicParsing="false" text="Eco" GridPane.columnIndex="3" />
-            <VBox alignment="CENTER" GridPane.rowIndex="1">
+            <Button mnemonicParsing="false" text="Eco" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <VBox alignment="CENTER">
                <children>
                   <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
                   <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="RLow" />
                </children>
             </VBox>
-            <VBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <VBox alignment="CENTER" GridPane.columnIndex="1">
                <children>
                   <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
                   <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="RMid" />
                </children>
             </VBox>
-            <VBox alignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <VBox alignment="CENTER" GridPane.columnIndex="2">
                <children>
                   <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
                   <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="RHigh" />
                </children>
             </VBox>
+            <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="2" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>
