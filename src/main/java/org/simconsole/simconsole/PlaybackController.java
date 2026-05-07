@@ -20,7 +20,10 @@ public class PlaybackController {
 	@FXML private HBox buttonsContainer;
 	@FXML private Button unskipButton;
 	@FXML private Button playButton;
-	@FXML private Button skipButton;
+	@FXML private Button cue1;
+	@FXML private Button cue2;
+	@FXML private Button cue3;
+	@FXML private Button cue4;
 
 	@FXML
 	public void initialize(){
@@ -31,7 +34,7 @@ public class PlaybackController {
 		playbackControlsContainer.prefHeightProperty().bind(playbackContainer.heightProperty().multiply(0.8));
 		playbackControlsContainer.prefWidthProperty().bind(playbackContainer.widthProperty().multiply(0.8));
 
-		Button [] buttons = {unskipButton, playButton, skipButton};
+		Button [] buttons = {unskipButton, playButton, cue1, cue2, cue3, cue4};
 
 		for (Button b : buttons){
 			DoubleBinding minDim = Bindings.createDoubleBinding(

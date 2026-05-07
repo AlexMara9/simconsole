@@ -21,11 +21,11 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="33.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="0.0" percentHeight="40.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="0.0" percentHeight="60.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <HBox fx:id="buttonsContainer" alignment="CENTER" fillHeight="false" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1">
+            <HBox fx:id="buttonsContainer" alignment="CENTER" fillHeight="false" minHeight="0.0" minWidth="0.0" GridPane.columnSpan="3">
                <children>
                   <Button fx:id="unskipButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" styleClass="control-button">
                      <graphic>
@@ -54,16 +54,14 @@
                         </Region>
                      </graphic>
                   </Button>
-                  <Button fx:id="skipButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="35.0" styleClass="control-button">
-                     <graphic>
-                        <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="15.0" prefWidth="20.0">
-                           <styleClass>
-                              <String fx:value="icon" />
-                              <String fx:value="icon-skip" />
-                           </styleClass>
-                        </Region>
-                     </graphic>
-                  </Button>
+                  <HBox minHeight="0.0" minWidth="0.0">
+                     <children>
+                        <Button fx:id="cue1" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="1" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="cue2" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="2" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="cue3" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="3" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="cue4" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="4" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
                </children>
             </HBox>
             <DynamicSlider minHeight="0.0" minWidth="0.0" GridPane.columnSpan="3" GridPane.rowIndex="1" />
