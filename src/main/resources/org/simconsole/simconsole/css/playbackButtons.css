@@ -24,7 +24,8 @@
 }
 
 .icon {
-    -fx-background-color: #a0a0a0;
+    /*-fx-background-color: #a0a0a0;*/
+    -fx-background-color: #ffffff;
 }
 
 .play-button .icon {
@@ -36,7 +37,8 @@
 }
 
 .control-button:pressed .icon {
-    -fx-background-color: #007aff;
+    /*-fx-background-color: #007aff;*/
+    -fx-background-color: #a0a0a0;
 }
 
 .play-button:pressed .icon {
