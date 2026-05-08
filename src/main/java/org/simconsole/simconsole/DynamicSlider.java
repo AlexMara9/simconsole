@@ -50,13 +50,13 @@ public class DynamicSlider extends Slider {
         if (!(track instanceof Region trackRegion) || !(thumb instanceof Region thumbRegion)) return;
 
         if (this.getOrientation() == Orientation.VERTICAL) {
-            this.maxWidthProperty().bind(this.heightProperty().multiply(0.15));
-            trackRegion.prefWidthProperty().bind(this.widthProperty().multiply(0.3));
+            this.maxWidthProperty().bind(this.heightProperty().multiply(0.25));
+            trackRegion.prefWidthProperty().bind(this.widthProperty().multiply(0.8));
             thumbRegion.prefWidthProperty().bind(this.widthProperty().multiply(0.9));
             thumbRegion.prefHeightProperty().bind(this.widthProperty().multiply(0.9));
         } else {
-            this.maxHeightProperty().bind(this.widthProperty().multiply(0.15));
-            trackRegion.prefHeightProperty().bind(this.heightProperty().multiply(0.3));
+            this.maxHeightProperty().bind(this.widthProperty().multiply(0.25));
+            trackRegion.prefHeightProperty().bind(this.heightProperty().multiply(0.8));
             thumbRegion.prefWidthProperty().bind(this.heightProperty().multiply(0.9));
             thumbRegion.prefHeightProperty().bind(this.heightProperty().multiply(0.9));
         }
@@ -71,16 +71,16 @@ public class DynamicSlider extends Slider {
             applyTrackStyle(track);
         });
 
-        // Thumb geometry: radius + border-width, colors stay in CSS (hover/pressed preserved)
+        // Thumb geometry: radius + insets, colors stay in CSS (hover/pressed preserved)
         thumb.layoutBoundsProperty().addListener((obs, old, bounds) -> {
             double size = Math.min(bounds.getWidth(), bounds.getHeight());
             double r = size / 2.0;
-            double borderWidth = size * 0.08;
+            double inset2 = size * 0.04;
+            double inset3 = size * 0.08;/*0.08*/
             thumb.setStyle(String.format(java.util.Locale.US,
-                    "-fx-background-radius: %.1fpx;" +
-                    "-fx-border-radius: %.1fpx;" +
-                    "-fx-border-width: %.1fpx;",
-                    r, r, borderWidth));
+                    "-fx-background-radius: %.1fpx, %.1fpx, %.1fpx;" +
+                    "-fx-background-insets: 0px, %.1fpx, %.1fpx;",
+                    r, r, r, inset2, inset3));
         });
     }
 
