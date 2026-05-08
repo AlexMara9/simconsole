@@ -10,7 +10,7 @@
 
 <StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane>
+      <GridPane minHeight="0.0" minWidth="0.0">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="20.0" />
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="60.0" />
