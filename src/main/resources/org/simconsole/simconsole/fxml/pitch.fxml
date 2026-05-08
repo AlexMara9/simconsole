@@ -23,7 +23,7 @@
             <RowConstraints minHeight="0.0" percentHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <DynamicSlider orientation="VERTICAL" />
+            <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" />
             <Button mnemonicParsing="false" text="keylock" GridPane.rowIndex="1" />
          </children>
       </GridPane>

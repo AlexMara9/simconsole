@@ -20,10 +20,11 @@
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="0.0" percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="0.0" percentHeight="5.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="0.0" percentHeight="45.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" text="Eco" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button mnemonicParsing="false" text="Eco" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <VBox alignment="CENTER">
                <children>
                   <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
@@ -42,7 +43,7 @@
                   <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="RHigh" />
                </children>
             </VBox>
-            <DynamicSlider orientation="VERTICAL" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>
