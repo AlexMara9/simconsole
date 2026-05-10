@@ -9,8 +9,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -39,20 +37,31 @@ public class ConsoleController {
 	@FXML private GridPane slidersGrill;
 
 	@FXML private HBox trackButtonsContainer;
-	@FXML private Button playButton;
-	@FXML private Button skipButton;
-	@FXML private Button unskipButton;
+	@FXML private Button playButtonA;
+	@FXML private Button playButtonB;
+	@FXML private Button unskipButton1;
+	@FXML private Button unskipButton2;
+	@FXML private Slider s; // Horizontal slider
 
-	private DeckControls controls;
+	private Deck deckA;
+	private Deck deckB;
+	private DeckControls controlsA;
+	private DeckControls controlsB;
+	private Crossfader crossfader;
 
-	/**
-	 * init function that sets the responsivity
-	 */
 	public void initialize(){
 		initResponsiveness();
 		initControls();
+	}
 
-		setDebug();
+	public void setupDecks(Deck deckA, DeckControls controlsA, Deck deckB, DeckControls controlsB) {
+		this.deckA = deckA;
+		this.controlsA = controlsA;
+		this.deckB = deckB;
+		this.controlsB = controlsB;
+		this.crossfader = new Crossfader(controlsA, controlsB);
+
+		setupSliders();
 	}
 
 	private void initResponsiveness(){
@@ -66,7 +75,6 @@ public class ConsoleController {
 		double slidersGrillWidthCellScaleFactor = 1;
 
 		double seekButtonsFontContainerScaleFactor = 0.5;
-
 
 		// vinyl
 		grid.heightProperty().addListener((o,n,j)->{
@@ -107,17 +115,19 @@ public class ConsoleController {
 
 		// track seeking buttons
 		DoubleBinding buttonsBoundSize = trackButtonsContainer.heightProperty().multiply(seekButtonsFontContainerScaleFactor);
-		Button[] arr = {playButton, skipButton, unskipButton};
+		Button[] arr = {playButtonA, playButtonB, unskipButton1, unskipButton2};
 		for (Button b : arr) {
-			b.fontProperty().bind(
-					Bindings.createObjectBinding(
-							() -> {
-								double size = Math.round(buttonsBoundSize.get());
-								return Font.font(size);
-							},
-							buttonsBoundSize
-					)
-			);
+			if (b != null) {
+				b.fontProperty().bind(
+						Bindings.createObjectBinding(
+								() -> {
+									double size = Math.round(buttonsBoundSize.get());
+									return Font.font(size);
+								},
+								buttonsBoundSize
+						)
+				);
+			}
 		}
 	}
 
@@ -125,7 +135,6 @@ public class ConsoleController {
 		double w = Math.max(1, canvas.getWidth());
 		double h = Math.max(1, canvas.getHeight());
 		GraphicsContext gc = canvas.getGraphicsContext2D();
-
 
 		gc.clearRect(0, 0, w, h);
 
@@ -168,66 +177,93 @@ public class ConsoleController {
 		double textWidth = meas.getLayoutBounds().getWidth();
 		double textHeight = meas.getLayoutBounds().getHeight();
 
-
 		double x = (w - textWidth) / 2.0;
 		double y = (h + textHeight / 2.0) / 2.0;
 		gc.fillText(text, x, y);
 	}
 
-	public void setControls(DeckControls controls) {
-		this.controls = controls;
+	private void initControls(){
+		if (playButtonA != null) {
+			playButtonA.setOnAction(e -> {
+				if(deckA != null ) {
+					if(!deckA.isPlaying()){
+						deckA.play();
+					}else {
+						deckA.pause();
+					}
+				}
+			});
+		}
+
+		if (playButtonB != null) {
+			playButtonB.setOnAction(e -> {
+				if(deckB != null ) {
+					if(!deckB.isPlaying()){
+						deckB.play();
+					}else {
+						deckB.pause();
+					}
+				}
+			});
+		}
 	}
 
-	private void initControls(){
-		playButton.setOnAction(e -> {
-			if(!controls.isPlaying()){
-				controls.play();
-			}else {
-				controls.pause();
-			}
-		});
-	}
-	
-	private void setDebug(){
+	private void setupSliders(){
 		grid.setStyle("-fx-border-color: #FF0000;");
 		slidersGrill.setStyle("-fx-border-color: #00FF00;");
 		trackButtonsContainer.setStyle("-fx-border-color: #0000FF;");
-		Slider s = (Slider) slidersGrill.getChildren().get(0);
-		s.valueProperty().addListener((o, oldVal, newVal) -> {
-			controls.setVolume(newVal.doubleValue());
+		
+		Slider volA = (Slider) slidersGrill.getChildren().get(0);
+		volA.valueProperty().addListener((o, oldVal, newVal) -> {
+			if(controlsA != null) controlsA.setVolume(newVal.doubleValue());
 		});
 
-		Slider s1 = (Slider) slidersGrill.getChildren().get(1);
-		s1.valueProperty().addListener((o, oldVal, newVal) -> {
-			controls.setEqLow(newVal.doubleValue());
-			System.out.println(newVal.doubleValue());
+		Slider eqLowA = (Slider) slidersGrill.getChildren().get(1);
+		eqLowA.valueProperty().addListener((o, oldVal, newVal) -> {
+			if(controlsA != null) controlsA.setEqLow(newVal.doubleValue());
 		});
-		Slider s2 = (Slider) slidersGrill.getChildren().get(2);
-		s2.valueProperty().addListener((o, oldVal, newVal) -> {
-			controls.setEqMid(newVal.doubleValue());
-			System.out.println(newVal.doubleValue());
+		Slider eqMidA = (Slider) slidersGrill.getChildren().get(2);
+		eqMidA.valueProperty().addListener((o, oldVal, newVal) -> {
+			if(controlsA != null) controlsA.setEqMid(newVal.doubleValue());
 		});
-		Slider s3 = (Slider) slidersGrill.getChildren().get(3);
-		s3.valueProperty().addListener((o, oldVal, newVal) -> {
-			controls.setEqHigh(newVal.doubleValue());
-			System.out.println(newVal.doubleValue());
+		Slider eqHighA = (Slider) slidersGrill.getChildren().get(3);
+		eqHighA.valueProperty().addListener((o, oldVal, newVal) -> {
+			if(controlsA != null) controlsA.setEqHigh(newVal.doubleValue());
 		});
 
-		Slider s4 = (Slider) slidersGrill.getChildren().get(4);
-		s4.valueProperty().addListener((o, oldVal, newVal) -> {
-			controls.setPan(newVal.doubleValue());
-			System.out.println(newVal.doubleValue());
+		Slider panA = (Slider) slidersGrill.getChildren().get(4);
+		panA.valueProperty().addListener((o, oldVal, newVal) -> {
+			if(controlsA != null) controlsA.setPan(newVal.doubleValue());
 		});
 
-		Slider s5 = (Slider) slidersGrill.getChildren().get(5);
-		s5.valueProperty().addListener((o, oldVal, newVal) -> {
-			controls.setPitch(newVal.doubleValue());
-			System.out.println(newVal.doubleValue());
+		Slider pitchA = (Slider) slidersGrill.getChildren().get(5);
+		pitchA.valueProperty().addListener((o, oldVal, newVal) -> {
+			if(controlsA != null) controlsA.setPitch(newVal.doubleValue());
 		});
 
 		Button keyLockButton = (Button) slidersGrill.getChildren().get(6);
 		keyLockButton.setOnAction(e -> {
-			controls.toggleKeyLock();
+			if(controlsA != null) controlsA.toggleKeyLock();
 		});
+
+		if (slidersGrill.getChildren().size() > 7) {
+			Slider crossSlider = (Slider) slidersGrill.getChildren().get(7);
+			crossSlider.valueProperty().addListener((o, oldVal, newVal) -> {
+				if(crossfader != null) crossfader.crossfade(newVal.doubleValue());
+			});
+		}
+		if (s != null) {
+			s.valueProperty().addListener((o, oldVal, newVal) -> {
+				// Calcola in che punto della canzone siamo rispetto al massimo dello slider
+				if (deckA != null && deckA.getAudioData() != null) {
+					double percentage = newVal.doubleValue() / s.getMax();
+					double targetSample = percentage * deckA.getAudioData().length;
+					
+					// Calcolo del delta e utilizzo di seekTrack
+					double delta = targetSample - deckA.getPlayheadDouble();
+					deckA.seekTrack(delta);
+				}
+			});
+		}
 	}
 }

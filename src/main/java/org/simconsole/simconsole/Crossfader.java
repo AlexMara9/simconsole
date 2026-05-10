@@ -12,7 +12,6 @@ public class Crossfader {
 
 
     public void crossfade(double pos) {
-        // Clampa la posizione per sicurezza tra -1.0 e 1.0
         pos = Math.max(-1.0, Math.min(1.0, pos));
         
         // Curva a Potenza Costante (Trigonometrica): 

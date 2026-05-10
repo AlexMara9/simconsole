@@ -3,7 +3,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import java.io.File;
 
-public class    AudioDecoder {
+public class AudioDecoder {
 
     // Reads a standard 16-bit WAV file and returns it as an array of doubles (-1.0 to 1.0)
     public static double[] readWavFileAsDoubles(String filePath) {
