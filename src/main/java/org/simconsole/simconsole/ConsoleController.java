@@ -1,5 +1,6 @@
 package org.simconsole.simconsole;
 
+import javafx.animation.AnimationTimer;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.fxml.FXML;
@@ -17,6 +18,9 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
+import java.io.File;
 
 /**
  * Controller that connects the UI to the app logic
@@ -31,7 +35,8 @@ public class ConsoleController {
 
 	@FXML private StackPane songListContainer;
 	@FXML private Label songListLabel;
-	@FXML private ListView songList;
+	@FXML private ListView<Tracks> songList;
+	@FXML private Button addTrackButton;
 
 	@FXML private StackPane slidersGrillContainer;
 	@FXML private GridPane slidersGrill;
@@ -42,16 +47,51 @@ public class ConsoleController {
 	@FXML private Button unskipButton1;
 	@FXML private Button unskipButton2;
 	@FXML private Slider s; // Horizontal slider
+	@FXML private Label timeLabelA;
+	@FXML private Label timeLabelB;
 
 	private Deck deckA;
 	private Deck deckB;
 	private DeckControls controlsA;
 	private DeckControls controlsB;
 	private Crossfader crossfader;
+	private AnimationTimer uiTimer;
 
 	public void initialize(){
 		initResponsiveness();
 		initControls();
+		
+		uiTimer = new AnimationTimer() {
+			@Override
+			public void handle(long now) {
+				updateUI();
+			}
+		};
+		uiTimer.start();
+	}
+
+	private void updateUI() {
+		if (deckA != null && deckA.getCurrentTrack() != null && timeLabelA != null) {
+			Tracks trackA = deckA.getCurrentTrack();
+			int sampleRate = trackA.getSampleRate();
+			double elapsedSeconds = deckA.getPlayheadDouble() / (sampleRate * 2.0);
+			double totalSeconds = trackA.getDurationMs() / 1000.0;
+			timeLabelA.setText(formatTime(elapsedSeconds) + " / " + formatTime(totalSeconds));
+		}
+		
+		if (deckB != null && deckB.getCurrentTrack() != null && timeLabelB != null) {
+			Tracks trackB = deckB.getCurrentTrack();
+			int sampleRate = trackB.getSampleRate();
+			double elapsedSeconds = deckB.getPlayheadDouble() / (sampleRate * 2.0);
+			double totalSeconds = trackB.getDurationMs() / 1000.0;
+			timeLabelB.setText(formatTime(elapsedSeconds) + " / " + formatTime(totalSeconds));
+		}
+	}
+
+	private String formatTime(double totalSeconds) {
+		int minutes = (int) (totalSeconds / 60);
+		int seconds = (int) (totalSeconds % 60);
+		return String.format("%02d:%02d", minutes, seconds);
 	}
 
 	public void setupDecks(Deck deckA, DeckControls controlsA, Deck deckB, DeckControls controlsB) {
@@ -183,6 +223,22 @@ public class ConsoleController {
 	}
 
 	private void initControls(){
+		if (addTrackButton != null) {
+			addTrackButton.setOnAction(e -> {
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Seleziona traccia audio");
+				fileChooser.getExtensionFilters().addAll(
+						new FileChooser.ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aiff", "*.flac", "*.ogg")
+				);
+				Window window = addTrackButton.getScene().getWindow();
+				File selectedFile = fileChooser.showOpenDialog(window);
+				if (selectedFile != null) {
+					Tracks newTrack = new Tracks(selectedFile.getAbsolutePath());
+					songList.getItems().add(newTrack);
+				}
+			});
+		}
+
 		if (playButtonA != null) {
 			playButtonA.setOnAction(e -> {
 				if(deckA != null ) {

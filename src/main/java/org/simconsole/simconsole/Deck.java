@@ -4,11 +4,23 @@ public class Deck {
     private DeckControls controls;
 
     private double[] audioData;
-    private volatile double playhead = 0.0;
-    private volatile boolean isPlaying = false;
+    private volatile double playhead;
+    private volatile boolean isPlaying;
     private Tracks currentTrack;
+    private volatile double internalVolume;
+    
+    public void loadTrack(Tracks track) {
+        isPlaying = false;
 
-    private volatile double internalVolume = 0.0;
+        double[] newData = track.getAudioData();
+
+        if (newData != null) {
+            this.currentTrack = track;
+            this.audioData = newData;
+            this.playhead = 0.0;
+            this.internalVolume = 0.0;
+        }
+    }
 
     public void setControls(DeckControls controls) {
         this.controls = controls;
@@ -18,18 +30,6 @@ public class Deck {
         return controls;
     }
 
-    public void loadTrack(Tracks track) {
-        isPlaying = false;
-
-        double[] newData = AudioDecoder.readWavFileAsDoubles(track.getFilePath());
-
-        if (newData != null) {
-            this.currentTrack = track;
-            this.audioData = newData;
-            this.playhead = 0.0;
-            this.internalVolume = 0.0;
-        }
-    }
 
     public void play() {
         if (audioData == null) return;
@@ -52,16 +52,13 @@ public class Deck {
         if (audioData == null) return;
         playhead += offset;
         
-        // Allineamento stereo (assicurati che il playhead sia sempre pari)
         if ((int)playhead % 2 != 0) {
             playhead -= 1;
         }
 
-        // Keep playhead within bounds
         if (playhead < 0) {
             playhead = 0;
         } else if (playhead >= audioData.length - 2) {
-            // Usa - 2 per assicurarti di cadere sempre sull'ultimo blocco Left/Right intero
             playhead = audioData.length - 2;
             isPlaying = false;
         }
@@ -92,8 +89,4 @@ public class Deck {
         this.internalVolume = vol;
     }
 
-    public double getCurrentBpm() {
-        if (currentTrack == null || controls == null) return 0.0;
-        return currentTrack.getOriginalBpm() * controls.getPitch();
-    }
-}
+}
