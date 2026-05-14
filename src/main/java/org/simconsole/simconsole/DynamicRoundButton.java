@@ -1,5 +1,7 @@
 package org.simconsole.simconsole;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.geometry.Bounds;
@@ -9,6 +11,7 @@ import javafx.scene.text.Text;
 
 public class DynamicRoundButton extends StackPane {
     private final StringProperty text = new SimpleStringProperty("");
+    private final DoubleProperty textSizeRatio = new SimpleDoubleProperty(0.15);
 
     private final Circle outerRing = new Circle();
     private final Circle middleRing = new Circle();
@@ -50,6 +53,7 @@ public class DynamicRoundButton extends StackPane {
         hitBox.radiusProperty().bind(outerRing.radiusProperty());
 
         this.layoutBoundsProperty().addListener((obs, old, bounds) -> updateLayout(bounds));
+        textSizeRatio.addListener((obs, old, val) -> updateLayout(this.getLayoutBounds()));
     }
 
     private void updateLayout(Bounds bounds) {
@@ -57,7 +61,7 @@ public class DynamicRoundButton extends StackPane {
         double h = bounds.getHeight();
         double size = Math.min(w, h);
 
-        double fontSize = size * 0.15;
+        double fontSize = size * textSizeRatio.get();
         String fontStyle = String.format(java.util.Locale.US, "-fx-font-size: %.1fpx;", fontSize);
         textNode.setStyle(fontStyle);
         textNode.applyCss();
@@ -80,4 +84,8 @@ public class DynamicRoundButton extends StackPane {
     public StringProperty textProperty() { return text; }
     public String getText() { return text.get(); }
     public void setText(String val) { text.set(val); }
+
+    public DoubleProperty textSizeRatioProperty() { return textSizeRatio; }
+    public double getTextSizeRatio() { return textSizeRatio.get(); }
+    public void setTextSizeRatio(double val) { textSizeRatio.set(val); }
 }
