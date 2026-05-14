@@ -1,4 +1,4 @@
-.dynamic-round-button {
+.dynamic-round-button, .dynamic-square-button {
     -fx-background-color: transparent;
 }
 

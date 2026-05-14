@@ -13,18 +13,18 @@ public class CueController {
 //	private static final double ICON_SIZE_FACTOR = 0.6;
 
 	@FXML private HBox buttonsContainer;
-	@FXML private Button cue1;
-	@FXML private Button cue2;
-	@FXML private Button cue3;
-	@FXML private Button cue4;
+	@FXML private DynamicSquareButton cue1;
+	@FXML private DynamicSquareButton cue2;
+	@FXML private DynamicSquareButton cue3;
+	@FXML private DynamicSquareButton cue4;
 
 	public void initialize(){
 		responsive();
 	}
 	private void responsive(){
-		Button [] buttons = {cue1, cue2, cue3, cue4};
+		DynamicSquareButton [] dynButtons = {cue1, cue2, cue3, cue4};
 
-		for (Button b : buttons){
+		for (DynamicSquareButton b : dynButtons){
 			DoubleBinding minDim = Bindings.createDoubleBinding(
 					() -> Math.min(buttonsContainer.getWidth() * BUTTON_WIDTH_FACTOR, buttonsContainer.getHeight()),
 					buttonsContainer.widthProperty(),
@@ -32,10 +32,6 @@ public class CueController {
 			);
 			b.prefHeightProperty().bind(minDim);
 			b.prefWidthProperty().bind(minDim);
-//			if(b.getGraphic() instanceof Region icon){
-//				icon.prefWidthProperty().bind(minDim.multiply(ICON_SIZE_FACTOR));
-//				icon.prefHeightProperty().bind(minDim.multiply(ICON_SIZE_FACTOR));
-//			}
 		}
 
 //		buttonsContainer.spacingProperty().bind(buttonsContainer.widthProperty().multiply(BUTTON_CONTAINER_SPACING_FACTOR));
