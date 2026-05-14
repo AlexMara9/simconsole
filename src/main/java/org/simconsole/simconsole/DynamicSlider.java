@@ -51,14 +51,14 @@ public class DynamicSlider extends Slider {
 
         if (this.getOrientation() == Orientation.VERTICAL) {
             this.maxWidthProperty().bind(this.heightProperty().multiply(0.25));
-            trackRegion.prefWidthProperty().bind(this.widthProperty().multiply(0.8));
-            thumbRegion.prefWidthProperty().bind(this.widthProperty().multiply(0.9));
-            thumbRegion.prefHeightProperty().bind(this.widthProperty().multiply(0.9));
+            trackRegion.prefWidthProperty().bind(this.heightProperty().multiply(0.25 * 0.8));
+            thumbRegion.prefWidthProperty().bind(this.heightProperty().multiply(0.25 * 0.9));
+            thumbRegion.prefHeightProperty().bind(this.heightProperty().multiply(0.25 * 0.9));
         } else {
-            this.maxHeightProperty().bind(this.widthProperty().multiply(0.25));
-            trackRegion.prefHeightProperty().bind(this.heightProperty().multiply(0.8));
-            thumbRegion.prefWidthProperty().bind(this.heightProperty().multiply(0.9));
-            thumbRegion.prefHeightProperty().bind(this.heightProperty().multiply(0.9));
+            this.maxHeightProperty().bind(this.widthProperty().multiply(0.08));
+            trackRegion.prefHeightProperty().bind(this.widthProperty().multiply(0.08 * 0.8));
+            thumbRegion.prefWidthProperty().bind(this.widthProperty().multiply(0.08 * 0.9));
+            thumbRegion.prefHeightProperty().bind(this.widthProperty().multiply(0.08 * 0.9));
         }
 
         // Track radius: separate listener, updates its own part and re-applies combined style

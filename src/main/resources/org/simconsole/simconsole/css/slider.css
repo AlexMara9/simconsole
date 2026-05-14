@@ -1,7 +1,8 @@
-.slider{
+.slider {
     -track-filled: #8af83b;
     -track-empty: #1a1a1a;
 }
+
 .slider .track {
     -fx-background-color: #1a1a1a;
     -fx-background-insets: 0;
