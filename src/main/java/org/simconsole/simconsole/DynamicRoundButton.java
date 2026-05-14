@@ -1,14 +1,18 @@
 package org.simconsole.simconsole;
 
+import javafx.beans.DefaultProperty;
 import javafx.beans.property.*;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
+@DefaultProperty("graphic")
 public class DynamicRoundButton extends StackPane {
     private final StringProperty text = new SimpleStringProperty("");
     private final DoubleProperty textSizeRatio = new SimpleDoubleProperty(0.15);
+    private final ObjectProperty<Node> graphic = new SimpleObjectProperty<>();
     private final BooleanProperty toggleButton = new SimpleBooleanProperty(false);
 
     private final Circle outerRing = new Circle();
@@ -39,6 +43,24 @@ public class DynamicRoundButton extends StackPane {
 
         initResponsive();
         initInteractivity();
+        initGraphicListener();
+    }
+
+    private void initGraphicListener() {
+        graphic.addListener((obs, oldNode, newNode) -> {
+            if (oldNode != null) {
+                getChildren().remove(oldNode);
+            }
+            if (newNode != null) {
+                // Make sure graphic is placed underneath hitBox so click events are not blocked
+                int hitBoxIndex = getChildren().indexOf(hitBox);
+                if (hitBoxIndex >= 0) {
+                    getChildren().add(hitBoxIndex, newNode);
+                } else {
+                    getChildren().add(newNode);
+                }
+            }
+        });
     }
 
     private void initResponsive() {
@@ -92,6 +114,10 @@ public class DynamicRoundButton extends StackPane {
     public DoubleProperty textSizeRatioProperty() { return textSizeRatio; }
     public double getTextSizeRatio() { return textSizeRatio.get(); }
     public void setTextSizeRatio(double val) { textSizeRatio.set(val); }
+
+    public ObjectProperty<Node> graphicProperty() { return graphic; }
+    public Node getGraphic() { return graphic.get(); }
+    public void setGraphic(Node val) { graphic.set(val); }
 
     public BooleanProperty toggleButtonProperty() { return toggleButton; }
     public boolean getToggleButton() { return toggleButton.get(); }
