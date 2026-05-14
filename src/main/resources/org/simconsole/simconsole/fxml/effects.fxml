@@ -24,21 +24,24 @@
             <RowConstraints minHeight="0.0" percentHeight="45.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <DynamicRoundButton text="Eco" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <DynamicRoundButton text="Eco" toggleButton="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <VBox alignment="CENTER">
                <children>
+                  <DynamicRoundButton text="KLow" toggleButton="true" VBox.vgrow="ALWAYS" />
                   <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
                   <DynamicRoundButton text="RLow" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             <VBox alignment="CENTER" GridPane.columnIndex="1">
                <children>
+                  <DynamicRoundButton text="KMid" toggleButton="true" VBox.vgrow="ALWAYS" />
                   <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
                   <DynamicRoundButton text="RMid" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
             <VBox alignment="CENTER" GridPane.columnIndex="2">
                <children>
+                  <DynamicRoundButton text="KHigh" toggleButton="true" VBox.vgrow="ALWAYS" />
                   <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
                   <DynamicRoundButton text="RHigh" VBox.vgrow="ALWAYS" />
                </children>

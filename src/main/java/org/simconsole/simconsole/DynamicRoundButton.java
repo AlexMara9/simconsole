@@ -1,9 +1,6 @@
 package org.simconsole.simconsole;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.geometry.Bounds;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
@@ -12,6 +9,7 @@ import javafx.scene.text.Text;
 public class DynamicRoundButton extends StackPane {
     private final StringProperty text = new SimpleStringProperty("");
     private final DoubleProperty textSizeRatio = new SimpleDoubleProperty(0.15);
+    private final BooleanProperty toggleButton = new SimpleBooleanProperty(false);
 
     private final Circle outerRing = new Circle();
     private final Circle middleRing = new Circle();
@@ -71,13 +69,19 @@ public class DynamicRoundButton extends StackPane {
         hitBox.setOnMousePressed(e -> {
             if (!ledRing.getStyleClass().contains("pressed")) {
                 ledRing.getStyleClass().add("pressed");
+            }else if(toggleButton.get()){
+                ledRing.getStyleClass().remove("pressed");
             }
         });
         hitBox.setOnMouseReleased(e -> {
-            ledRing.getStyleClass().remove("pressed");
+            if(!toggleButton.get()){
+                ledRing.getStyleClass().remove("pressed");
+            }
         });
         hitBox.setOnMouseExited(e -> {
-            ledRing.getStyleClass().remove("pressed");
+            if(!toggleButton.get()){
+                ledRing.getStyleClass().remove("pressed");
+            }
         });
     }
 
@@ -88,4 +92,8 @@ public class DynamicRoundButton extends StackPane {
     public DoubleProperty textSizeRatioProperty() { return textSizeRatio; }
     public double getTextSizeRatio() { return textSizeRatio.get(); }
     public void setTextSizeRatio(double val) { textSizeRatio.set(val); }
+
+    public BooleanProperty toggleButtonProperty() { return toggleButton; }
+    public boolean getToggleButton() { return toggleButton.get(); }
+    public void setToggleButton(boolean val) { toggleButton.set(val); }
 }

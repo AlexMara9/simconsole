@@ -25,7 +25,7 @@
          </rowConstraints>
          <children>
             <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" />
-            <DynamicRoundButton text="♪" textSizeRatio="0.5" GridPane.rowIndex="1" />
+            <DynamicRoundButton text="♪" textSizeRatio="0.5" toggleButton="true" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>
