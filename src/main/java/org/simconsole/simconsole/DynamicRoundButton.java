@@ -1,0 +1,83 @@
+package org.simconsole.simconsole;
+
+import javafx.beans.property.StringProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.geometry.Bounds;
+import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+
+public class DynamicRoundButton extends StackPane {
+    private final StringProperty text = new SimpleStringProperty("");
+
+    private final Circle outerRing = new Circle();
+    private final Circle middleRing = new Circle();
+    private final Circle outerKnob = new Circle();
+    private final Circle ledRing = new Circle();
+    private final Circle innerKnob = new Circle();
+    private final Text textNode = new Text();
+    private final Circle hitBox = new Circle();
+
+    public DynamicRoundButton() {
+        this.getStyleClass().add("dynamic-round-button");
+
+        outerRing.getStyleClass().add("round-button-outer-ring");
+        middleRing.getStyleClass().add("round-button-middle-ring");
+        outerKnob.getStyleClass().add("round-button-outer-knob");
+        ledRing.getStyleClass().add("round-button-led-ring");
+        innerKnob.getStyleClass().add("round-button-inner-knob");
+        textNode.getStyleClass().add("round-button-text");
+
+        textNode.textProperty().bind(text);
+        textNode.setPickOnBounds(false);
+        this.setPickOnBounds(false);
+
+        hitBox.setFill(javafx.scene.paint.Color.TRANSPARENT);
+
+        this.getChildren().addAll(outerRing, middleRing, outerKnob, ledRing, innerKnob, textNode, hitBox);
+
+        initResponsive();
+        initInteractivity();
+    }
+
+    private void initResponsive() {
+        outerRing.radiusProperty().bind(javafx.beans.binding.Bindings.min(this.widthProperty(), this.heightProperty()).multiply(0.45));
+        middleRing.radiusProperty().bind(javafx.beans.binding.Bindings.min(this.widthProperty(), this.heightProperty()).multiply(0.43));
+        outerKnob.radiusProperty().bind(javafx.beans.binding.Bindings.min(this.widthProperty(), this.heightProperty()).multiply(0.41));
+        ledRing.radiusProperty().bind(javafx.beans.binding.Bindings.min(this.widthProperty(), this.heightProperty()).multiply(0.36));
+        innerKnob.radiusProperty().bind(javafx.beans.binding.Bindings.min(this.widthProperty(), this.heightProperty()).multiply(0.33));
+        
+        hitBox.radiusProperty().bind(outerRing.radiusProperty());
+
+        this.layoutBoundsProperty().addListener((obs, old, bounds) -> updateLayout(bounds));
+    }
+
+    private void updateLayout(Bounds bounds) {
+        double w = bounds.getWidth();
+        double h = bounds.getHeight();
+        double size = Math.min(w, h);
+
+        double fontSize = size * 0.15;
+        String fontStyle = String.format(java.util.Locale.US, "-fx-font-size: %.1fpx;", fontSize);
+        textNode.setStyle(fontStyle);
+        textNode.applyCss();
+    }
+
+    private void initInteractivity() {
+        hitBox.setOnMousePressed(e -> {
+            if (!ledRing.getStyleClass().contains("pressed")) {
+                ledRing.getStyleClass().add("pressed");
+            }
+        });
+        hitBox.setOnMouseReleased(e -> {
+            ledRing.getStyleClass().remove("pressed");
+        });
+        hitBox.setOnMouseExited(e -> {
+            ledRing.getStyleClass().remove("pressed");
+        });
+    }
+
+    public StringProperty textProperty() { return text; }
+    public String getText() { return text.get(); }
+    public void setText(String val) { text.set(val); }
+}

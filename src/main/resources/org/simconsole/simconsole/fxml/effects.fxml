@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.simconsole.simconsole.DynamicDotKnob?>
 <?import org.simconsole.simconsole.DynamicSlider?>
+<?import org.simconsole.simconsole.DynamicRoundButton?>
 
 <StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -25,6 +26,7 @@
         </rowConstraints>
          <children>
             <Button mnemonicParsing="false" text="Eco" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <DynamicRoundButton text="Push" GridPane.columnIndex="0" GridPane.rowIndex="2" />
             <VBox alignment="CENTER">
                <children>
                   <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
@@ -51,5 +53,6 @@
       <URL value="@../css/card.css" />
       <URL value="@../css/slider.css" />
       <URL value="@../css/knob.css" />
+      <URL value="@../css/button.css" />
    </stylesheets>
 </StackPane>
