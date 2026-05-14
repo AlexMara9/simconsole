@@ -33,3 +33,31 @@
     -fx-font-family: "Segoe UI", "Inter", sans-serif;
     -fx-font-weight: bold;
 }
+
+.cue1 .round-button-led-ring {
+    -fx-fill: #f83b3b;
+}
+.cue1 .round-button-led-ring.pressed {
+    -fx-fill: #a62727;
+}
+
+.cue2 .round-button-led-ring {
+    -fx-fill: #f8cc3b;
+}
+.cue2 .round-button-led-ring.pressed {
+    -fx-fill: #aa8c29;
+}
+
+.cue3 .round-button-led-ring {
+    -fx-fill: #71f83b;
+}
+.cue3 .round-button-led-ring.pressed {
+    -fx-fill: #4fae29;
+}
+
+.cue4 .round-button-led-ring {
+    -fx-fill: #3be8f8;
+}
+.cue4 .round-button-led-ring.pressed {
+    -fx-fill: #3be8f8;
+}

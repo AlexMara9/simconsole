@@ -5,9 +5,9 @@
 
 <HBox fx:id="buttonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" stylesheets="@../css/button.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.CueController">
    <children>
-      <DynamicSquareButton fx:id="cue1" minHeight="0.0" minWidth="0.0" text="1" textSizeRatio="0.4" />
-      <DynamicSquareButton fx:id="cue2" minHeight="0.0" minWidth="0.0" text="2" textSizeRatio="0.4" />
-      <DynamicSquareButton fx:id="cue3" minHeight="0.0" minWidth="0.0" text="3" textSizeRatio="0.4" />
-      <DynamicSquareButton fx:id="cue4" minHeight="0.0" minWidth="0.0" text="4" textSizeRatio="0.4" />
+      <DynamicSquareButton fx:id="cue1" minHeight="0.0" minWidth="0.0" styleClass="cue1" text="1" textSizeRatio="0.4" />
+      <DynamicSquareButton fx:id="cue2" minHeight="0.0" minWidth="0.0" styleClass="cue2" text="2" textSizeRatio="0.4" />
+      <DynamicSquareButton fx:id="cue3" minHeight="0.0" minWidth="0.0" styleClass="cue3" text="3" textSizeRatio="0.4" />
+      <DynamicSquareButton fx:id="cue4" minHeight="0.0" minWidth="0.0" styleClass="cue4" text="4" textSizeRatio="0.4" />
    </children>
 </HBox>
