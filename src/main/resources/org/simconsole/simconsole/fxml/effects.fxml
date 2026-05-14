@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import org.simconsole.simconsole.DynamicDotKnob?>
+<?import org.simconsole.simconsole.DynamicSlider?>
+
+<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" StackPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="33.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="34.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="33.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="0.0" percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="0.0" percentHeight="5.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="0.0" percentHeight="45.0" valignment="CENTER" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button mnemonicParsing="false" text="Eco" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <VBox alignment="CENTER">
+               <children>
+                  <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
+                  <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="RLow" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" GridPane.columnIndex="1">
+               <children>
+                  <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
+                  <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="RMid" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" GridPane.columnIndex="2">
+               <children>
+                  <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
+                  <Button minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="RHigh" />
+               </children>
+            </VBox>
+            <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+         </children>
+      </GridPane>
+   </children>
+   <stylesheets>
+      <URL value="@../css/card.css" />
+      <URL value="@../css/slider.css" />
+      <URL value="@../css/knob.css" />
+   </stylesheets>
+</StackPane>

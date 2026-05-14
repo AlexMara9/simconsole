@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+
+<HBox fx:id="buttonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" style="-fx-background-radius: 100; -fx-background-color: #007aff;" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.PlaybackController">
+   <children>
+      <Button fx:id="rewindButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button" stylesheets="@../css/playbackButtons.css">
+         <graphic>
+            <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="15.0" prefWidth="20.0">
+               <styleClass>
+                  <String fx:value="icon" />
+                  <String fx:value="icon-unskip" />
+               </styleClass>
+            </Region>
+         </graphic>
+         <HBox.margin>
+            <Insets />
+         </HBox.margin>
+      </Button>
+      <Button fx:id="playButton" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" styleClass="control-button" stylesheets="@../css/playbackButtons.css">
+         <graphic>
+            <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="15.0" prefWidth="20.0">
+               <styleClass>
+                  <String fx:value="icon" />
+                  <String fx:value="icon-play" />
+               </styleClass>
+            </Region>
+         </graphic>
+      </Button>
+   </children>
+</HBox>

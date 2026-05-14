@@ -1,0 +1,25 @@
+.slider {
+    -track-filled: #8af83b;
+    -track-empty: #1a1a1a;
+}
+
+.slider .track {
+    -fx-background-color: #1a1a1a;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.slider .thumb {
+    -fx-background-color: #111111, #262626, linear-gradient(from 0% 0% to 100% 100%, #f4f4f4 0%, #9e9e9e 25%, #e2e2e2 50%, #828282 85%, #cfcfcf 100%);
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+.slider .thumb:hover {
+    -fx-background-color: #111111, #262626, linear-gradient(from 0% 0% to 100% 100%, #ffffff 0%, #a8a8a8 25%, #ececec 50%, #8c8c8c 85%, #d9d9d9 100%);
+}
+
+.slider .thumb:pressed {
+    -fx-background-color: #111111, #262626, linear-gradient(from 0% 0% to 100% 100%, #e0e0e0 0%, #8f8f8f 25%, #d0d0d0 50%, #757575 85%, #bebebe 100%);
+}

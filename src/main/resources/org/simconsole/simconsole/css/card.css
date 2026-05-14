@@ -1,0 +1,13 @@
+.card {
+    -fx-background-color: #1e1e1e;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 4);
+    -fx-padding: 0;
+}
+
+
+.controls-card {
+    -fx-background-color: transparent;
+    -fx-effect: none;
+    -fx-padding: 0;
+}

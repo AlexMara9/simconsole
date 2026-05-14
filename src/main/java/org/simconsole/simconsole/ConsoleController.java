@@ -1,291 +1,49 @@
 package org.simconsole.simconsole;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.value.ChangeListener;
-import javafx.geometry.Orientation;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.beans.binding.DoubleBinding;
 import javafx.fxml.FXML;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.control.Slider;
 
 /**
  * Controller that connects the UI to the app logic
  */
 public class ConsoleController {
+	// grid & general UI scale
+	private static final int MIN_FONT_SIZE = 0;
+	private static final double FONT_SCALE_FACTOR = 50.0;
+	// playback
+	private static final double BUTTON_CONTAINER_SPACING_FACTOR = 0.125;// compared to the HBox
+
+	// grid & general UI scale
 	@FXML private GridPane grid;
-
-	@FXML private Circle vinyl;
-	@FXML private Circle vinylCenter;
-
-	@FXML private StackPane graphContainer;
-	@FXML private Canvas graph;
-
-	@FXML private StackPane songListContainer;
-	@FXML private Label songListLabel;
-	@FXML private ListView songList;
-
-	@FXML private StackPane slidersGrillContainer;
-	@FXML private GridPane slidersGrill;
-
-	@FXML private HBox trackButtonsContainer;
-	@FXML private Button playButton;
-	@FXML private Button skipButton;
-	@FXML private Button unskipButton;
-
-	@FXML private Slider volumeSlider;
+	// playback
+	@FXML private HBox testest;
 
 	/**
-	 * init function that sets the responsivity
+	 * init function
 	 */
+	@FXML
 	public void initialize(){
 		initResponsiveness();
-		initListeners();
-		initDynamicSliderStyles();
-
-		//setDebug();
 	}
 
 	private void initResponsiveness(){
-		double vinylRadiusSceneScaleFactor = (double) 1 / 8;
+		// grid & general UI scale
+		grid.heightProperty().addListener((o,n,j)-> updateGridFontSize());
+		grid.widthProperty().addListener((o,n,j)-> updateGridFontSize());
 
-		double songListCellScaleFactor = 0.9;
-		double songListLabelHeightCellScaleFactor = (double) 1 - songListCellScaleFactor;
-		double songListLabelFontCellScaleFactor = songListLabelHeightCellScaleFactor * 0.8;
+		// playback
+//		testest.spacingProperty().bind(testest.widthProperty().multiply(BUTTON_CONTAINER_SPACING_FACTOR));
 
-		double slidersGrillHeightCellScaleFactor = 0.9;
-		double slidersGrillWidthCellScaleFactor = 1;
-
-		double seekButtonsFontContainerScaleFactor = 0.5;
-
-
-		// vinyl & general UI scale
-		grid.heightProperty().addListener((o,n,j)->{
-			if (grid.getWidth() > j.doubleValue()){
-				vinyl.setRadius(j.doubleValue()* vinylRadiusSceneScaleFactor);
-			}
-			updateGridFontSize();
-		});
-		grid.widthProperty().addListener((o,n,j)->{
-			if (grid.getHeight() > j.doubleValue()){
-				vinyl.setRadius(j.doubleValue()* vinylRadiusSceneScaleFactor);
-			}
-			updateGridFontSize();
-		});
-		vinylCenter.radiusProperty().bind(Bindings.multiply(vinyl.radiusProperty(),0.2));
-		vinylCenter.strokeWidthProperty().bind(Bindings.multiply(vinyl.radiusProperty(),0.04));
-
-
-		// graph
-		graph.heightProperty().bind(graphContainer.heightProperty());
-		graph.widthProperty().bind(graphContainer.widthProperty());
-		graph.widthProperty().addListener((o, oldV, newV) -> drawPlaceholder(graph));
-		graph.heightProperty().addListener((o, oldV, newV) -> drawPlaceholder(graph));
-
-		// song list
-		songList.prefHeightProperty().bind(songListContainer.heightProperty().multiply(songListCellScaleFactor));
-		songList.prefWidthProperty().bind(songListContainer.widthProperty());
-		songListLabel.prefHeightProperty().bind(songListContainer.heightProperty().multiply(songListLabelHeightCellScaleFactor));
-		DoubleBinding songListBoundSize = songListContainer.heightProperty().multiply(songListLabelFontCellScaleFactor);
-		songListLabel.fontProperty().bind(
-				Bindings.createObjectBinding(
-						() -> {
-							double size = Math.round(songListBoundSize.get());
-							return Font.font(size);
-						},
-						songListBoundSize
-				)
-		);
-
-		// effects sliders
-		slidersGrill.prefHeightProperty().bind(slidersGrillContainer.heightProperty().multiply(slidersGrillHeightCellScaleFactor));
-		slidersGrill.prefWidthProperty().bind(slidersGrillContainer.widthProperty().multiply(slidersGrillWidthCellScaleFactor));
-
-		// track seeking buttons
-		DoubleBinding buttonsBoundSize = trackButtonsContainer.heightProperty().multiply(seekButtonsFontContainerScaleFactor);
-		Button[] arr = {playButton, skipButton, unskipButton};
-		for (Button b : arr) {
-			b.fontProperty().bind(
-					Bindings.createObjectBinding(
-							() -> {
-								double size = Math.round(buttonsBoundSize.get());
-								return Font.font(size);
-							},
-							buttonsBoundSize
-					)
-			);
-		}
 	}
 
-
 	private void updateGridFontSize() {
-		double minDim = Math.min(grid.getWidth(), grid.getHeight());
-		if (minDim > 0) {
+		double minWindowDim = Math.min(grid.getWidth(), grid.getHeight());
+		if (minWindowDim > 0) {
 			// scale factor to keep font size proportional
-			double fontSize = minDim / 50.0;
-			fontSize = Math.max(0, Math.min(fontSize, 1000000));
+			double fontSize = minWindowDim / FONT_SCALE_FACTOR;
+			fontSize = Math.max(MIN_FONT_SIZE, fontSize);
 			grid.setStyle(String.format(java.util.Locale.US, "-fx-font-size: %.2fpx;", fontSize));
 		}
 	}
-
-	private void drawPlaceholder(Canvas canvas) {
-		double w = Math.max(1, canvas.getWidth());
-		double h = Math.max(1, canvas.getHeight());
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-
-
-		gc.clearRect(0, 0, w, h);
-
-		// colors
-		Color bg = Color.web("#1e1e1e");
-		Color border = Color.web("#2b2b2b");
-		Color cross = Color.web("#333333");
-		Color textColor = Color.web("#a0a0a0");
-
-		// background
-		gc.setFill(bg);
-		gc.fillRect(0, 0, w, h);
-
-		// relative thickness
-		double minDim = Math.min(w, h);
-		double borderWidth = Math.max(1.0, minDim * 0.005);
-		double crossWidth = Math.max(1.0, minDim * 0.003);
-
-		// border with offset for line width
-		gc.setStroke(border);
-		gc.setLineWidth(borderWidth);
-		double halfStroke = borderWidth / 2.0;
-		gc.strokeRect(halfStroke, halfStroke, Math.max(0, w - borderWidth), Math.max(0, h - borderWidth));
-
-		// diagonal cross with relative margin (10%)
-		double margin = Math.min(w, h) * 0.05;
-		gc.setStroke(cross);
-		gc.setLineWidth(crossWidth);
-		gc.strokeLine(margin, margin, w - margin, h - margin);
-		gc.strokeLine(margin, h - margin, w - margin, margin);
-
-		// central text: scale the font compared to the dimension of the canvas
-		String text = "Signal Visualizer";
-		double fontSize = Math.max(10, minDim * 0.07); // responsive dimension
-		gc.setFill(textColor);
-		gc.setFont(Font.font("Segoe UI", FontWeight.BOLD, fontSize));
-
-		Text meas = new Text(text);
-		meas.setFont(gc.getFont());
-		double textWidth = meas.getLayoutBounds().getWidth();
-		double textHeight = meas.getLayoutBounds().getHeight();
-
-
-		double x = (w - textWidth) / 2.0;
-		double y = (h + textHeight / 2.0) / 2.0;
-		gc.fillText(text, x, y);
-	}
-
-	private void initListeners(){
-		volumeSlider.valueProperty().addListener((observableValue, oldValue, newValue) ->{
-			// volume slider action
-		});
-
-		// vinyl animation
-		vinyl.setOnScroll(event -> {
-			double delta = event.getDeltaY();
-			// rotate vinyl
-			vinyl.setRotate(vinyl.getRotate() + delta * 0.3);
-		});
-	}
-
-	private void setDebug(){
-		grid.setStyle("-fx-border-color: #FF0000;");
-		slidersGrill.setStyle("-fx-border-color: #00FF00;");
-		trackButtonsContainer.setStyle("-fx-border-color: #0000FF;");
-	}
-
-	private void initDynamicSliderStyles() {
-		applyDynamicStyle(grid);
-	}
-
-	private void applyDynamicStyle(Parent root) {
-		for (Node node : root.getChildrenUnmodifiable()) {
-			if (node instanceof Slider s) {
-				applyDynamicStyleToSlider(s);
-			} else if (node instanceof Parent p) {
-				applyDynamicStyle(p);
-			}
-		}
-	}
-
-	private void applyDynamicStyleToSlider(Slider slider) {
-		slider.skinProperty().addListener((obs, old, skin) -> {
-			if (skin == null) return;
-
-			Node track = slider.lookup(".track");
-			Node thumb = slider.lookup(".thumb");
-			if (track == null || thumb == null) return;
-
-			ChangeListener<Object> listener = (o, ov, nv) -> updateSliderTrack(slider, track, thumb);
-			track.layoutBoundsProperty().addListener(listener);
-			thumb.layoutBoundsProperty().addListener(listener);
-			slider.valueProperty().addListener(listener);
-
-			updateSliderTrack(slider, track, thumb);
-		});
-	}
-
-	private void updateSliderTrack(Slider slider, Node track, Node thumb) {
-		double min = slider.getMin();
-		double max = slider.getMax();
-		double val = slider.getValue();
-		double percentage = (max == min) ? 0 : (val - min) / (max - min);
-
-		String colorFilled = "#007aff"; // modern blue accent
-		String colorEmpty = "#2b2b2b";  // dark grey / almost black
-
-		if (slider.getOrientation() == Orientation.VERTICAL) {
-			double trackHeight = track.getLayoutBounds().getHeight();
-			double thumbHeight = thumb.getLayoutBounds().getHeight();
-			if (trackHeight > 0 && thumbHeight > 0) {
-				double thumbRadius = thumbHeight / 2.0;
-				double usableTrack = trackHeight - thumbHeight;
-				double centerFromTop = thumbRadius + (1.0 - percentage) * usableTrack;
-				double stopPercentage = (centerFromTop / trackHeight) * 100.0;
-
-				String style = String.format(
-						java.util.Locale.US,
-						"-fx-background-color: linear-gradient(to bottom, %s %.1f%%, %s %.1f%%);",
-						colorEmpty, stopPercentage, colorFilled, stopPercentage
-				);
-				track.setStyle(style);
-			}
-		} else {
-			double trackWidth = track.getLayoutBounds().getWidth();
-			double thumbWidth = thumb.getLayoutBounds().getWidth();
-			if (trackWidth > 0 && thumbWidth > 0) {
-				double thumbRadius = thumbWidth / 2.0;
-				double usableTrack = trackWidth - thumbWidth;
-				double centerFromLeft = thumbRadius + percentage * usableTrack;
-				double stopPercentage = (centerFromLeft / trackWidth) * 100.0;
-
-				String style = String.format(
-						java.util.Locale.US,
-						"-fx-background-color: linear-gradient(to right, %s %.1f%%, %s %.1f%%);",
-						colorFilled, stopPercentage, colorEmpty, stopPercentage
-				);
-				track.setStyle(style);
-			}
-		}
-	}
-
 }

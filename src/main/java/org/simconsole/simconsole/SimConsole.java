@@ -10,7 +10,7 @@ import java.io.IOException;
 public class SimConsole extends Application {
 	@Override
 	public void start(Stage stage) throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(SimConsole.class.getResource("console-view.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(SimConsole.class.getResource("fxml/console-view.fxml"));
 		Scene scene = new Scene(fxmlLoader.load(), (int)(1920/3), (int)(1080/3));
 		ConsoleController consoleController = fxmlLoader.getController();
 

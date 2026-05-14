@@ -1,0 +1,59 @@
+/* ── Root & Base Layout ──────────────────────────────────────── */
+.root {
+    -fx-background-color: #121212;
+    -fx-font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.main-container {
+    -fx-padding: 20;
+    -fx-hgap: 15;
+    -fx-vgap: 15;
+}
+
+/* ── Typography ──────────────────────────────────────────────── */
+.section-label {
+    -fx-text-fill: #ffffff;
+    -fx-padding: 0.5em;
+    -fx-font-weight: bold;
+    -fx-font-size: 1.2em;
+}
+
+/* ── ListView ────────────────────────────────────────────────── */
+.list-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cccccc;
+    -fx-padding: 8;
+}
+
+.list-view .list-cell:empty {
+    -fx-background-color: transparent;
+}
+
+.list-view .list-cell:hover {
+    -fx-background-color: #2a2a2a;
+    -fx-text-fill: #ffffff;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #007aff;
+    -fx-text-fill: #ffffff;
+}
+
+/* ── ScrollBar ───────────────────────────────────────────────── */
+.list-view .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+.list-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #444444;
+    -fx-background-radius: 4;
+}
+
+.list-view .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #666666;
+}
