@@ -14,38 +14,62 @@
    <children>
       <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" StackPane.alignment="CENTER">
         <columnConstraints>
-          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="33.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="34.0" />
-            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="33.0" />
+          <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="33.0" />
+            <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="34.0" />
+            <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="33.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="0.0" percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="0.0" percentHeight="5.0" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="0.0" percentHeight="45.0" valignment="CENTER" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="0.0" percentHeight="50.0" valignment="CENTER" />
+            <RowConstraints minHeight="0.0" percentHeight="5.0" valignment="CENTER" />
+            <RowConstraints minHeight="0.0" percentHeight="45.0" valignment="CENTER" />
         </rowConstraints>
          <children>
             <DynamicRoundButton text="Eco" toggleButton="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <VBox alignment="CENTER">
+            <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="0.0" percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <DynamicRoundButton text="KLow" toggleButton="true" VBox.vgrow="ALWAYS" />
-                  <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
-                  <DynamicRoundButton text="RLow" VBox.vgrow="ALWAYS" />
+                  <DynamicRoundButton minHeight="0.0" minWidth="0.0" text="KLow" toggleButton="true" GridPane.rowIndex="0" />
+                  <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1" />
+                  <DynamicRoundButton minHeight="0.0" minWidth="0.0" text="RLow" GridPane.rowIndex="2" />
                </children>
-            </VBox>
-            <VBox alignment="CENTER" GridPane.columnIndex="1">
+            </GridPane>
+            <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="0.0" percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <DynamicRoundButton text="KMid" toggleButton="true" VBox.vgrow="ALWAYS" />
-                  <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
-                  <DynamicRoundButton text="RMid" VBox.vgrow="ALWAYS" />
+                  <DynamicRoundButton minHeight="0.0" minWidth="0.0" text="KMid" toggleButton="true" GridPane.rowIndex="0" />
+                  <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1" />
+                  <DynamicRoundButton minHeight="0.0" minWidth="0.0" text="RMid" GridPane.rowIndex="2" />
                </children>
-            </VBox>
-            <VBox alignment="CENTER" GridPane.columnIndex="2">
+            </GridPane>
+            <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="2">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" percentWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="0.0" percentHeight="50.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <DynamicRoundButton text="KHigh" toggleButton="true" VBox.vgrow="ALWAYS" />
-                  <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" VBox.vgrow="ALWAYS" />
-                  <DynamicRoundButton text="RHigh" VBox.vgrow="ALWAYS" />
+                  <DynamicRoundButton minHeight="0.0" minWidth="0.0" text="KHigh" toggleButton="true" GridPane.rowIndex="0" />
+                  <DynamicDotKnob leftLabel="-12" max="12.0" min="-12.0" rightLabel="12" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1" />
+                  <DynamicRoundButton minHeight="0.0" minWidth="0.0" text="RHigh" GridPane.rowIndex="2" />
                </children>
-            </VBox>
+            </GridPane>
             <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
