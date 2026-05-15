@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import org.simconsole.simconsole.DynamicRoundButton?>
 <?import org.simconsole.simconsole.DynamicSlider?>
 
 <StackPane minHeight="0.0" minWidth="0.0" styleClass="controls-card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets>
       <URL value="@../css/card.css" />
       <URL value="@../css/slider.css" />
+      <URL value="@../css/button.css" />
    </stylesheets>
    <children>
       <GridPane alignment="CENTER">
@@ -24,7 +25,7 @@
          </rowConstraints>
          <children>
             <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" />
-            <Button mnemonicParsing="false" text="keylock" GridPane.rowIndex="1" />
+            <DynamicRoundButton text="♪" textSizeRatio="0.5" toggleButton="true" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>

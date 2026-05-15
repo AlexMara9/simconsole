@@ -1,0 +1,63 @@
+.dynamic-round-button, .dynamic-square-button {
+    -fx-background-color: transparent;
+}
+
+.round-button-outer-ring {
+    -fx-fill: #111111;
+}
+
+.round-button-led-ring {
+    -fx-fill: #8af83b;
+}
+
+.round-button-led-ring.pressed {
+    -fx-fill: #5a9e22; /* Inscurito leggermente quando premuto */
+}
+
+.round-button-middle-ring {
+    -fx-fill: #262626;
+}
+
+/* Stesso gradiente usato in knob.css per il componente inner-knob */
+.round-button-outer-knob, .round-button-inner-knob {
+    -fx-fill: linear-gradient(from 0% 0% to 100% 100%, 
+                              #f4f4f4 0%, 
+                              #9e9e9e 25%, 
+                              #e2e2e2 50%, 
+                              #828282 85%, 
+                              #cfcfcf 100%);
+}
+
+.round-button-text {
+    -fx-fill: #1a1a1a;
+    -fx-font-family: "Segoe UI", "Inter", sans-serif;
+    -fx-font-weight: bold;
+}
+
+.cue1 .round-button-led-ring {
+    -fx-fill: #f83b3b;
+}
+.cue1 .round-button-led-ring.pressed {
+    -fx-fill: #a62727;
+}
+
+.cue2 .round-button-led-ring {
+    -fx-fill: #f8cc3b;
+}
+.cue2 .round-button-led-ring.pressed {
+    -fx-fill: #aa8c29;
+}
+
+.cue3 .round-button-led-ring {
+    -fx-fill: #71f83b;
+}
+.cue3 .round-button-led-ring.pressed {
+    -fx-fill: #4fae29;
+}
+
+.cue4 .round-button-led-ring {
+    -fx-fill: #3be8f8;
+}
+.cue4 .round-button-led-ring.pressed {
+    -fx-fill: #3be8f8;
+}

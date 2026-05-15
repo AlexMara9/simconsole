@@ -13,20 +13,20 @@ public class PlaybackController {
 	/* responsive */
 	private static final double BUTTON_WIDTH_FACTOR = 0.5; // compared to the HBox
 	private static final double BUTTON_CONTAINER_SPACING_FACTOR = 0.05;// compared to the HBox
-	private static final double ICON_SIZE_FACTOR = 0.6;
+	private static final double ICON_SIZE_FACTOR = 0.3;
 
 	@FXML private HBox buttonsContainer;
-	@FXML private Button rewindButton;
-	@FXML private Button playButton;
+	@FXML private DynamicRoundButton rewindButton;
+	@FXML private DynamicRoundButton playButton;
 
 	@FXML
 	public void initialize(){
 		responsive();
 	}
 	private void responsive(){
-		Button [] buttons = {rewindButton, playButton};
+		DynamicRoundButton [] buttons = {rewindButton, playButton};
 
-		for (Button b : buttons){
+		for (DynamicRoundButton b : buttons){
 			DoubleBinding minDim = Bindings.createDoubleBinding(
 					() -> Math.min(buttonsContainer.getWidth() * BUTTON_WIDTH_FACTOR, buttonsContainer.getHeight() * 0.8), // added * 0.8 so it doesn't touch the edges completely if height is the limiting factor
 					buttonsContainer.widthProperty(),
