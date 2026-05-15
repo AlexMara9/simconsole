@@ -29,12 +29,6 @@ public class DynamicSlider extends Slider {
     }
 
     private void initDynamicStyle() {
-        // Clip reattivo: qualsiasi cosa la SliderSkin disegni fuori dai bordi
-        // (tick marks, etichette) viene tagliata e non sborda mai sul layout circostante.
-        Rectangle clip = new Rectangle();
-        clip.widthProperty().bind(this.widthProperty());
-        clip.heightProperty().bind(this.heightProperty());
-        this.setClip(clip);
 
         this.skinProperty().addListener((obs, old, skin) -> {
             if (skin == null) return;
