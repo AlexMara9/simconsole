@@ -18,13 +18,13 @@
          </columnConstraints>
          <rowConstraints>
             <RowConstraints minHeight="0.0" percentHeight="70.0" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="0.0" percentHeight="5.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="0.0" percentHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
             <RowConstraints minHeight="0.0" percentHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" />
             <DynamicSlider blockIncrement="0.1" majorTickUnit="0.25" max="1.0" min="-1.0" minHeight="0.0" minWidth="0.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" />
+            <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" style="-fx-border-color: #ff0000;" />
             <DynamicKnob minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1" GridPane.rowSpan="2" />
             <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="2" />
             <DynamicKnob minHeight="0.0" minWidth="0.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2" />

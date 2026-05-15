@@ -1,12 +1,18 @@
 package org.simconsole.simconsole;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.Region;
+import javafx.scene.shape.Rectangle;
 
 public class DynamicSlider extends Slider {
+
+    // responsive
+    private static final double TRACK_THICKNESS_SCALE_FACTOR = 1;
 
     // Track style parts — kept separate for clean logic, combined in applyTrackStyle()
     private String trackGradientStyle = "";
@@ -23,6 +29,13 @@ public class DynamicSlider extends Slider {
     }
 
     private void initDynamicStyle() {
+        // Clip reattivo: qualsiasi cosa la SliderSkin disegni fuori dai bordi
+        // (tick marks, etichette) viene tagliata e non sborda mai sul layout circostante.
+        Rectangle clip = new Rectangle();
+        clip.widthProperty().bind(this.widthProperty());
+        clip.heightProperty().bind(this.heightProperty());
+        this.setClip(clip);
+
         this.skinProperty().addListener((obs, old, skin) -> {
             if (skin == null) return;
 
@@ -49,16 +62,56 @@ public class DynamicSlider extends Slider {
     private void initResponsive(Node track, Node thumb) {
         if (!(track instanceof Region trackRegion) || !(thumb instanceof Region thumbRegion)) return;
 
+        // Sblocchiamo il limite minimo di fabbrica per consentire compressione infinita!
+        trackRegion.setMinWidth(0);
+        trackRegion.setMinHeight(0);
+        thumbRegion.setMinWidth(0);
+        thumbRegion.setMinHeight(0);
+
         if (this.getOrientation() == Orientation.VERTICAL) {
+            this.prefWidthProperty().bind(this.heightProperty().multiply(0.25));
             this.maxWidthProperty().bind(this.heightProperty().multiply(0.25));
-            trackRegion.prefWidthProperty().bind(this.heightProperty().multiply(0.25 * 0.8));
-            thumbRegion.prefWidthProperty().bind(this.heightProperty().multiply(0.25 * 0.9));
-            thumbRegion.prefHeightProperty().bind(this.heightProperty().multiply(0.25 * 0.9));
+            
+            DoubleBinding w = Bindings.createDoubleBinding(() -> {
+                if(isShowTickMarks()){
+                    return this.widthProperty().get() / 2;
+                }
+                return this.widthProperty().get();
+            }, this.widthProperty(), this.showTickMarksProperty());
+
+            trackRegion.prefWidthProperty().bind(w.multiply(0.8));
+            thumbRegion.prefWidthProperty().bind(w.multiply(0.9));
+            thumbRegion.prefHeightProperty().bind(w.multiply(0.9));
+
+            // Limita rigorosamente lo spazio dei tickmarks alla metà rimanente
+            ChangeListener<Number> tickScaler = (obs, old, val) -> 
+                applyTickScale(w.get(), this.getWidth());
+            
+            this.widthProperty().addListener(tickScaler);
+            this.showTickMarksProperty().addListener((obs, old, show) -> applyTickScale(w.get(), this.getWidth()));
+            w.addListener((obs, old, val) -> applyTickScale(val.doubleValue(), this.getWidth()));
         } else {
-            this.maxHeightProperty().bind(this.widthProperty().multiply(0.08));
-            trackRegion.prefHeightProperty().bind(this.widthProperty().multiply(0.08 * 0.8));
-            thumbRegion.prefWidthProperty().bind(this.widthProperty().multiply(0.08 * 0.9));
-            thumbRegion.prefHeightProperty().bind(this.widthProperty().multiply(0.08 * 0.9));
+            this.prefHeightProperty().bind(this.widthProperty().multiply(0.25));
+            this.maxHeightProperty().bind(this.widthProperty().multiply(0.25));
+
+            DoubleBinding h = Bindings.createDoubleBinding(() -> {
+                if(isShowTickMarks()){
+                    return this.heightProperty().get() / 2;
+                }
+                return this.heightProperty().get();
+            }, this.heightProperty(), this.showTickMarksProperty());
+
+            trackRegion.prefHeightProperty().bind(h.multiply(0.8));
+            thumbRegion.prefWidthProperty().bind(h.multiply(0.9));
+            thumbRegion.prefHeightProperty().bind(h.multiply(0.9));
+
+            // Limita rigorosamente lo spazio dei tickmarks alla metà rimanente (orizzontale)
+            ChangeListener<Number> tickScaler = (obs, old, val) -> 
+                applyTickScale(h.get(), this.getHeight());
+            
+            this.heightProperty().addListener(tickScaler);
+            this.showTickMarksProperty().addListener((obs, old, show) -> applyTickScale(h.get(), this.getHeight()));
+            h.addListener((obs, old, val) -> applyTickScale(val.doubleValue(), this.getHeight()));
         }
 
         // Track radius: separate listener, updates its own part and re-applies combined style
@@ -123,4 +176,33 @@ public class DynamicSlider extends Slider {
             }
         }
     }
+    private void applyTickScale(double trackThickness, double totalDimension) {
+        // L'Axis è la regione interna che disegna i tick marks e le etichette
+        Node axis = this.lookup(".axis");
+        if (axis instanceof Region axisRegion) {
+            // Sblocchiamo il limite minimo per non far mai sbordare l'Axis!
+            axisRegion.setMinWidth(0);
+            axisRegion.setMinHeight(0);
+
+            double fontSize = Math.max(4, trackThickness * 0.30);
+            axisRegion.setStyle(String.format(java.util.Locale.US,
+                    "-fx-font-size: %.1fpx;", fontSize));
+            
+            // BLOCCHIAMO e constringiamo rigorosamente le dimensioni della regione dell'axis!
+            // Matematicamente non potrà MAI occupare più dello spazio che gli abbiamo riservato.
+            double maxAllowed = totalDimension - trackThickness;
+            if (this.getOrientation() == Orientation.VERTICAL) {
+                axisRegion.setMaxWidth(Math.max(0, maxAllowed));
+                axisRegion.setPrefWidth(Math.max(0, maxAllowed));
+            } else {
+                axisRegion.setMaxHeight(Math.max(0, maxAllowed));
+                axisRegion.setPrefHeight(Math.max(0, maxAllowed));
+            }
+        }
+    }
+
+    // Bypassa il minimo calcolato da SliderSkin: senza questo override,
+    // la skin dichiara al layout un minimo fisso che noi non possiamo controllare
+    // agendo solo sui nodi figli (track, thumb, axis).
+
 }

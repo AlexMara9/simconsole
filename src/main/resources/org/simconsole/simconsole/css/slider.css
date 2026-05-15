@@ -23,3 +23,8 @@
 .slider .thumb:pressed {
     -fx-background-color: #111111, #262626, linear-gradient(from 0% 0% to 100% 100%, #e0e0e0 0%, #8f8f8f 25%, #d0d0d0 50%, #757575 85%, #bebebe 100%);
 }
+
+.slider .axis {
+    -fx-tick-length: 0.6em;
+    -fx-minor-tick-length: 0.4em;
+}
