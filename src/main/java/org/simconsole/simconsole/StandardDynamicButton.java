@@ -23,17 +23,17 @@ public class StandardDynamicButton extends ButtonBase {
         super();
         this.getStyleClass().setAll("dynamic-square-button");
         
-        // FORZA IL RAPPORTO DI FORMA 1:1 (QUADRATO)
-        // Legando la larghezza all'altezza, ci assicuriamo che il rettangolo di ingombro del Controllo
-        // sia sempre un quadrato perfetto. Questo elimina lo "spacing" vuoto ai lati quando inserito
-        // in un HBox che ne stira l'altezza.
+        // FORZA IL RAPPORTO DI FORMA 1:1 (QUADRATO) COME LIMITE MASSIMO E PREFERITO
+        // Legando la larghezza preferita e massima all'altezza, ci assicuriamo che il bottone 
+        // non diventi mai "largo" con spazi vuoti ai lati. 
+        // TRUCCO: NON leghiamo la minWidth! In questo modo, se la finestra si stringe troppo, 
+        // l'HBox avrà il permesso di "schiacciare" il bottone orizzontalmente evitando l'overflow!
         this.heightProperty().addListener((obs, oldVal, newVal) -> {
             double h = newVal.doubleValue();
-            this.setMinWidth(h);
             this.setPrefWidth(h);
             this.setMaxWidth(h);
         });
-
+        
         // Ascolta il cambio di forma per cambiare la skin e la classe CSS
         this.roundShape.addListener((obs, oldVal, isRound) -> {
             if (isRound) {
