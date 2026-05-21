@@ -21,16 +21,11 @@ public abstract class KnobBase extends Control {
 
     public KnobBase() {
         super();
-        
-        // FORZA IL RAPPORTO DI FORMA 1:1 (QUADRATO) COME LIMITE MASSIMO E PREFERITO
-        // Legando la larghezza preferita e massima all'altezza, ci assicuriamo che la manopola 
-        // non diventi mai "larga" con spazi vuoti ai lati. 
-        // NON leghiamo la minWidth per permettere all'HBox di schiacciare orizzontalmente in caso di poco spazio.
-        this.heightProperty().addListener((obs, oldVal, newVal) -> {
-            double h = newVal.doubleValue();
-            this.setPrefWidth(h);
-            this.setMaxWidth(h);
-        });
+    }
+
+    @Override
+    public javafx.geometry.Orientation getContentBias() {
+        return javafx.geometry.Orientation.VERTICAL;
     }
 
     public DoubleProperty valueProperty() { return value; }

@@ -197,6 +197,7 @@ public class LedKnobSkin extends SkinBase<LedKnob> {
 
     @Override
     protected double computeMaxWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
+        if (height != -1) return height;
         return Double.MAX_VALUE;
     }
 
