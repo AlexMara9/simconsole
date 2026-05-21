@@ -4,30 +4,30 @@
 <?import java.net.URL?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<?import org.simconsole.simconsole.DynamicRoundButton?>
+<?import org.simconsole.simconsole.LedButton?>
 
 <HBox fx:id="buttonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.PlaybackController">
    <children>
-      <DynamicRoundButton fx:id="rewindButton">
+      <LedButton fx:id="rewindButton" minHeight="0.0" minWidth="0.0" roundShape="true" textSizeRatio="0.3">
          <graphic>
-            <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mouseTransparent="true" prefHeight="15.0" prefWidth="20.0">
+            <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mouseTransparent="true">
                <styleClass>
                   <String fx:value="icon" />
                   <String fx:value="icon-unskip" />
                </styleClass>
             </Region>
          </graphic>
-      </DynamicRoundButton>
-      <DynamicRoundButton fx:id="playButton" toggleButton="true">
+      </LedButton>
+      <LedButton fx:id="playButton" minHeight="0.0" minWidth="0.0" roundShape="true" textSizeRatio="0.3" toggleMode="true">
          <graphic>
-            <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mouseTransparent="true" prefHeight="15.0" prefWidth="20.0">
+            <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mouseTransparent="true">
                <styleClass>
                   <String fx:value="icon" />
                   <String fx:value="icon-play" />
                </styleClass>
             </Region>
          </graphic>
-      </DynamicRoundButton>
+      </LedButton>
    </children>
    <stylesheets>
       <URL value="@../css/button.css" />

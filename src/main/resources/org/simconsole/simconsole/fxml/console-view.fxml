@@ -34,19 +34,19 @@
       <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" GridPane.columnIndex="1" />
       <StackPane fx:id="playbackContainer" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/card.css" GridPane.columnSpan="4" GridPane.rowIndex="1">
          <children>
-            <GridPane fx:id="playbackControlsContainer">
+            <GridPane fx:id="playbackControlsContainer" minHeight="0.0" minWidth="0.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="30.0" />
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="0.0" percentWidth="37.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="0.0" percentWidth="33.0" />
+                <ColumnConstraints minWidth="0.0" percentWidth="30.0" />
+                <ColumnConstraints minWidth="0.0" percentWidth="37.0" />
+                  <ColumnConstraints minWidth="0.0" percentWidth="33.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="0.0" percentHeight="40.0" />
                 <RowConstraints minHeight="0.0" percentHeight="60.0" />
               </rowConstraints>
                <children>
-                  <fx:include minHeight="0.0" minWidth="0.0" source="Playback.fxml" />
-                  <fx:include minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                  <fx:include minHeight="0.0" minWidth="0.0" source="Playback.fxml" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
+                  <fx:include minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER" />
                   <fx:include source="seek-slider.fxml" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                </children>
             </GridPane>
