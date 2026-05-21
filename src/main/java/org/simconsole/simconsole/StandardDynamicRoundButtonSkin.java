@@ -85,20 +85,28 @@ public class StandardDynamicRoundButtonSkin extends SkinBase<StandardDynamicButt
         innerKnob.radiusProperty().bind(minDim.multiply(0.33));
 
         container.layoutBoundsProperty().addListener((obs, oldBounds, bounds) -> {
-            updateTextSize(bounds.getWidth(), bounds.getHeight(), control.getTextSizeRatio());
+            updateContentSize(bounds.getWidth(), bounds.getHeight(), control.getTextSizeRatio());
         });
         control.textSizeRatioProperty().addListener((obs, oldRatio, newRatio) -> {
-            updateTextSize(container.getWidth(), container.getHeight(), newRatio.doubleValue());
+            updateContentSize(container.getWidth(), container.getHeight(), newRatio.doubleValue());
         });
     }
 
-    private void updateTextSize(double w, double h, double ratio) {
+    private void updateContentSize(double w, double h, double ratio) {
         double size = Math.min(w, h);
-        double fontSize = size * ratio;
-        if (fontSize > 0) {
-            String fontStyle = String.format(java.util.Locale.US, "-fx-font-size: %.1fpx;", fontSize);
+        double contentSize = size * ratio;
+        if (contentSize > 0) {
+            String fontStyle = String.format(java.util.Locale.US, "-fx-font-size: %.1fpx;", contentSize);
             textNode.setStyle(fontStyle);
             textNode.applyCss();
+            
+            // Applica la ratio anche alla grafica (SVG Region, etc.)
+            Node graphic = getSkinnable().getGraphic();
+            if (graphic instanceof javafx.scene.layout.Region) {
+                javafx.scene.layout.Region reg = (javafx.scene.layout.Region) graphic;
+                reg.setPrefWidth(contentSize);
+                reg.setPrefHeight(contentSize);
+            }
         }
     }
 
@@ -122,12 +130,12 @@ public class StandardDynamicRoundButtonSkin extends SkinBase<StandardDynamicButt
 
     @Override
     protected double computeMinWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
-        return leftInset + rightInset + 30; 
+        return leftInset + rightInset + 30;
     }
 
     @Override
     protected double computeMinHeight(double width, double topInset, double rightInset, double bottomInset, double leftInset) {
-        return topInset + bottomInset + 30; 
+        return topInset + bottomInset + 30;
     }
 
     @Override

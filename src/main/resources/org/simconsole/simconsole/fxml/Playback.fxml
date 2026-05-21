@@ -19,7 +19,7 @@
             </Region>
          </graphic>
       </DynamicRoundButton>
-      <StandardDynamicButton fx:id="playButton" minHeight="0.0" minWidth="0.0" roundShape="true" toggleMode="true">
+      <StandardDynamicButton fx:id="playButton" minHeight="0.0" minWidth="0.0" roundShape="true" textSizeRatio="0.3" toggleMode="true">
          <graphic>
             <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mouseTransparent="true" prefHeight="15.0" prefWidth="20.0">
                <styleClass>
