@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import org.simconsole.simconsole.DynamicRoundButton?>
+<?import org.simconsole.simconsole.StandardDynamicButton?>
 
 <HBox fx:id="buttonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.PlaybackController">
    <children>
@@ -18,7 +19,7 @@
             </Region>
          </graphic>
       </DynamicRoundButton>
-      <DynamicRoundButton fx:id="playButton" toggleButton="true">
+      <StandardDynamicButton fx:id="playButton" minHeight="0.0" minWidth="0.0" roundShape="true" toggleMode="true">
          <graphic>
             <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mouseTransparent="true" prefHeight="15.0" prefWidth="20.0">
                <styleClass>
@@ -27,7 +28,7 @@
                </styleClass>
             </Region>
          </graphic>
-      </DynamicRoundButton>
+      </StandardDynamicButton>
    </children>
    <stylesheets>
       <URL value="@../css/button.css" />

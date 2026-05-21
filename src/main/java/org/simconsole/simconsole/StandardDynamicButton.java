@@ -17,6 +17,7 @@ public class StandardDynamicButton extends ButtonBase {
     private final DoubleProperty textSizeRatio = new SimpleDoubleProperty(0.15);
     private final BooleanProperty toggleMode = new SimpleBooleanProperty(false);
     private final BooleanProperty selected = new SimpleBooleanProperty(false);
+    private final BooleanProperty roundShape = new SimpleBooleanProperty(false);
 
     public StandardDynamicButton() {
         super();
@@ -32,11 +33,22 @@ public class StandardDynamicButton extends ButtonBase {
             this.setPrefWidth(h);
             this.setMaxWidth(h);
         });
+
+        // Ascolta il cambio di forma per cambiare la skin e la classe CSS
+        this.roundShape.addListener((obs, oldVal, isRound) -> {
+            if (isRound) {
+                this.getStyleClass().setAll("dynamic-round-button");
+                this.setSkin(new StandardDynamicRoundButtonSkin(this));
+            } else {
+                this.getStyleClass().setAll("dynamic-square-button");
+                this.setSkin(new StandardDynamicSquareButtonSkin(this));
+            }
+        });
     }
 
     @Override
-    protected Skin<?> createDefaultSkin() {
-        return new StandardDynamicButtonSkin(this);
+    protected javafx.scene.control.Skin<?> createDefaultSkin() {
+        return roundShape.get() ? new StandardDynamicRoundButtonSkin(this) : new StandardDynamicSquareButtonSkin(this);
     }
 
     @Override
@@ -85,5 +97,17 @@ public class StandardDynamicButton extends ButtonBase {
 
     public void setSelected(boolean val) {
         selected.set(val);
+    }
+
+    public BooleanProperty roundShapeProperty() {
+        return roundShape;
+    }
+
+    public boolean getRoundShape() {
+        return roundShape.get();
+    }
+
+    public void setRoundShape(boolean val) {
+        roundShape.set(val);
     }
 }

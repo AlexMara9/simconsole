@@ -17,14 +17,14 @@ public class PlaybackController {
 
 	@FXML private HBox buttonsContainer;
 	@FXML private DynamicRoundButton rewindButton;
-	@FXML private DynamicRoundButton playButton;
+	@FXML private StandardDynamicButton playButton;
 
 	@FXML
 	public void initialize(){
 		responsive();
 	}
 	private void responsive(){
-		DynamicRoundButton [] buttons = {rewindButton, playButton};
+		DynamicRoundButton [] buttons = {rewindButton};
 
 		for (DynamicRoundButton b : buttons){
 			DoubleBinding minDim = Bindings.createDoubleBinding(

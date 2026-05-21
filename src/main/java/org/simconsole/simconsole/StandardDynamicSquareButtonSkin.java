@@ -11,10 +11,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 /**
- * Skin for {@link StandardDynamicButton}.
- * It manages the visual nodes and applies responsive sizing based on the control's size.
+ * Square Skin for {@link StandardDynamicButton}.
  */
-public class StandardDynamicButtonSkin extends SkinBase<StandardDynamicButton> {
+public class StandardDynamicSquareButtonSkin extends SkinBase<StandardDynamicButton> {
 
     private final Rectangle outerRing = new Rectangle();
     private final Rectangle middleRing = new Rectangle();
@@ -23,13 +22,11 @@ public class StandardDynamicButtonSkin extends SkinBase<StandardDynamicButton> {
     private final Rectangle innerKnob = new Rectangle();
     private final Text textNode = new Text();
 
-    // Container used to align all nodes in the center, acting as the layout root for the skin
     private final StackPane container = new StackPane();
 
-    public StandardDynamicButtonSkin(StandardDynamicButton control) {
+    public StandardDynamicSquareButtonSkin(StandardDynamicButton control) {
         super(control);
 
-        // Assign CSS classes
         outerRing.getStyleClass().add("round-button-outer-ring");
         middleRing.getStyleClass().add("round-button-middle-ring");
         outerKnob.getStyleClass().add("round-button-outer-knob");
@@ -37,53 +34,35 @@ public class StandardDynamicButtonSkin extends SkinBase<StandardDynamicButton> {
         innerKnob.getStyleClass().add("round-button-inner-knob");
         textNode.getStyleClass().add("round-button-text");
 
-        // Bind text to the control's text property natively provided by ButtonBase
         textNode.textProperty().bind(control.textProperty());
 
-        // Setup the container
         container.getChildren().addAll(outerRing, middleRing, outerKnob, ledRing, innerKnob, textNode);
-
-        // Add the container to the skin
         getChildren().add(container);
 
-        // Manage dynamic graphic from ButtonBase
         control.graphicProperty().addListener((obs, oldNode, newNode) -> updateGraphic(oldNode, newNode));
         updateGraphic(null, control.getGraphic());
 
-        // Setup responsive bindings for size
         setupResponsiveBindings(control);
 
-        // Listen for visual state changes (armed or selected)
         control.armedProperty().addListener((obs, old, armed) -> updateVisualState());
         control.selectedProperty().addListener((obs, old, selected) -> updateVisualState());
 
-        // Gestione dell'interattività: SkinBase non implementa il comportamento del mouse di default.
-        // Aggiungiamo i listener per simulare il comportamento nativo di un bottone.
-        container.setOnMousePressed(e -> {
-            control.arm();
-        });
+        container.setOnMousePressed(e -> control.arm());
         
         container.setOnMouseReleased(e -> {
             boolean wasArmed = control.isArmed();
             control.disarm();
-            // Lancia l'evento action solo se il mouse viene rilasciato all'interno del bottone
             if (wasArmed && container.getLayoutBounds().contains(e.getX(), e.getY())) {
                 control.fire();
             }
         });
 
         container.setOnMouseExited(e -> {
-            // Se usciamo dal bottone mentre teniamo premuto, si "disarma"
-            if (control.isArmed()) {
-                control.disarm();
-            }
+            if (control.isArmed()) control.disarm();
         });
 
         container.setOnMouseEntered(e -> {
-            // Se rientriamo col mouse tenendo ancora premuto, si riarma
-            if (e.isPrimaryButtonDown()) {
-                control.arm();
-            }
+            if (e.isPrimaryButtonDown()) control.arm();
         });
     }
 
@@ -97,8 +76,6 @@ public class StandardDynamicButtonSkin extends SkinBase<StandardDynamicButton> {
     }
 
     private void setupResponsiveBindings(StandardDynamicButton control) {
-        // We bind the dimensions based on the container's available size.
-        // StackPane resizes its bounds to the Control's available layout area.
         NumberBinding minDim = Bindings.min(container.widthProperty(), container.heightProperty());
 
         bindRect(outerRing, minDim, 0.90, 0.20);
@@ -107,7 +84,6 @@ public class StandardDynamicButtonSkin extends SkinBase<StandardDynamicButton> {
         bindRect(ledRing, minDim, 0.72, 0.12);
         bindRect(innerKnob, minDim, 0.66, 0.10);
 
-        // Handle text scaling
         container.layoutBoundsProperty().addListener((obs, oldBounds, bounds) -> {
             updateTextSize(bounds.getWidth(), bounds.getHeight(), control.getTextSizeRatio());
         });
@@ -135,15 +111,7 @@ public class StandardDynamicButtonSkin extends SkinBase<StandardDynamicButton> {
 
     private void updateVisualState() {
         StandardDynamicButton control = getSkinnable();
-        boolean shouldBeLit;
-
-        if (control.getToggleMode()) {
-            // Se in modalità toggle, si accende se è selezionato O se l'utente lo sta premendo
-            shouldBeLit = control.isSelected() || control.isArmed();
-        } else {
-            // In modalità bottone normale, si accende solo mentre viene premuto
-            shouldBeLit = control.isArmed();
-        }
+        boolean shouldBeLit = control.getToggleMode() ? (control.isSelected() || control.isArmed()) : control.isArmed();
 
         if (shouldBeLit) {
             if (!ledRing.getStyleClass().contains("pressed")) {
@@ -156,35 +124,28 @@ public class StandardDynamicButtonSkin extends SkinBase<StandardDynamicButton> {
 
     @Override
     protected void layoutChildren(double contentX, double contentY, double contentWidth, double contentHeight) {
-        // Lay out the container to fill the skin's allocated area.
         layoutInArea(container, contentX, contentY, contentWidth, contentHeight, -1, HPos.CENTER, VPos.CENTER);
     }
 
     @Override
     protected double computeMinWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
-        return leftInset + rightInset + 30; // Minima dimensione sensata
+        return leftInset + rightInset + 30; 
     }
 
     @Override
     protected double computeMinHeight(double width, double topInset, double rightInset, double bottomInset, double leftInset) {
-        return topInset + bottomInset + 30; // Minima dimensione sensata
+        return topInset + bottomInset + 30; 
     }
 
     @Override
     protected double computePrefWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
-        if (height != -1) {
-            // Se l'altezza è nota (es. HBox fillHeight), la larghezza deve essere uguale per restare un quadrato
-            return height; 
-        }
+        if (height != -1) return height; 
         return leftInset + rightInset + 50; 
     }
 
     @Override
     protected double computePrefHeight(double width, double topInset, double rightInset, double bottomInset, double leftInset) {
-        if (width != -1) {
-            // Se la larghezza è nota (es. VBox fillWidth), l'altezza deve essere uguale
-            return width;
-        }
+        if (width != -1) return width;
         return topInset + bottomInset + 50;
     }
 
