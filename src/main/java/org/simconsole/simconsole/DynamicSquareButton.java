@@ -1,6 +1,7 @@
 package org.simconsole.simconsole;
 
 import javafx.beans.DefaultProperty;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
@@ -65,7 +66,7 @@ public class DynamicSquareButton extends StackPane {
     }
 
     private void initResponsive() {
-        var minDim = javafx.beans.binding.Bindings.min(this.widthProperty(), this.heightProperty());
+        var minDim = Bindings.min(this.widthProperty(), this.heightProperty());
         
         // I moltiplicatori sono il doppio rispetto ai raggi (radius) usati nel bottone rotondo
         // Aggiungiamo anche un arcFactor proporzionale per smussare gli angoli del quadrato
