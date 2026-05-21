@@ -5,8 +5,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import org.simconsole.simconsole.DynamicRoundButton?>
 <?import org.simconsole.simconsole.DynamicSlider?>
+<?import org.simconsole.simconsole.StandardDynamicButton?>
 
 <StackPane minHeight="0.0" minWidth="0.0" styleClass="controls-card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <stylesheets>
@@ -25,7 +25,7 @@
          </rowConstraints>
          <children>
             <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" />
-            <DynamicRoundButton text="♪" textSizeRatio="0.5" toggleButton="true" GridPane.rowIndex="1" />
+            <StandardDynamicButton minHeight="0.0" minWidth="0.0" roundShape="true" text="♪" textSizeRatio="0.5" toggleMode="true" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>
