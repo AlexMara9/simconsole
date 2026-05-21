@@ -5,21 +5,20 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.ButtonBase;
-import javafx.scene.control.Skin;
 
 /**
  * Standard JavaFX implementation of a responsive, dynamically styled button.
  * It separates the control logic from its visual representation, which is handled
- * by {@link StandardDynamicRoundButtonSkin} {@link StandardDynamicSquareButtonSkin}.
+ * by {@link LedButtonRoundSkin} {@link LedButtonSquareSkin}.
  */
-public class StandardDynamicButton extends ButtonBase {
+public class LedButton extends ButtonBase {
 
     private final DoubleProperty textSizeRatio = new SimpleDoubleProperty(0.15);
     private final BooleanProperty toggleMode = new SimpleBooleanProperty(false);
     private final BooleanProperty selected = new SimpleBooleanProperty(false);
     private final BooleanProperty roundShape = new SimpleBooleanProperty(false);
 
-    public StandardDynamicButton() {
+    public LedButton() {
         super();
         this.getStyleClass().setAll("dynamic-square-button");
         
@@ -38,17 +37,17 @@ public class StandardDynamicButton extends ButtonBase {
         this.roundShape.addListener((obs, oldVal, isRound) -> {
             if (isRound) {
                 this.getStyleClass().setAll("dynamic-round-button");
-                this.setSkin(new StandardDynamicRoundButtonSkin(this));
+                this.setSkin(new LedButtonRoundSkin(this));
             } else {
                 this.getStyleClass().setAll("dynamic-square-button");
-                this.setSkin(new StandardDynamicSquareButtonSkin(this));
+                this.setSkin(new LedButtonSquareSkin(this));
             }
         });
     }
 
     @Override
     protected javafx.scene.control.Skin<?> createDefaultSkin() {
-        return roundShape.get() ? new StandardDynamicRoundButtonSkin(this) : new StandardDynamicSquareButtonSkin(this);
+        return roundShape.get() ? new LedButtonRoundSkin(this) : new LedButtonSquareSkin(this);
     }
 
     @Override

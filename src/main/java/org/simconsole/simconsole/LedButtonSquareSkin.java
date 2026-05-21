@@ -7,27 +7,28 @@ import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.control.SkinBase;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
 /**
- * Round Skin for {@link StandardDynamicButton}.
+ * Square Skin for {@link LedButton}.
  */
-public class StandardDynamicRoundButtonSkin extends SkinBase<StandardDynamicButton> {
+public class LedButtonSquareSkin extends SkinBase<LedButton> {
 
-    private final Circle outerRing = new Circle();
-    private final Circle middleRing = new Circle();
-    private final Circle outerKnob = new Circle();
-    private final Circle ledRing = new Circle();
-    private final Circle innerKnob = new Circle();
+    private final Rectangle outerRing = new Rectangle();
+    private final Rectangle middleRing = new Rectangle();
+    private final Rectangle outerKnob = new Rectangle();
+    private final Rectangle ledRing = new Rectangle();
+    private final Rectangle innerKnob = new Rectangle();
     private final Text textNode = new Text();
 
     private final StackPane container = new StackPane();
 
-    public StandardDynamicRoundButtonSkin(StandardDynamicButton control) {
+    public LedButtonSquareSkin(LedButton control) {
         super(control);
 
-        // Sblocca il ridimensionamento verso il basso
+        // Sblocca il ridimensionamento verso il basso (altrimenti il container si rifiuta di 
+        // rimpicciolirsi se le sue forme interne al momento sono grandi, causando l'overflow)
         container.setMinSize(0, 0);
 
         outerRing.getStyleClass().add("round-button-outer-ring");
@@ -78,14 +79,14 @@ public class StandardDynamicRoundButtonSkin extends SkinBase<StandardDynamicButt
         }
     }
 
-    private void setupResponsiveBindings(StandardDynamicButton control) {
+    private void setupResponsiveBindings(LedButton control) {
         NumberBinding minDim = Bindings.min(container.widthProperty(), container.heightProperty());
 
-        outerRing.radiusProperty().bind(minDim.multiply(0.45));
-        middleRing.radiusProperty().bind(minDim.multiply(0.43));
-        outerKnob.radiusProperty().bind(minDim.multiply(0.41));
-        ledRing.radiusProperty().bind(minDim.multiply(0.36));
-        innerKnob.radiusProperty().bind(minDim.multiply(0.33));
+        bindRect(outerRing, minDim, 0.90, 0.20);
+        bindRect(middleRing, minDim, 0.86, 0.18);
+        bindRect(outerKnob, minDim, 0.82, 0.16);
+        bindRect(ledRing, minDim, 0.72, 0.12);
+        bindRect(innerKnob, minDim, 0.66, 0.10);
 
         container.layoutBoundsProperty().addListener((obs, oldBounds, bounds) -> {
             updateContentSize(bounds.getWidth(), bounds.getHeight(), control.getTextSizeRatio());
@@ -93,6 +94,13 @@ public class StandardDynamicRoundButtonSkin extends SkinBase<StandardDynamicButt
         control.textSizeRatioProperty().addListener((obs, oldRatio, newRatio) -> {
             updateContentSize(container.getWidth(), container.getHeight(), newRatio.doubleValue());
         });
+    }
+
+    private void bindRect(Rectangle rect, NumberBinding minDim, double sizeFactor, double arcFactor) {
+        rect.widthProperty().bind(minDim.multiply(sizeFactor));
+        rect.heightProperty().bind(minDim.multiply(sizeFactor));
+        rect.arcWidthProperty().bind(minDim.multiply(arcFactor));
+        rect.arcHeightProperty().bind(minDim.multiply(arcFactor));
     }
 
     private void updateContentSize(double w, double h, double ratio) {
@@ -114,7 +122,7 @@ public class StandardDynamicRoundButtonSkin extends SkinBase<StandardDynamicButt
     }
 
     private void updateVisualState() {
-        StandardDynamicButton control = getSkinnable();
+        LedButton control = getSkinnable();
         boolean shouldBeLit = control.getToggleMode() ? (control.isSelected() || control.isArmed()) : control.isArmed();
 
         if (shouldBeLit) {
@@ -143,7 +151,7 @@ public class StandardDynamicRoundButtonSkin extends SkinBase<StandardDynamicButt
 
     @Override
     protected double computePrefWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
-        if (height != -1) return height; 
+        if (height != -1) return height;
         return leftInset + rightInset + 50; 
     }
 

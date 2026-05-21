@@ -4,11 +4,11 @@
 <?import java.net.URL?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
-<?import org.simconsole.simconsole.StandardDynamicButton?>
+<?import org.simconsole.simconsole.LedButton?>
 
 <HBox fx:id="buttonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.PlaybackController">
    <children>
-      <StandardDynamicButton fx:id="rewindButton" minHeight="0.0" minWidth="0.0" roundShape="true" textSizeRatio="0.3">
+      <LedButton fx:id="rewindButton" minHeight="0.0" minWidth="0.0" roundShape="true" textSizeRatio="0.3">
          <graphic>
             <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mouseTransparent="true">
                <styleClass>
@@ -17,8 +17,8 @@
                </styleClass>
             </Region>
          </graphic>
-      </StandardDynamicButton>
-      <StandardDynamicButton fx:id="playButton" minHeight="0.0" minWidth="0.0" roundShape="true" textSizeRatio="0.3" toggleMode="true">
+      </LedButton>
+      <LedButton fx:id="playButton" minHeight="0.0" minWidth="0.0" roundShape="true" textSizeRatio="0.3" toggleMode="true">
          <graphic>
             <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mouseTransparent="true">
                <styleClass>
@@ -27,7 +27,7 @@
                </styleClass>
             </Region>
          </graphic>
-      </StandardDynamicButton>
+      </LedButton>
    </children>
    <stylesheets>
       <URL value="@../css/button.css" />
