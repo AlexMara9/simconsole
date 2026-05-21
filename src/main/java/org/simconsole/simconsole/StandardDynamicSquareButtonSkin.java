@@ -27,6 +27,10 @@ public class StandardDynamicSquareButtonSkin extends SkinBase<StandardDynamicBut
     public StandardDynamicSquareButtonSkin(StandardDynamicButton control) {
         super(control);
 
+        // Sblocca il ridimensionamento verso il basso (altrimenti il container si rifiuta di 
+        // rimpicciolirsi se le sue forme interne al momento sono grandi, causando l'overflow)
+        container.setMinSize(0, 0);
+
         outerRing.getStyleClass().add("round-button-outer-ring");
         middleRing.getStyleClass().add("round-button-middle-ring");
         outerKnob.getStyleClass().add("round-button-outer-knob");

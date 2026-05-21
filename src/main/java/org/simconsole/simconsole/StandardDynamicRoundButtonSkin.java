@@ -27,6 +27,9 @@ public class StandardDynamicRoundButtonSkin extends SkinBase<StandardDynamicButt
     public StandardDynamicRoundButtonSkin(StandardDynamicButton control) {
         super(control);
 
+        // Sblocca il ridimensionamento verso il basso
+        container.setMinSize(0, 0);
+
         outerRing.getStyleClass().add("round-button-outer-ring");
         middleRing.getStyleClass().add("round-button-middle-ring");
         outerKnob.getStyleClass().add("round-button-outer-knob");
