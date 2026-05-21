@@ -22,17 +22,6 @@ public class LedButton extends ButtonBase {
         super();
         this.getStyleClass().setAll("dynamic-square-button");
         
-        // FORZA IL RAPPORTO DI FORMA 1:1 (QUADRATO) COME LIMITE MASSIMO E PREFERITO
-        // Legando la larghezza preferita e massima all'altezza, ci assicuriamo che il bottone 
-        // non diventi mai "largo" con spazi vuoti ai lati. 
-        // TRUCCO: NON leghiamo la minWidth! In questo modo, se la finestra si stringe troppo, 
-        // l'HBox avrà il permesso di "schiacciare" il bottone orizzontalmente evitando l'overflow!
-        this.heightProperty().addListener((obs, oldVal, newVal) -> {
-            double h = newVal.doubleValue();
-            this.setPrefWidth(h);
-            this.setMaxWidth(h);
-        });
-        
         // Ascolta il cambio di forma per cambiare la skin e la classe CSS
         this.roundShape.addListener((obs, oldVal, isRound) -> {
             if (isRound) {
@@ -43,6 +32,11 @@ public class LedButton extends ButtonBase {
                 this.setSkin(new LedButtonSquareSkin(this));
             }
         });
+    }
+
+    @Override
+    public javafx.geometry.Orientation getContentBias() {
+        return javafx.geometry.Orientation.VERTICAL;
     }
 
     @Override
