@@ -16,7 +16,7 @@ public class PlaybackController {
 	private static final double ICON_SIZE_FACTOR = 0.3;
 
 	@FXML private HBox buttonsContainer;
-	@FXML private DynamicRoundButton rewindButton;
+	@FXML private StandardDynamicButton rewindButton;
 	@FXML private StandardDynamicButton playButton;
 
 	@FXML
@@ -24,7 +24,7 @@ public class PlaybackController {
 		responsive();
 	}
 	private void responsive(){
-		DynamicRoundButton [] buttons = {rewindButton};
+		DynamicRoundButton [] buttons = {};
 
 		for (DynamicRoundButton b : buttons){
 			DoubleBinding minDim = Bindings.createDoubleBinding(
