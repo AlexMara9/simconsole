@@ -10,7 +10,7 @@ import javafx.scene.control.Skin;
 /**
  * Standard JavaFX implementation of a responsive, dynamically styled button.
  * It separates the control logic from its visual representation, which is handled
- * by {@link StandardDynamicButtonSkin}.
+ * by {@link StandardDynamicRoundButtonSkin} {@link StandardDynamicSquareButtonSkin}.
  */
 public class StandardDynamicButton extends ButtonBase {
 
