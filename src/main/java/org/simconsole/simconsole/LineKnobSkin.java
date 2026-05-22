@@ -58,6 +58,8 @@ public class LineKnobSkin extends SkinBase<LineKnob> {
         container.getChildren().addAll(ticksPane, outerRing, middleRing, innerKnob, indicatorPane);
         getChildren().add(container);
 
+        container.setPickOnBounds(false);
+
         setupResponsiveBindings(control);
         initInteractivity(control);
     }
