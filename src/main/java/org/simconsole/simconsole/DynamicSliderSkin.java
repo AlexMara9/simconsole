@@ -81,7 +81,7 @@ public class DynamicSliderSkin extends SliderSkin {
             if (slider.isShowTickLabels()) {
                 Text text = new Text(String.format(java.util.Locale.US, "%.0f", val));
                 text.getStyleClass().add("slider-tick-label");
-                text.setStyle("-fx-fill: #aaaaaa;"); // CSS Hook
+                text.setTextOrigin(javafx.geometry.VPos.CENTER); // Garantisce centering verticale corretto
                 tickLabels.add(text);
                 customTicksPane.getChildren().add(text);
             }
@@ -91,7 +91,6 @@ public class DynamicSliderSkin extends SliderSkin {
                 for (int i = 1; i <= minorCount; i++) {
                     Line minorLine = new Line();
                     minorLine.getStyleClass().add("slider-tick-minor");
-                    minorLine.setStyle("-fx-stroke: #666666; -fx-stroke-width: 1px;"); // CSS Hook
                     minorTickLines.add(minorLine);
                     customTicksPane.getChildren().add(minorLine);
                 }
@@ -101,49 +100,34 @@ public class DynamicSliderSkin extends SliderSkin {
 
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
+        super.layoutChildren(x, y, w, h);
+        if (track == null || thumb == null) return;
+
         boolean showTicks = getSkinnable().isShowTickMarks();
         boolean isVert = getSkinnable().getOrientation() == Orientation.VERTICAL;
 
-        // Dividiamo lo spazio: se ci sono i tick, diamo metà spessore al track e metà ai tick
-        double trackAreaThickness = isVert ? w : h;
-        if (showTicks) {
-            trackAreaThickness /= 2.0;
-        }
+        double trackAreaW = isVert ? (showTicks ? w * 0.4 : w) : w;
+        double trackAreaH = isVert ? h : (showTicks ? h * 0.4 : h);
 
-        // Il track e il thumb hanno padding=0 in CSS, quindi prefSize=0x0 nativamente.
-        // Dobbiamo FORZARE la loro dimensione qui prima di chiamare il layout nativo, 
-        // altrimenti saranno invisibili!
-        if (track instanceof javafx.scene.layout.Region && thumb instanceof javafx.scene.layout.Region) {
-            javafx.scene.layout.Region t = (javafx.scene.layout.Region) track;
-            javafx.scene.layout.Region th = (javafx.scene.layout.Region) thumb;
-            
-            if (isVert) {
-                t.setPrefWidth(trackAreaThickness * 0.8);
-                th.setPrefWidth(trackAreaThickness * 0.9);
-                th.setPrefHeight(trackAreaThickness * 0.9);
-            } else {
-                t.setPrefHeight(trackAreaThickness * 0.8);
-                th.setPrefWidth(trackAreaThickness * 0.9);
-                th.setPrefHeight(trackAreaThickness * 0.9);
-            }
-        }
+        double tickAreaW = isVert ? (showTicks ? w * 0.6 : 0) : w;
+        double tickAreaH = isVert ? h : (showTicks ? h * 0.6 : 0);
 
-        // Fai calcolare a SliderSkin la posizione (usando solo metà area se ci sono i tick)
-        if (showTicks) {
-            if (isVert) super.layoutChildren(x, y, w / 2, h);
-            else super.layoutChildren(x, y, w, h / 2);
-        } else {
-            super.layoutChildren(x, y, w, h);
-        }
-
-        if (track == null || thumb == null) return;
-
-        // Force perfect circular thumb and track radius dynamically
-        double shortSide = Math.min(track.getLayoutBounds().getWidth(), track.getLayoutBounds().getHeight());
-        double trackRadius = shortSide / 2.0;
+        double trackW = isVert ? trackAreaW * 0.4 : trackAreaW;
+        double trackH = isVert ? trackAreaH : trackAreaH * 0.4;
         
-        double thumbSize = Math.min(thumb.getLayoutBounds().getWidth(), thumb.getLayoutBounds().getHeight());
-        double thumbRadius = thumbSize / 2.0;
+        trackW = Math.max(1, trackW);
+        trackH = Math.max(1, trackH);
+
+        double trackX = isVert ? x + (trackAreaW - trackW) / 2.0 : x;
+        double trackY = isVert ? y : y + (trackAreaH - trackH) / 2.0;
+
+        track.resizeRelocate(trackX, trackY, trackW, trackH);
+
+        double thumbSize = isVert ? trackAreaW * 0.8 : trackAreaH * 0.8;
+        thumbSize = Math.max(8, thumbSize);
+        thumb.resize(thumbSize, thumbSize);
+        
+        double thumbRadius = Math.max(0, thumbSize / 2.0);
         double inset2 = thumbSize * 0.04;
         double inset3 = thumbSize * 0.08;
         
@@ -152,10 +136,145 @@ public class DynamicSliderSkin extends SliderSkin {
                 "-fx-background-insets: 0px, %.1fpx, %.1fpx;",
                 thumbRadius, thumbRadius, thumbRadius, inset2, inset3));
 
-        updateTrackGradient();
-        
+        double min = getSkinnable().getMin();
+        double max = getSkinnable().getMax();
+        double val = getSkinnable().getValue();
+        double range = max - min;
+        double percentage = range > 0 ? (val - min) / range : 0;
+        percentage = Math.max(0, Math.min(1, percentage));
+
+        double usableTrack = isVert ? trackH - thumbSize : trackW - thumbSize;
+        usableTrack = Math.max(0, usableTrack);
+        double startOffset = thumbSize / 2.0;
+
+        if (isVert) {
+            double thumbCenterY = trackY + startOffset + (1.0 - percentage) * usableTrack;
+            double thumbX = trackX + trackW / 2.0 - thumbSize / 2.0;
+            thumb.relocate(thumbX, thumbCenterY - thumbSize / 2.0);
+        } else {
+            double thumbCenterX = trackX + startOffset + percentage * usableTrack;
+            double thumbY = trackY + trackH / 2.0 - thumbSize / 2.0;
+            thumb.relocate(thumbCenterX - thumbSize / 2.0, thumbY);
+        }
+
+        updateTrackGradient(); // Aggiorna i colori usando le nuove geometrie
+
         if (showTicks) {
-            layoutCustomTicks(x, y, w, h);
+            customTicksPane.setVisible(true);
+            customTicksPane.resizeRelocate(x, y, w, h);
+
+            double tx = isVert ? x + trackAreaW : x;
+            double ty = isVert ? y : y + trackAreaH;
+
+            double majorUnit = getSkinnable().getMajorTickUnit();
+            if (majorUnit <= 0) majorUnit = range / 4.0;
+            if (majorUnit <= 0) majorUnit = 1;
+            int minorCount = getSkinnable().getMinorTickCount();
+            
+            double majorDistance = (majorUnit / range) * usableTrack;
+            boolean showLabels = majorDistance > 12.0;
+            boolean showMinor = (majorDistance / (minorCount + 1)) > 4.0;
+
+            double majorLen = isVert ? tickAreaW * 0.25 : tickAreaH * 0.25;
+            double minorLen = isVert ? tickAreaW * 0.12 : tickAreaH * 0.12;
+            double textMargin = isVert ? tickAreaW * 0.05 : tickAreaH * 0.05; // Gap responsivo!
+
+            double maxFontByThickness = isVert ? (tickAreaW * 0.35) : (tickAreaH * 0.6);
+            double maxFontBySpacing = isVert ? (majorDistance * 0.8) : (majorDistance * 0.45);
+            if (!showLabels) {
+                maxFontBySpacing = isVert ? (usableTrack * 0.3) : (usableTrack * 0.2);
+            }
+            double idealFontSize = Math.min(maxFontByThickness, maxFontBySpacing);
+            // Rimossi tutti i limiti minimi per consentire un rimpicciolimento infinito
+            double fontSize = Math.max(1, idealFontSize); 
+
+            double majorStroke = Math.max(1.0, fontSize * 0.15);
+            double minorStroke = Math.max(1.0, fontSize * 0.08);
+
+            int majorIndex = 0;
+            int minorIndex = 0;
+
+            for (double v = min; v <= max + 0.0001; v += majorUnit) {
+                double vPerc = range > 0 ? (v - min) / range : 0;
+                vPerc = Math.max(0, Math.min(1, vPerc));
+                double pos = startOffset + (isVert ? (1.0 - vPerc) : vPerc) * usableTrack;
+
+                if (majorIndex < majorTickLines.size()) {
+                    Line line = majorTickLines.get(majorIndex);
+                    line.setStyle(String.format(java.util.Locale.US, "-fx-stroke: #aaaaaa; -fx-stroke-width: %.1fpx;", majorStroke));
+                    if (isVert) {
+                        line.setStartX(tx);
+                        line.setEndX(tx + majorLen);
+                        line.setStartY(trackY + pos);
+                        line.setEndY(trackY + pos);
+                    } else {
+                        line.setStartX(trackX + pos);
+                        line.setEndX(trackX + pos);
+                        line.setStartY(ty);
+                        line.setEndY(ty + majorLen);
+                    }
+
+                    if (majorIndex < tickLabels.size()) {
+                        Text text = tickLabels.get(majorIndex);
+                        boolean isExtreme = (v == min || Math.abs(v - max) < 0.001);
+                        text.setVisible(showLabels || isExtreme);
+
+                        if (text.isVisible()) {
+                            text.setStyle(String.format(java.util.Locale.US, "-fx-font-size: %.1fpx; -fx-fill: #aaaaaa;", fontSize));
+                            text.applyCss();
+                            double tw = text.getLayoutBounds().getWidth();
+                            double th = text.getLayoutBounds().getHeight();
+
+                            if (isVert) {
+                                double textSpaceX = tx + majorLen + textMargin;
+                                double textSpaceW = tickAreaW - majorLen - textMargin;
+                                double calculatedX = textSpaceX + textSpaceW / 2.0 - tw / 2.0;
+                                // Clampa a sinistra per impedire FISICAMENTE che il testo tocchi la tacca
+                                text.setLayoutX(Math.max(textSpaceX, calculatedX));
+                                text.setLayoutY(trackY + pos); 
+                            } else {
+                                double textSpaceY = ty + majorLen + textMargin;
+                                double textSpaceH = tickAreaH - majorLen - textMargin;
+                                double calculatedY = textSpaceY + textSpaceH / 2.0;
+                                // Clampa in alto per impedire FISICAMENTE che il testo tocchi la tacca
+                                text.setLayoutY(Math.max(textSpaceY + th / 2.0, calculatedY));
+                                text.setLayoutX(trackX + pos - tw / 2.0);
+                            }
+                        }
+                    }
+                    majorIndex++;
+                }
+
+                if (v < max && minorCount > 0) {
+                    double minorUnitVal = majorUnit / (minorCount + 1);
+                    for (int i = 1; i <= minorCount; i++) {
+                        if (minorIndex < minorTickLines.size()) {
+                            Line line = minorTickLines.get(minorIndex);
+                            line.setVisible(showMinor);
+                            if (showMinor) {
+                                line.setStyle(String.format(java.util.Locale.US, "-fx-stroke: #666666; -fx-stroke-width: %.1fpx;", minorStroke));
+                                double minorVal = v + minorUnitVal * i;
+                                double mPerc = range > 0 ? (minorVal - min) / range : 0;
+                                mPerc = Math.max(0, Math.min(1, mPerc));
+                                double mPos = startOffset + (isVert ? (1.0 - mPerc) : mPerc) * usableTrack;
+
+                                if (isVert) {
+                                    line.setStartX(tx);
+                                    line.setEndX(tx + minorLen);
+                                    line.setStartY(trackY + mPos);
+                                    line.setEndY(trackY + mPos);
+                                } else {
+                                    line.setStartX(trackX + mPos);
+                                    line.setEndX(trackX + mPos);
+                                    line.setStartY(ty);
+                                    line.setEndY(ty + minorLen);
+                                }
+                            }
+                            minorIndex++;
+                        }
+                    }
+                }
+            }
         } else {
             customTicksPane.getChildren().forEach(n -> n.setVisible(false));
         }
@@ -171,7 +290,6 @@ public class DynamicSliderSkin extends SliderSkin {
         double max = slider.getMax();
         double val = slider.getValue();
         
-        // Prevent division by zero
         if (max == min) return;
         
         double percentage = (val - min) / (max - min);
@@ -186,6 +304,7 @@ public class DynamicSliderSkin extends SliderSkin {
             if (trackHeight > 0 && thumbHeight > 0) {
                 double thumbRad = thumbHeight / 2.0;
                 double usableTrack = trackHeight - thumbHeight;
+                usableTrack = Math.max(0, usableTrack);
                 double centerFromTop = thumbRad + (1.0 - percentage) * usableTrack;
                 double stopPercentage = (centerFromTop / trackHeight) * 100.0;
 
@@ -199,6 +318,7 @@ public class DynamicSliderSkin extends SliderSkin {
             if (trackWidth > 0 && thumbWidth > 0) {
                 double thumbRad = thumbWidth / 2.0;
                 double usableTrack = trackWidth - thumbWidth;
+                usableTrack = Math.max(0, usableTrack);
                 double centerFromLeft = thumbRad + percentage * usableTrack;
                 double stopPercentage = (centerFromLeft / trackWidth) * 100.0;
 
@@ -209,7 +329,7 @@ public class DynamicSliderSkin extends SliderSkin {
         }
 
         double shortSide = Math.min(track.getLayoutBounds().getWidth(), track.getLayoutBounds().getHeight());
-        double trackRadius = shortSide / 2.0;
+        double trackRadius = Math.max(0, shortSide / 2.0);
         String trackRadiusStyle = String.format(java.util.Locale.US,
                 "-fx-background-radius: %.1fpx; -fx-border-radius: %.1fpx;",
                 trackRadius, trackRadius);
@@ -217,162 +337,13 @@ public class DynamicSliderSkin extends SliderSkin {
         track.setStyle(trackGradientStyle + trackRadiusStyle);
     }
 
-    private void layoutCustomTicks(double x, double y, double w, double h) {
-        Slider slider = getSkinnable();
-        if (majorTickLines.isEmpty()) return;
-
-        // Pane copre tutto, così le coordinate (tx) sono relative allo slider intero
-        customTicksPane.resizeRelocate(x, y, w, h);
-
-        boolean isVert = slider.getOrientation() == Orientation.VERTICAL;
-        double trackLength = isVert ? track.getLayoutBounds().getHeight() : track.getLayoutBounds().getWidth();
-        double thumbLength = isVert ? thumb.getLayoutBounds().getHeight() : thumb.getLayoutBounds().getWidth();
-        
-        if (trackLength <= 0) return;
-
-        double usableTrack = trackLength - thumbLength;
-        double startOffset = thumbLength / 2.0;
-
-        double min = slider.getMin();
-        double max = slider.getMax();
-        double range = max - min;
-        
-        // --- AUTO-HIDING LOGIC ---
-        double pixelsPerUnit = usableTrack / range;
-        double majorDistance = pixelsPerUnit * slider.getMajorTickUnit();
-        double minorDistance = majorDistance / (slider.getMinorTickCount() + 1);
-
-        // Se i minor ticks sono troppo vicini (< 4px), spegnili
-        boolean showMinor = minorDistance > 4.0;
-        // Se i major ticks sono troppo vicini (< 12px), nascondi il testo (salvo min e max)
-        boolean showLabels = majorDistance > 12.0;
-
-        // Proporzioni dei tick basate sullo spessore allocato all'area dei tick (metà slider)
-        double tickAreaWidth = isVert ? (w / 2) : (h / 2);
-        double majorLen = tickAreaWidth * 0.3; // 30% dell'area ticks
-        double minorLen = tickAreaWidth * 0.15;
-
-        // Coordinate di partenza per l'area dei tick
-        double tx = isVert ? (w / 2) : 0;
-        double ty = isVert ? 0 : (h / 2);
-
-        int majorIndex = 0;
-        int minorIndex = 0;
-
-        double majorUnit = slider.getMajorTickUnit();
-        int minorCount = slider.getMinorTickCount();
-
-        for (double val = min; val <= max; val += majorUnit) {
-            double percentage = (val - min) / range;
-            double pos = startOffset + percentage * usableTrack;
-            if (isVert) pos = trackLength - pos; // Disegna dal basso verso l'alto
-            
-            // Layout Major Line
-            if (majorIndex < majorTickLines.size()) {
-                Line line = majorTickLines.get(majorIndex);
-                if (isVert) {
-                    line.setStartX(tx); 
-                    line.setEndX(tx + majorLen);
-                    line.setStartY(track.getLayoutY() + pos); 
-                    line.setEndY(track.getLayoutY() + pos);
-                } else {
-                    line.setStartX(track.getLayoutX() + pos); 
-                    line.setEndX(track.getLayoutX() + pos);
-                    line.setStartY(ty); 
-                    line.setEndY(ty + majorLen);
-                }
-
-                // Layout Label
-                if (majorIndex < tickLabels.size()) {
-                    Text text = tickLabels.get(majorIndex);
-                    boolean isExtreme = (val == min || val == max);
-                    text.setVisible(showLabels || isExtreme); // Auto-hiding
-
-                    if (text.isVisible()) {
-                        double fontSize = Math.max(8, tickAreaWidth * 0.35);
-                        text.setStyle(String.format(java.util.Locale.US, "-fx-font-size: %.1fpx; -fx-fill: #aaaaaa;", fontSize));
-                        text.applyCss();
-
-                        double tw = text.getLayoutBounds().getWidth();
-                        double th = text.getLayoutBounds().getHeight();
-
-                        if (isVert) {
-                            text.setLayoutX(tx + majorLen + 5);
-                            text.setLayoutY(track.getLayoutY() + pos + th / 4);
-                        } else {
-                            text.setLayoutX(track.getLayoutX() + pos - tw / 2);
-                            text.setLayoutY(ty + majorLen + 5 + th / 1.5);
-                        }
-                    }
-                }
-                majorIndex++;
-            }
-
-            // Layout Minor Lines
-            if (val < max && minorCount > 0) {
-                double minorUnit = majorUnit / (minorCount + 1);
-                for (int i = 1; i <= minorCount; i++) {
-                    if (minorIndex < minorTickLines.size()) {
-                        Line line = minorTickLines.get(minorIndex);
-                        line.setVisible(showMinor); // Auto-hiding
-                        
-                        if (showMinor) {
-                            double minorVal = val + minorUnit * i;
-                            double mPerc = (minorVal - min) / range;
-                            double mPos = startOffset + mPerc * usableTrack;
-                            if (isVert) mPos = trackLength - mPos;
-
-                            if (isVert) {
-                                line.setStartX(tx); 
-                                line.setEndX(tx + minorLen);
-                                line.setStartY(track.getLayoutY() + mPos); 
-                                line.setEndY(track.getLayoutY() + mPos);
-                            } else {
-                                line.setStartX(track.getLayoutX() + mPos); 
-                                line.setEndX(track.getLayoutX() + mPos);
-                                line.setStartY(ty); 
-                                line.setEndY(ty + minorLen);
-                            }
-                        }
-                        minorIndex++;
-                    }
-                }
-            }
-        }
-    }
-
-    // --- RESPONSIVE PROPORTIONS ---
-    // Questi sostituiscono i vecchi bind() nel costruttore!
-    
     @Override
-    protected double computePrefWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
-        if (getSkinnable().getOrientation() == Orientation.VERTICAL) {
-            if (height != -1) return height * 0.25; // Spessore è il 25% della lunghezza
-        }
-        return super.computePrefWidth(height, topInset, rightInset, bottomInset, leftInset);
+    protected double computeMinWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
+        return 0; // Sblocca la compressione infinita
     }
 
     @Override
-    protected double computePrefHeight(double width, double topInset, double rightInset, double bottomInset, double leftInset) {
-        if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
-            if (width != -1) return width * 0.25; // Spessore è il 25% della lunghezza
-        }
-        return super.computePrefHeight(width, topInset, rightInset, bottomInset, leftInset);
-    }
-
-    @Override
-    protected double computeMaxWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
-        if (getSkinnable().getOrientation() == Orientation.VERTICAL) {
-            return computePrefWidth(height, topInset, rightInset, bottomInset, leftInset);
-        }
-        return super.computeMaxWidth(height, topInset, rightInset, bottomInset, leftInset);
-    }
-
-    @Override
-    protected double computeMaxHeight(double width, double topInset, double rightInset, double bottomInset, double leftInset) {
-        if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
-            return computePrefHeight(width, topInset, rightInset, bottomInset, leftInset);
-        }
-        return super.computeMaxHeight(width, topInset, rightInset, bottomInset, leftInset);
+    protected double computeMinHeight(double width, double topInset, double rightInset, double bottomInset, double leftInset) {
+        return 0; // Sblocca la compressione infinita
     }
 }
