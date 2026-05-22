@@ -112,8 +112,17 @@ public class DynamicSliderSkin extends SliderSkin {
         double tickAreaW = isVert ? (showTicks ? w * 0.6 : 0) : w;
         double tickAreaH = isVert ? h : (showTicks ? h * 0.6 : 0);
 
-        double trackW = isVert ? trackAreaW * 0.4 : trackAreaW;
-        double trackH = isVert ? trackAreaH : trackAreaH * 0.4;
+        // --- THUMB SIZE ---
+        // Il thumb cerca di occupare il 25% della lunghezza totale, ma si restringe se lo spazio è minore
+        double idealThickness = isVert ? h * 0.25 : w * 0.25;
+        double maxAvailable = isVert ? trackAreaW : trackAreaH;
+        double thumbSize = Math.min(idealThickness, maxAvailable);
+        thumbSize = Math.max(1, thumbSize);
+
+        // --- TRACK LAYOUT ---
+        // Lo spessore del track prende il 90% del thumb
+        double trackW = isVert ? (thumbSize * 0.9) : trackAreaW;
+        double trackH = isVert ? trackAreaH : (thumbSize * 0.9);
         
         trackW = Math.max(1, trackW);
         trackH = Math.max(1, trackH);
@@ -123,8 +132,7 @@ public class DynamicSliderSkin extends SliderSkin {
 
         track.resizeRelocate(trackX, trackY, trackW, trackH);
 
-        double thumbSize = isVert ? trackAreaW * 0.8 : trackAreaH * 0.8;
-        thumbSize = Math.max(8, thumbSize);
+        // --- THUMB RADII ---
         thumb.resize(thumbSize, thumbSize);
         
         double thumbRadius = Math.max(0, thumbSize / 2.0);
@@ -335,6 +343,24 @@ public class DynamicSliderSkin extends SliderSkin {
                 trackRadius, trackRadius);
 
         track.setStyle(trackGradientStyle + trackRadiusStyle);
+    }
+
+    @Override
+    protected double computePrefWidth(double height, double topInset, double rightInset, double bottomInset, double leftInset) {
+        if (getSkinnable().getOrientation() == Orientation.VERTICAL) {
+            double h = height != -1 ? height : getSkinnable().getHeight();
+            return (h > 0 ? h : 200) * 0.25;
+        }
+        return super.computePrefWidth(height, topInset, rightInset, bottomInset, leftInset);
+    }
+
+    @Override
+    protected double computePrefHeight(double width, double topInset, double rightInset, double bottomInset, double leftInset) {
+        if (getSkinnable().getOrientation() == Orientation.HORIZONTAL) {
+            double w = width != -1 ? width : getSkinnable().getWidth();
+            return (w > 0 ? w : 200) * 0.25;
+        }
+        return super.computePrefHeight(width, topInset, rightInset, bottomInset, leftInset);
     }
 
     @Override
