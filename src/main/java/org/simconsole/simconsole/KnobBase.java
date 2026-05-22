@@ -15,6 +15,8 @@ public abstract class KnobBase extends Control {
     private final DoubleProperty value = new SimpleDoubleProperty(0.0);
     private final DoubleProperty min = new SimpleDoubleProperty(0.0);
     private final DoubleProperty max = new SimpleDoubleProperty(1.0);
+    private final javafx.beans.property.ObjectProperty<javafx.geometry.Orientation> layoutBias = 
+        new javafx.beans.property.SimpleObjectProperty<>(javafx.geometry.Orientation.HORIZONTAL);
 
     private final StringProperty leftLabel = new SimpleStringProperty("L");
     private final StringProperty rightLabel = new SimpleStringProperty("R");
@@ -23,9 +25,13 @@ public abstract class KnobBase extends Control {
         super();
     }
 
+    public final javafx.beans.property.ObjectProperty<javafx.geometry.Orientation> layoutBiasProperty() { return layoutBias; }
+    public final javafx.geometry.Orientation getLayoutBias() { return layoutBias.get(); }
+    public final void setLayoutBias(javafx.geometry.Orientation value) { layoutBias.set(value); }
+
     @Override
     public javafx.geometry.Orientation getContentBias() {
-        return javafx.geometry.Orientation.VERTICAL;
+        return getLayoutBias();
     }
 
     public DoubleProperty valueProperty() { return value; }

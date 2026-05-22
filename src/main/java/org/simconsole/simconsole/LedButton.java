@@ -4,6 +4,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Orientation;
 import javafx.scene.control.ButtonBase;
 
 /**
@@ -17,11 +18,13 @@ public class LedButton extends ButtonBase {
     private final BooleanProperty toggleMode = new SimpleBooleanProperty(false);
     private final BooleanProperty selected = new SimpleBooleanProperty(false);
     private final BooleanProperty roundShape = new SimpleBooleanProperty(false);
+    private final javafx.beans.property.ObjectProperty<javafx.geometry.Orientation> layoutBias = 
+        new javafx.beans.property.SimpleObjectProperty<>(javafx.geometry.Orientation.HORIZONTAL);
 
     public LedButton() {
         super();
         this.getStyleClass().setAll("dynamic-square-button");
-        
+
         // Ascolta il cambio di forma per cambiare la skin e la classe CSS
         this.roundShape.addListener((obs, oldVal, isRound) -> {
             if (isRound) {
@@ -34,9 +37,13 @@ public class LedButton extends ButtonBase {
         });
     }
 
+    public final javafx.beans.property.ObjectProperty<javafx.geometry.Orientation> layoutBiasProperty() { return layoutBias; }
+    public final javafx.geometry.Orientation getLayoutBias() { return layoutBias.get(); }
+    public final void setLayoutBias(javafx.geometry.Orientation value) { layoutBias.set(value); }
+
     @Override
     public javafx.geometry.Orientation getContentBias() {
-        return javafx.geometry.Orientation.VERTICAL;
+        return getLayoutBias();
     }
 
     @Override

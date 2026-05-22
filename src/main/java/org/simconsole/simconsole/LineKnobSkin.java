@@ -196,6 +196,7 @@ public class LineKnobSkin extends SkinBase<LineKnob> {
 
     @Override
     protected double computeMaxHeight(double width, double topInset, double rightInset, double bottomInset, double leftInset) {
+        if (width != -1) return width;
         return Double.MAX_VALUE;
     }
 }
