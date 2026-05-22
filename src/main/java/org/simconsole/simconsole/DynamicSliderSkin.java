@@ -72,6 +72,7 @@ public class DynamicSliderSkin extends SliderSkin {
         if (majorUnit <= 0) return;
 
         for (double val = min; val <= max; val += majorUnit) {
+            System.out.println(val);
             Line majorLine = new Line();
             majorLine.getStyleClass().add("slider-tick-major");
             majorLine.setStyle("-fx-stroke: #aaaaaa; -fx-stroke-width: 2px;"); // CSS Hook
@@ -79,7 +80,7 @@ public class DynamicSliderSkin extends SliderSkin {
             customTicksPane.getChildren().add(majorLine);
 
             if (slider.isShowTickLabels()) {
-                Text text = new Text(String.format(java.util.Locale.US, "%.0f", val));
+                Text text = new Text(Double.toString(val));
                 text.getStyleClass().add("slider-tick-label");
                 text.setTextOrigin(javafx.geometry.VPos.CENTER); // Garantisce centering verticale corretto
                 tickLabels.add(text);
