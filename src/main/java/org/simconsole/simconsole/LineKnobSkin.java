@@ -60,6 +60,7 @@ public class LineKnobSkin extends SkinBase<LineKnob> {
 
         container.setPickOnBounds(false);
 
+
         setupResponsiveBindings(control);
         initInteractivity(control);
     }
@@ -98,6 +99,7 @@ public class LineKnobSkin extends SkinBase<LineKnob> {
         positionText(leftText, cx, cy, textRadius, -135);
         positionText(rightText, cx, cy, textRadius, 135);
 
+        double tickWidth = size * 0.04;
         double tickRadiusInner = size * 0.32;
         double tickRadiusOuter = size * 0.36;
         double startAngle = -100;
@@ -105,15 +107,18 @@ public class LineKnobSkin extends SkinBase<LineKnob> {
         double step = (endAngle - startAngle) / 4;
         for (int i = 0; i < 5; i++) {
             double angle = startAngle + step * i;
+            ticks[i].setStyle(String.format("-fx-stroke-width: %.1f;", tickWidth));
             positionLine(ticks[i], cx, cy, tickRadiusInner, tickRadiusOuter, angle);
         }
 
+        double indicatorWidth = size * 0.04;
         double indicatorR1 = size * 0.12;
         double indicatorR2 = size * 0.22;
         indicator.setStartX(cx);
         indicator.setStartY(cy - indicatorR1);
         indicator.setEndX(cx);
         indicator.setEndY(cy - indicatorR2);
+        indicator.setStyle(String.format("-fx-stroke-width: %.0fpx;", indicatorWidth));
 
         updateIndicator(getSkinnable());
     }
