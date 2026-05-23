@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import org.simconsole.simconsole.DynamicDeck?>
 
 <!-- Import Custom Components -->
 
@@ -30,7 +31,7 @@
       <fx:include minHeight="0.0" minWidth="0.0" source="master.fxml" GridPane.columnIndex="2" GridPane.columnSpan="4" />
     
       <!-- Left Deck -->
-      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+      <DynamicDeck minHeight="0.0" minWidth="0.0" spinSpeed="10.0" spinning="true" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="1" GridPane.rowIndex="0" />
       <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" GridPane.columnIndex="1" />
       <StackPane fx:id="playbackContainer" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/card.css" GridPane.columnSpan="4" GridPane.rowIndex="1">
          <children>
@@ -64,7 +65,7 @@
       </VBox>
 
       <!-- Right Deck -->
-      <fx:include minHeight="0.0" minWidth="0.0" source="deck.fxml" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+      <DynamicDeck minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="6" GridPane.rowIndex="0" />
       <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" GridPane.columnIndex="6" />
       <StackPane fx:id="playbackContainer1" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/card.css" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="1">
          <children>
