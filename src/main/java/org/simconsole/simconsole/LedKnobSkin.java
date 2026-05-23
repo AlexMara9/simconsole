@@ -58,6 +58,8 @@ public class LedKnobSkin extends SkinBase<LedKnob> {
         container.getChildren().addAll(dotsPane, outerRing, middleRing, innerKnob, indicatorPane);
         getChildren().add(container);
 
+        container.setPickOnBounds(false);
+
         setupResponsiveBindings(control);
         initInteractivity(control);
     }

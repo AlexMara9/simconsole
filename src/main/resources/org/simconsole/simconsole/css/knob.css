@@ -25,13 +25,11 @@
 /* Dynamic Knob 1 (L/R) */
 .knob-indicator-line {
     -fx-stroke: #2a2a2a;
-    -fx-stroke-width: 2px;
     -fx-stroke-line-cap: round;
 }
 
 .knob-tick {
-    -fx-stroke: #1a1a1a;
-    -fx-stroke-width: 2px;
+    -fx-stroke: #0b0b0b;
     -fx-stroke-line-cap: round;
 }
 

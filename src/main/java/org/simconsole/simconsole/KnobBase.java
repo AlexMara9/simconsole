@@ -23,6 +23,7 @@ public abstract class KnobBase extends Control {
 
     public KnobBase() {
         super();
+        this.setPickOnBounds(false);
     }
 
     public final javafx.beans.property.ObjectProperty<javafx.geometry.Orientation> layoutBiasProperty() { return layoutBias; }
