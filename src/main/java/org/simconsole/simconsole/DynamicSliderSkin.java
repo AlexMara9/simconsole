@@ -101,8 +101,10 @@ public class DynamicSliderSkin extends SliderSkin {
 
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
-        super.layoutChildren(x, y, w, h);
-        if (track == null || thumb == null) return;
+        if (track == null || thumb == null) {
+            super.layoutChildren(x, y, w, h);
+            return;
+        }
 
         boolean showTicks = getSkinnable().isShowTickMarks();
         boolean isVert = getSkinnable().getOrientation() == Orientation.VERTICAL;
@@ -121,12 +123,32 @@ public class DynamicSliderSkin extends SliderSkin {
         thumbSize = Math.max(1, thumbSize);
 
         // --- TRACK LAYOUT ---
-        // Lo spessore del track prende il 90% del thumb
-        double trackW = isVert ? (thumbSize * 0.9) : trackAreaW;
-        double trackH = isVert ? trackAreaH : (thumbSize * 0.9);
+        // Il track nativo ha la STESSA dimensione del thumb per garantire un mouse-tracking 1:1,
+        // ma la grafica verrà ristretta visivamente tramite CSS insets del 5% per lato.
+        double trackW = isVert ? thumbSize : trackAreaW;
+        double trackH = isVert ? trackAreaH : thumbSize;
         
         trackW = Math.max(1, trackW);
         trackH = Math.max(1, trackH);
+
+        // FORZA le dimensioni sui nodi nativi PRIMA di chiamare il layout nativo
+        // Questo è il segreto per mantenere il drag del mouse sincronizzato (1:1) con la nostra grafica custom!
+        if (track instanceof javafx.scene.layout.Region && thumb instanceof javafx.scene.layout.Region) {
+            javafx.scene.layout.Region t = (javafx.scene.layout.Region) track;
+            javafx.scene.layout.Region th = (javafx.scene.layout.Region) thumb;
+            t.setPrefWidth(trackW);
+            t.setPrefHeight(trackH);
+            th.setPrefWidth(thumbSize);
+            th.setPrefHeight(thumbSize);
+        }
+
+        // Fai fare a SliderSkin il suo lavoro di binding per il mouse usando le nostre misure
+        if (showTicks) {
+            if (isVert) super.layoutChildren(x, y, w * 0.4, h);
+            else super.layoutChildren(x, y, w, h * 0.4);
+        } else {
+            super.layoutChildren(x, y, w, h);
+        }
 
         double trackX = isVert ? x + (trackAreaW - trackW) / 2.0 : x;
         double trackY = isVert ? y : y + (trackAreaH - trackH) / 2.0;
@@ -307,6 +329,9 @@ public class DynamicSliderSkin extends SliderSkin {
         String colorFilled = "-track-filled";
         String colorEmpty = "-track-empty";
 
+        double thumbSize = Math.min(thumb.getLayoutBounds().getWidth(), thumb.getLayoutBounds().getHeight());
+        double overlap = thumbSize * 0.05;
+
         if (slider.getOrientation() == Orientation.VERTICAL) {
             double trackHeight = track.getLayoutBounds().getHeight();
             double thumbHeight = thumb.getLayoutBounds().getHeight();
@@ -315,7 +340,11 @@ public class DynamicSliderSkin extends SliderSkin {
                 double usableTrack = trackHeight - thumbHeight;
                 usableTrack = Math.max(0, usableTrack);
                 double centerFromTop = thumbRad + (1.0 - percentage) * usableTrack;
-                double stopPercentage = (centerFromTop / trackHeight) * 100.0;
+                
+                double visualTrackHeight = trackHeight - 2 * overlap;
+                double visualCenterFromTop = centerFromTop - overlap;
+                double stopPercentage = visualTrackHeight > 0 ? (visualCenterFromTop / visualTrackHeight) * 100.0 : 0;
+                stopPercentage = Math.max(0, Math.min(100, stopPercentage));
 
                 trackGradientStyle = String.format(java.util.Locale.US,
                         "-fx-background-color: linear-gradient(to bottom, %s %.1f%%, %s %.1f%%);",
@@ -329,7 +358,11 @@ public class DynamicSliderSkin extends SliderSkin {
                 double usableTrack = trackWidth - thumbWidth;
                 usableTrack = Math.max(0, usableTrack);
                 double centerFromLeft = thumbRad + percentage * usableTrack;
-                double stopPercentage = (centerFromLeft / trackWidth) * 100.0;
+                
+                double visualTrackWidth = trackWidth - 2 * overlap;
+                double visualCenterFromLeft = centerFromLeft - overlap;
+                double stopPercentage = visualTrackWidth > 0 ? (visualCenterFromLeft / visualTrackWidth) * 100.0 : 0;
+                stopPercentage = Math.max(0, Math.min(100, stopPercentage));
 
                 trackGradientStyle = String.format(java.util.Locale.US,
                         "-fx-background-color: linear-gradient(to right, %s %.1f%%, %s %.1f%%);",
@@ -338,10 +371,11 @@ public class DynamicSliderSkin extends SliderSkin {
         }
 
         double shortSide = Math.min(track.getLayoutBounds().getWidth(), track.getLayoutBounds().getHeight());
-        double trackRadius = Math.max(0, shortSide / 2.0);
+        double visualShortSide = shortSide - 2 * overlap;
+        double trackRadius = Math.max(0, visualShortSide / 2.0);
         String trackRadiusStyle = String.format(java.util.Locale.US,
-                "-fx-background-radius: %.1fpx; -fx-border-radius: %.1fpx;",
-                trackRadius, trackRadius);
+                "-fx-background-radius: %.1fpx; -fx-background-insets: %.1fpx;",
+                trackRadius, overlap);
 
         track.setStyle(trackGradientStyle + trackRadiusStyle);
     }
