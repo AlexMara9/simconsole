@@ -40,7 +40,7 @@ public class DynamicDeck extends Control {
 
     @Override
     protected Skin<?> createDefaultSkin() {
-        return new DynamicDeckSkin(this);
+        return new CDJDeckSkin(this);
     }
 
     // --- Property Getters/Setters ---
