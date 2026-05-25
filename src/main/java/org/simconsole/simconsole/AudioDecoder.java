@@ -9,11 +9,26 @@ public class AudioDecoder {
     public static double[] readWavFileAsDoubles(String filePath) {
         try {
             File file = new File(filePath);
-            AudioInputStream ais = AudioSystem.getAudioInputStream(file);
+            AudioInputStream in = AudioSystem.getAudioInputStream(file);
+            javax.sound.sampled.AudioFormat baseFormat = in.getFormat();
+            
+            // Decodifica automatica da MP3/compressi a PCM 16-bit (tramite mp3spi)
+            javax.sound.sampled.AudioFormat decodedFormat = new javax.sound.sampled.AudioFormat(
+                    javax.sound.sampled.AudioFormat.Encoding.PCM_SIGNED,
+                    baseFormat.getSampleRate(),
+                    16,
+                    baseFormat.getChannels(),
+                    baseFormat.getChannels() * 2,
+                    baseFormat.getSampleRate(),
+                    false
+            );
+            
+            AudioInputStream ais = AudioSystem.getAudioInputStream(decodedFormat, in);
 
             // Read all raw bytes from the file
             byte[] bytes = ais.readAllBytes();
             ais.close();
+            in.close();
 
             // A 16-bit sample takes 2 bytes.
             // So the array of doubles will be half the size of the byte array.

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -28,13 +29,31 @@
         <Circle fx:id="vinyl" fill="DODGERBLUE" radius="43.0" stroke="BLACK" strokeType="INSIDE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" GridPane.vgrow="NEVER" />
       <StackPane fx:id="songListContainer" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="2">
          <children>
-              <ListView fx:id="songList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" StackPane.alignment="BOTTOM_CENTER" />
-              <Label fx:id="songListLabel" text="lista" wrapText="true" StackPane.alignment="TOP_CENTER">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Button fx:id="addTrackButton" text="+" StackPane.alignment="TOP_RIGHT"/>
+            <javafx.scene.layout.VBox spacing="4.0" style="-fx-padding: 4;" StackPane.alignment="CENTER">
+
+               <!-- PANNELLO 1: Ricerca iTunes -->
+               <javafx.scene.layout.VBox spacing="2.0" javafx.scene.layout.VBox.vgrow="ALWAYS">
+                  <javafx.scene.layout.HBox spacing="4.0" alignment="CENTER_LEFT">
+                     <Label text="🔍 iTunes" style="-fx-font-size: 10px; -fx-text-fill: #888888;" />
+                     <TextField fx:id="searchField" promptText="Cerca artista o titolo..." javafx.scene.layout.HBox.hgrow="ALWAYS" />
+                  </javafx.scene.layout.HBox>
+                  <ListView fx:id="searchResultsList" javafx.scene.layout.VBox.vgrow="ALWAYS" />
+               </javafx.scene.layout.VBox>
+
+               <!-- PANNELLO 2: Playlist -->
+               <javafx.scene.layout.VBox spacing="2.0" javafx.scene.layout.VBox.vgrow="ALWAYS">
+                  <javafx.scene.layout.HBox spacing="4.0" alignment="CENTER_LEFT">
+                     <Label text="♫ Playlist" style="-fx-font-size: 10px; -fx-text-fill: #888888;" />
+                     <Button fx:id="addTrackButton" text="+" style="-fx-font-size: 10px;" />
+                     <Button fx:id="removeButton" text="−" style="-fx-font-size: 10px;" />
+                     <Button fx:id="sortDurationButton" text="↑ Durata" style="-fx-font-size: 9px;" />
+                     <Button fx:id="sortTitleButton" text="↑ Titolo" style="-fx-font-size: 9px;" />
+                     <Button fx:id="sortArtistButton" text="↑ Artista" style="-fx-font-size: 9px;" />
+                  </javafx.scene.layout.HBox>
+                  <ListView fx:id="playlistList" javafx.scene.layout.VBox.vgrow="ALWAYS" />
+               </javafx.scene.layout.VBox>
+
+            </javafx.scene.layout.VBox>
          </children>
       </StackPane>
         <PointLight color="CHARTREUSE" lightOn="true" GridPane.rowIndex="2" />

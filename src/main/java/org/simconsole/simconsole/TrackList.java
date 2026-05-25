@@ -24,9 +24,7 @@ public class TrackList {
         this.name = name;
     }
 
-    /**
-      Basterà fare: songList.setItems(trackList.getObservableTracks());
-     */
+
     public ObservableList<Tracks> getObservableTracks() {
         return tracks;
     }

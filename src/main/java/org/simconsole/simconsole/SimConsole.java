@@ -24,6 +24,9 @@ public class SimConsole extends Application {
 		Tracks trackA = new Tracks("C:\\Users\\Pietro\\Downloads\\bassi.wav");
 		Tracks trackB = new Tracks("C:\\Users\\Pietro\\Downloads\\mixaggio.wav");
 		Tracks trackC = new Tracks("C:\\Users\\Pietro\\Downloads\\LosingIt.wav");
+		Tracks trackD = new Tracks("C:\\Users\\Pietro\\Downloads\\Nightcrawler.wav");
+
+		
 		//t1
 		Deck d1 = new Deck();
 		DeckControls c1 = new DeckControls();
@@ -40,7 +43,7 @@ public class SimConsole extends Application {
 		AudioProcessor processor2 = new AudioProcessor(d2);
 		processor2.startPlayback();
 
-		d1.loadTrack(trackA);
+		d1.loadTrack(trackD);
 		d2.loadTrack(trackC);
 		
 		consoleController.setupDecks(d1, c1, d2, c2);

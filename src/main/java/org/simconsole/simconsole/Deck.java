@@ -30,6 +30,7 @@ public class Deck {
         return controls;
     }
 
+    public Tracks getCurrentTrack(){return  currentTrack;}
 
     public void play() {
         if (audioData == null) return;

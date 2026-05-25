@@ -46,6 +46,13 @@
             <version>21.0.6</version>
         </dependency>
 
+        <!-- Decoder MP3 -->
+        <dependency>
+            <groupId>com.googlecode.soundlibs</groupId>
+            <artifactId>mp3spi</artifactId>
+            <version>1.9.5.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>
