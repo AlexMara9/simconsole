@@ -45,7 +45,5 @@ public class SimConsole extends Application {
 
 		d1.loadTrack(trackD);
 		d2.loadTrack(trackC);
-		
-		consoleController.setupDecks(d1, c1, d2, c2);
 	}
 }
