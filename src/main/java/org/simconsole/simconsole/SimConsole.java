@@ -21,6 +21,31 @@ public class SimConsole extends Application {
 		stage.setScene(scene);
 		stage.show();
 
-		//consoleController.initialize();
+		Tracks trackA = new Tracks("C:\\Users\\Pietro\\Downloads\\bassi.wav");
+		Tracks trackB = new Tracks("C:\\Users\\Pietro\\Downloads\\mixaggio.wav");
+		Tracks trackC = new Tracks("C:\\Users\\Pietro\\Downloads\\LosingIt.wav");
+		Tracks trackD = new Tracks("C:\\Users\\Pietro\\Downloads\\Nightcrawler.wav");
+
+		
+		//t1
+		Deck d1 = new Deck();
+		DeckControls c1 = new DeckControls();
+		d1.setControls(c1);
+
+		AudioProcessor processor1 = new AudioProcessor(d1);
+		processor1.startPlayback();
+
+		//t2
+		Deck d2 = new Deck();
+		DeckControls c2 = new DeckControls();
+		d2.setControls(c2);
+
+		AudioProcessor processor2 = new AudioProcessor(d2);
+		processor2.startPlayback();
+
+		d1.loadTrack(trackD);
+		d2.loadTrack(trackC);
+		
+		consoleController.setupDecks(d1, c1, d2, c2);
 	}
 }
