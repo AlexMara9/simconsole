@@ -18,55 +18,93 @@ import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.transform.Rotate;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * CDJDeckSkin — skin che replica il jog wheel Pioneer CDJ-3000.
+ *
+ * ─── Strategia "ombre fisse" ────────────────────────────────────────────────
+ * In JavaFX gli effetti (InnerShadow, DropShadow) vengono calcolati nello
+ * spazio locale del nodo, PRIMA che le trasformazioni vengano applicate.
+ * Questo significa che un InnerShadow con offsetY=5 su un nodo che ruota di
+ * 90° mostrerà l'ombra a DESTRA invece che in basso → l'ombra ruota.
+ *
+ * Soluzione: ogni gruppo rotante è avvolto in un Group FISSO che porta l'effetto.
+ * L'effetto è calcolato sullo spazio schermo del gruppo fisso → non ruota mai.
+ *
+ * Schema:
+ *   fixedRimShading   (fisso, ha rimDropShadow)
+ *     └─ rotatingRimSkirt  (ruota: outerRim, skirt, grooveRing)
+ *
+ *   fixedPlatterShading (fisso, ha platterDropShadow + platterEdgeDark)
+ *     └─ rotatingPlatter  (ruota: mainPlatter)
+ *
+ *   fixedBumpShading  (fisso, ha bumpShadow + bumpHighlight)
+ *     └─ rotatingBumps    (ruota: 24 bumps)
+ *
+ *   fixedDisplayShading (fisso, ha displayCavityInner + displayCavityOuter)
+ *     └─ rotatingDisplay  (ruota: bezel, chrome, innerDisplay, lines, hub)
+ *
+ *   Archi fissi overlay (non ruotano: riflessi ambientali top-left)
+ */
 public class CDJDeckSkin extends SkinBase<DynamicDeck> {
 
-    // ─── Gruppi principali ───────────────────────────────────────────────────
-    private final Group rotatingBase;       // outerRim + skirt + mainPlatter
-    private final Group rotatingBumps;      // fossette circolari sulla skirt
-    private final Group fixedLightingBumps; // wrapper fisso per InnerShadow sulle fossette
-    private final Group rotatingDisplay;    // bezel + righe radiali + hub
+    // ── Gruppi rotanti (solo geometria, nessun effetto direzionale) ───────────
+    private final Group rotatingRimSkirt;  // outerRim, skirt, grooveRing
+    private final Group rotatingPlatter;   // mainPlatter
+    private final Group rotatingBumps;     // 24 fossette
+    private final Group rotatingDisplay;   // bezel + chrome + innerDisplay + linee + hub
 
-    // ─── Cerchi base ─────────────────────────────────────────────────────────
-    private final Circle outerRim;          // bordo esterno
-    private final Circle rimHighlightRing;  // anello highlight chiaro appena dentro il bordo
-    private final Circle skirt;             // zona fossette
-    private final Circle mainPlatter;       // piatto rialzato centrale
+    // ── Wrapper fissi (portano gli effetti in coordinate schermo) ─────────────
+    private final Group fixedRimShading;      // Group(rotatingRimSkirt)
+    private final Group fixedPlatterShading;  // Group(rotatingPlatter)
+    private final Group fixedBumpShading;     // Group(rotatingBumps)
+    private final Group fixedDisplayShading;  // Group(rotatingDisplay)
 
-    // ─── Fossette sulla skirt (bumps circolari) ───────────────────────────────
+    // ── Forme ─────────────────────────────────────────────────────────────────
+    private final Circle outerRim;
+    private final Circle skirt;
+    private final Circle grooveRing;
+    private final Circle mainPlatter;
+
     private static final int NUM_BUMPS = 24;
     private final List<Circle> bumpList = new ArrayList<>();
 
-    // ─── Display centrale ────────────────────────────────────────────────────
     private final Circle displayBezel;
+    private final Circle chromeRing;
     private final Circle innerDisplay;
+    private final Circle hubBody;
+    private final Circle hubSpecular;
 
-    // Righe radiali fitte per la texture "vinile concavo"
-    private static final int NUM_STROBE = 240;   // molto piu' fitte = vinile vero
-    private final List<Line> strobeTicks = new ArrayList<>();
+    private static final int NUM_LINES = 12;
+    private final List<Line> strobeLines = new ArrayList<>();
+    private final Line redMarker;
 
-    // Anelli concentrici sul display (simulano le solcature del vinile)
-    private final Circle grooveRingOuter;
-    private final Circle grooveRingInner;
+    // ── Overlay illuminazione globale bumps (fisso, non ruota) ──────────────
+    // Gradiente lineare top-left → bottom-right:
+    // Bright a top-left (bumps che "guardano" la luce) → dark a bottom-right
+    // Matematicamente: linear_value(bx, by) ∝ dot((bx,by)/r, (-1,-1)/√2)
+    // che è esattamente il fattore di illuminazione lambertiana per ogni bump.
+    private final Circle bumpLightingOverlay;
 
-    private final Circle centerHub;
+    // ── Overlay archi fissi ───────────────────────────────────────────────────────
+    private final Arc rimHighlightArc;
+    private final Arc rimShadowArc;
+    private final Arc platterHighlightArc;
+    private final Arc bezelChromeArc;
 
-    // ─── Overlay fissi ───────────────────────────────────────────────────────
-    private final Arc outerRimGlow;    // riflesso chiaro sul bordo esterno (fisso)
-
-    // ─── Effetti ──────────────────────────────────────────────────────────────────────────
-    private final DropShadow platterShadow;
-    private final InnerShadow platterInner;
-    private final DropShadow rimShadow;
+    // ── Effetti (aggiornati nel layout per essere responsivi) ─────────────────
+    private final DropShadow rimDropShadow;
+    private final DropShadow platterDropShadow;
+    private final InnerShadow platterEdgeDark;
     private final InnerShadow bumpShadow;
     private final InnerShadow bumpHighlight;
-    private final DropShadow bezelShadow;
-    private final InnerShadow displayCavity;
-    private final InnerShadow displayCavity2;  // secondo layer concavita'
-    private final DropShadow markerGlow;        // glow rosso sui marker
+    private final InnerShadow displayCavityInner;
+    private final InnerShadow displayCavityOuter;
+    private final DropShadow  markerGlow;
 
     private double oldMouseAngle;
 
@@ -75,186 +113,255 @@ public class CDJDeckSkin extends SkinBase<DynamicDeck> {
     public CDJDeckSkin(DynamicDeck deck) {
         super(deck);
 
-        rotatingBase    = new Group();
-        rotatingBumps   = new Group();
-        rotatingDisplay = new Group();
+        rotatingRimSkirt = new Group();
+        rotatingPlatter  = new Group();
+        rotatingBumps    = new Group();
+        rotatingDisplay  = new Group();
 
-        // ── Outer Rim ────────────────────────────────────────────────────────
-        // Sfumatura radiale: bordo grigio chiaro → quasi nero verso il centro
+        // ════════════════════════════════════════════════════════════════════
+        // OUTER RIM — gradiente focus top-left, stop extra per bordo rialzato
+        // ════════════════════════════════════════════════════════════════════
         outerRim = new Circle();
         outerRim.setFill(new RadialGradient(
-                0, 0,          // focusAngle, focusDist
-                0.5, 0.5, 0.5, // centerX, centerY, radius (proporzioni)
-                true,          // proportional
-                CycleMethod.NO_CYCLE,
-                new Stop(0.0,  Color.web("#5a5a5a")),
-                new Stop(0.70, Color.web("#2c2c2c")),
-                new Stop(1.0,  Color.web("#111111"))
+                130, 0.20,
+                0.50, 0.50, 0.50,
+                true, CycleMethod.NO_CYCLE,
+                new Stop(0.00, Color.web("#484848")),
+                new Stop(0.55, Color.web("#282828")),
+                new Stop(0.88, Color.web("#1a1a1a")),
+                new Stop(0.93, Color.web("#323232")),  // flash bordo rialzato
+                new Stop(1.00, Color.web("#0e0e0e"))
         ));
-        rimShadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#00000088"), 12, 0.2, 0, 3);
-        outerRim.setEffect(rimShadow);
+        // NESSUN effetto sul rim: l'effetto va sul wrapper fisso
+        rimDropShadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#000000cc"), 14, 0.25, 0, 4);
 
-        // Anello highlight sottile (simula il bordo lucido rialzato)
-        rimHighlightRing = new Circle();
-        rimHighlightRing.setFill(Color.TRANSPARENT);
-        rimHighlightRing.setStroke(Color.web("#6a6a6aaa"));
-
-        // ── Skirt (zona fossette) ─────────────────────────────────────────────
+        // SKIRT
         skirt = new Circle();
         skirt.setFill(new RadialGradient(
-                0, 0, 0.5, 0.5, 0.5,
+                0, 0, 0.50, 0.50, 0.50,
                 true, CycleMethod.NO_CYCLE,
-                new Stop(0.0, Color.web("#282828")),
-                new Stop(1.0, Color.web("#111111"))
+                new Stop(0.0, Color.web("#202020")),
+                new Stop(1.0, Color.web("#131313"))
         ));
 
-        // ── Main Platter (rialzato) ───────────────────────────────────────────
+        // GROOVE RING — anello scuro di separazione skirt/piatto
+        grooveRing = new Circle();
+        grooveRing.setFill(Color.web("#090909"));
+
+        rotatingRimSkirt.getChildren().addAll(outerRim, skirt, grooveRing);
+
+        // fixedRimShading: wrapper fisso → DropShadow sempre verso il basso
+        fixedRimShading = new Group(rotatingRimSkirt);
+        fixedRimShading.setEffect(rimDropShadow);
+
+        // ════════════════════════════════════════════════════════════════════
+        // MAIN PLATTER — rialzato sopra la skirt
+        //   platterDropShadow: ombra proiettata sul groove ring (sempre in basso)
+        //   platterEdgeDark: bordo inferiore-destro scuro (luce da top-left)
+        //   Entrambi sul wrapper fisso → non ruotano
+        // ════════════════════════════════════════════════════════════════════
         mainPlatter = new Circle();
         mainPlatter.setFill(new RadialGradient(
-                0, 0, 0.46, 0.43, 0.5, // focus leggermente in alto-sinistra
+                130, 0.25,
+                0.46, 0.42, 0.50,
                 true, CycleMethod.NO_CYCLE,
-                new Stop(0.0, Color.web("#3a3a3a")),
-                new Stop(0.6, Color.web("#252525")),
-                new Stop(1.0, Color.web("#181818"))
+                new Stop(0.00, Color.web("#3e3e3e")),
+                new Stop(0.30, Color.web("#313131")),
+                new Stop(0.65, Color.web("#242424")),
+                new Stop(0.90, Color.web("#1c1c1c")),
+                new Stop(1.00, Color.web("#151515"))
         ));
-        // Ombra esterna per il rialzo 3D
-        platterShadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#000000cc"), 20, 0.1, 0, 7);
-        // Inner shadow per il bordo concavo tra skirt e piatto
-        platterInner  = new InnerShadow(BlurType.GAUSSIAN, Color.web("#00000099"), 10, 0, 0, -4);
-        platterShadow.setInput(platterInner);
-        mainPlatter.setEffect(platterShadow);
+        // NESSUN effetto sul mainPlatter: gli effetti vanno sul wrapper fisso
+        platterEdgeDark   = new InnerShadow(BlurType.GAUSSIAN, Color.web("#000000bb"), 14, 0.0, 4, 8);
+        platterDropShadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#000000ee"), 20, 0.15, 0, 7);
+        platterDropShadow.setInput(platterEdgeDark);  // chain: prima InnerShadow poi DropShadow
 
-        rotatingBase.getChildren().addAll(outerRim, rimHighlightRing, skirt, mainPlatter);
+        rotatingPlatter.getChildren().add(mainPlatter);
 
-        // ── Fossette (bumps circolari sulla skirt) ────────────────────────────
+        // fixedPlatterShading: wrapper fisso → ombra e bordo scuro sempre fissi
+        fixedPlatterShading = new Group(rotatingPlatter);
+        fixedPlatterShading.setEffect(platterDropShadow);
+
+        // ════════════════════════════════════════════════════════════════════
+        // BUMPS — fossette sferiche concave sulla skirt
+        //   Fill: centro scuro (profondo), bordi più chiari (pareti fossetta)
+        //   fixedBumpShading già garantiva la direzione fissa → invariato
+        // ════════════════════════════════════════════════════════════════════
         for (int i = 0; i < NUM_BUMPS; i++) {
             Circle bump = new Circle();
-            // Le fossette sono scure con bordo leggermente più chiaro
             bump.setFill(new RadialGradient(
-                    0, 0, 0.4, 0.35, 0.5,
+                    130, 0.18,
+                    0.42, 0.38, 0.50,
                     true, CycleMethod.NO_CYCLE,
-                    new Stop(0.0, Color.web("#1a1a1a")),
-                    new Stop(0.6, Color.web("#111111")),
-                    new Stop(1.0, Color.web("#0a0a0a"))
+                    new Stop(0.00, Color.web("#0e0e0e")),
+                    new Stop(0.50, Color.web("#1a1a1a")),
+                    new Stop(0.80, Color.web("#252525")),
+                    new Stop(1.00, Color.web("#1c1c1c"))
             ));
             bumpList.add(bump);
             rotatingBumps.getChildren().add(bump);
         }
-
-        // InnerShadow applicato al gruppo fisso (la direzione luce non ruota)
-        bumpHighlight = new InnerShadow(BlurType.GAUSSIAN, Color.web("#ffffff1a"), 2, 0, 0, -1);
-        bumpShadow    = new InnerShadow(BlurType.GAUSSIAN, Color.web("#000000cc"), 5, 0, 0, 3);
+        bumpHighlight = new InnerShadow(BlurType.GAUSSIAN, Color.web("#ffffff18"), 3, 0.6, -2, -2);
+        bumpShadow    = new InnerShadow(BlurType.GAUSSIAN, Color.web("#000000d0"), 5, 0.4, 2, 3);
         bumpShadow.setInput(bumpHighlight);
 
-        fixedLightingBumps = new Group(rotatingBumps);
-        fixedLightingBumps.setEffect(bumpShadow);
+        fixedBumpShading = new Group(rotatingBumps);
+        fixedBumpShading.setEffect(bumpShadow);
 
-        // ── Display Bezel ─────────────────────────────────────────────────────
+        // Overlay illuminazione globale: modula la luminosità di ogni bump
+        // in base alla sua posizione angolare rispetto alla fonte di luce.
+        // Gradient: (0,0)→(1,1) = top-left→bottom-right nel bbox del cerchio.
+        bumpLightingOverlay = new Circle();
+        bumpLightingOverlay.setFill(new LinearGradient(
+                0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
+                new Stop(0.00, Color.web("#ffffff1e")),  // top-left: bump più illuminati
+                new Stop(0.50, Color.web("#00000000")),  // neutro al centro
+                new Stop(1.00, Color.web("#0000002e"))   // bottom-right: bump in ombra
+        ));
+        bumpLightingOverlay.setMouseTransparent(true);
+
+        // ════════════════════════════════════════════════════════════════════
+        // DISPLAY — bezel + chrome ring + innerDisplay + linee + hub
+        //   displayCavityInner: ombra direzionale sul bordo bottom-right
+        //   displayCavityOuter: ombra diffusa globale (profondità cavità)
+        //   Entrambi sul wrapper fisso fixedDisplayShading → non ruotano
+        // ════════════════════════════════════════════════════════════════════
         displayBezel = new Circle();
         displayBezel.setFill(new RadialGradient(
-                0, 0, 0.5, 0.5, 0.5,
+                0, 0, 0.50, 0.50, 0.50,
                 true, CycleMethod.NO_CYCLE,
-                new Stop(0.0, Color.web("#3c3c3c")),
-                new Stop(1.0, Color.web("#0d0d0d"))
+                new Stop(0.0, Color.web("#252525")),
+                new Stop(0.8, Color.web("#141414")),
+                new Stop(1.0, Color.web("#0c0c0c"))
         ));
-        bezelShadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#000000bb"), 12, 0.1, 0, 4);
-        displayBezel.setEffect(bezelShadow);
+        // NESSUN effetto sul displayBezel: va sul wrapper fisso
 
-        // ── Inner Display (concavo con righe radiali) ─────────────────────
+        chromeRing = new Circle();
+        chromeRing.setFill(Color.TRANSPARENT);
+        chromeRing.setStroke(Color.web("#2e2e2e"));
+
         innerDisplay = new Circle();
-        // Gradiente leggermente asimmetrico: il vinile riflette luce in alto a sinistra
         innerDisplay.setFill(new RadialGradient(
-                -25, 0.35,
-                0.46, 0.43, 0.5,
+                130, 0.12,
+                0.48, 0.45, 0.50,
                 true, CycleMethod.NO_CYCLE,
-                new Stop(0.00, Color.web("#282828")),
-                new Stop(0.30, Color.web("#181818")),
-                new Stop(0.65, Color.web("#0e0e0e")),
-                new Stop(1.00, Color.web("#060606"))
+                new Stop(0.00, Color.web("#1e1e1e")),
+                new Stop(0.35, Color.web("#101010")),
+                new Stop(0.70, Color.web("#070707")),
+                new Stop(1.00, Color.web("#020202"))
         ));
-        // Due livelli di InnerShadow incatenati → cavita' piu' profonda
-        displayCavity2 = new InnerShadow(BlurType.GAUSSIAN, Color.web("#000000cc"), 6, 0.3, 0, 5);
-        displayCavity  = new InnerShadow(BlurType.GAUSSIAN, Color.web("#00000088"), 18, 0, 0, 2);
-        displayCavity.setInput(displayCavity2);
-        innerDisplay.setEffect(displayCavity);
+        // NESSUN effetto su innerDisplay: va sul wrapper fisso
+        displayCavityInner = new InnerShadow(BlurType.GAUSSIAN, Color.web("#000000f0"), 8, 0.5, 3, 5);
+        displayCavityOuter = new InnerShadow(BlurType.GAUSSIAN, Color.web("#000000aa"), 20, 0, 0, 0);
+        displayCavityInner.setInput(displayCavityOuter);
 
-        // Anelli concentrici "solcature vinile"
-        grooveRingOuter = new Circle();
-        grooveRingOuter.setFill(Color.TRANSPARENT);
-        grooveRingOuter.setStroke(Color.web("#00000060"));
+        // Marker rosso
+        markerGlow = new DropShadow(BlurType.GAUSSIAN, Color.web("#ff000099"), 10, 0.5, 0, 0);
+        redMarker  = new Line();
+        redMarker.setStroke(Color.web("#ff2020ff"));
+        redMarker.setStrokeLineCap(StrokeLineCap.ROUND);
+        redMarker.setEffect(markerGlow);  // glow centrato: ok anche se ruota
 
-        grooveRingInner = new Circle();
-        grooveRingInner.setFill(Color.TRANSPARENT);
-        grooveRingInner.setStroke(Color.web("#00000055"));
-
-        // Righe radiali (240 solchi, 3 livelli opacita' per variazione naturale)
-        markerGlow = new DropShadow(BlurType.GAUSSIAN, Color.web("#ff0000cc"), 6, 0.5, 0, 0);
-        for (int i = 0; i < NUM_STROBE; i++) {
-            Line tick = new Line();
-            tick.setStrokeLineCap(StrokeLineCap.BUTT);
-            if (i == 0 || i == 1) {
-                tick.setStroke(Color.web("#ff2222ff"));
-                tick.setStrokeWidth(2.0);
-                tick.setEffect(markerGlow);
-            } else {
-                int mod = i % 3;
-                if (mod == 0) {
-                    tick.setStroke(Color.web("#44444488"));
-                } else if (mod == 1) {
-                    tick.setStroke(Color.web("#33333366"));
-                } else {
-                    tick.setStroke(Color.web("#2a2a2a55"));
-                }
-            }
-            strobeTicks.add(tick);
-            rotatingDisplay.getChildren().add(tick);
+        // Strobe lines
+        for (int i = 0; i < NUM_LINES; i++) {
+            Line line = new Line();
+            line.setStrokeLineCap(StrokeLineCap.ROUND);
+            line.setStroke(i % 3 == 0 ? Color.web("#4a4a4a99") : Color.web("#3a3a3a77"));
+            strobeLines.add(line);
+            rotatingDisplay.getChildren().add(line);
         }
 
-        // ── Center Hub ────────────────────────────────────────────────────────
-        centerHub = new Circle();
-        centerHub.setFill(new RadialGradient(
-                0, 0, 0.42, 0.38, 0.5,
+        // Hub
+        hubBody = new Circle();
+        hubBody.setFill(new RadialGradient(
+                130, 0.30,
+                0.40, 0.35, 0.50,
                 true, CycleMethod.NO_CYCLE,
-                new Stop(0.0, Color.web("#2e2e2e")),
-                new Stop(1.0, Color.web("#0a0a0a"))
+                new Stop(0.00, Color.web("#424242")),
+                new Stop(0.45, Color.web("#1e1e1e")),
+                new Stop(1.00, Color.web("#080808"))
         ));
-        DropShadow hubShadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#000000cc"), 8, 0.15, 0, 2);
-        centerHub.setEffect(hubShadow);
+        // Hub shadow: piccolo e centrato → rotazione non percepibile
+        DropShadow hubShadow = new DropShadow(BlurType.GAUSSIAN, Color.web("#000000cc"), 5, 0.2, 0, 1);
+        hubBody.setEffect(hubShadow);
 
-        rotatingDisplay.getChildren().addAll(0, List.of(displayBezel, innerDisplay, grooveRingOuter, grooveRingInner));
-        rotatingDisplay.getChildren().add(centerHub);
+        hubSpecular = new Circle();
+        hubSpecular.setFill(new RadialGradient(
+                0, 0, 0.40, 0.35, 0.50,
+                true, CycleMethod.NO_CYCLE,
+                new Stop(0.0, Color.web("#ffffff28")),
+                new Stop(1.0, Color.TRANSPARENT)
+        ));
+        hubSpecular.setMouseTransparent(true);
 
-        // ── Highlight Arc sul bordo (fisso, non ruota) ────────────────────────
-        // Simula il riflesso ambientale sul bordo metallico superiore-sinistro
-        outerRimGlow = new Arc();
-        outerRimGlow.setType(ArcType.OPEN);
-        outerRimGlow.setStartAngle(100);
-        outerRimGlow.setLength(130);
-        outerRimGlow.setFill(Color.TRANSPARENT);
-        outerRimGlow.setStroke(new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
+        rotatingDisplay.getChildren().addAll(0, List.of(displayBezel, chromeRing, innerDisplay));
+        rotatingDisplay.getChildren().add(0, redMarker);
+        rotatingDisplay.getChildren().addAll(hubBody, hubSpecular);
+
+        // fixedDisplayShading: wrapper fisso → cavità sempre con ombra fissa
+        fixedDisplayShading = new Group(rotatingDisplay);
+        fixedDisplayShading.setEffect(displayCavityInner);
+
+        // ════════════════════════════════════════════════════════════════════
+        // ARCHI OVERLAY FISSI — riflessi ambientali che non ruotano mai
+        // ════════════════════════════════════════════════════════════════════
+        rimHighlightArc = makeArc(105, 115, new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
                 new Stop(0.0, Color.web("#ffffff00")),
-                new Stop(0.4, Color.web("#ffffff33")),
-                new Stop(1.0, Color.web("#ffffff00"))
-        ));
-        outerRimGlow.setMouseTransparent(true);
+                new Stop(0.4, Color.web("#ffffff66")),
+                new Stop(1.0, Color.web("#ffffff00"))));
 
-        // ── Montaggio finale ──────────────────────────────────────────────────
-        getChildren().addAll(rotatingBase, fixedLightingBumps, rotatingDisplay, outerRimGlow);
+        rimShadowArc = makeArc(285, 120, new LinearGradient(0, 0, 1, 0, true, CycleMethod.NO_CYCLE,
+                new Stop(0.0, Color.web("#00000000")),
+                new Stop(0.5, Color.web("#00000055")),
+                new Stop(1.0, Color.web("#00000000"))));
 
-        // ── Binding rotazione con pivot fisso (0,0) ───────────────────────────
-        javafx.scene.transform.Rotate rotBase = new javafx.scene.transform.Rotate(0, 0, 0);
-        rotBase.angleProperty().bind(deck.rotationAngleProperty());
-        rotatingBase.getTransforms().add(rotBase);
+        platterHighlightArc = makeArc(115, 95, new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
+                new Stop(0.0, Color.web("#ffffff00")),
+                new Stop(0.5, Color.web("#ffffff44")),
+                new Stop(1.0, Color.web("#ffffff00"))));
 
-        javafx.scene.transform.Rotate rotBumps = new javafx.scene.transform.Rotate(0, 0, 0);
-        rotBumps.angleProperty().bind(deck.rotationAngleProperty());
-        rotatingBumps.getTransforms().add(rotBumps);
+        bezelChromeArc = makeArc(100, 130, new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE,
+                new Stop(0.0, Color.web("#ffffff00")),
+                new Stop(0.4, Color.web("#ffffff99")),
+                new Stop(1.0, Color.web("#ffffff00"))));
 
-        javafx.scene.transform.Rotate rotDisplay = new javafx.scene.transform.Rotate(0, 0, 0);
-        rotDisplay.angleProperty().bind(deck.rotationAngleProperty());
-        rotatingDisplay.getTransforms().add(rotDisplay);
+        // ════════════════════════════════════════════════════════════════════
+        // MONTAGGIO — ordine z-stacking dal basso verso l'alto
+        // ════════════════════════════════════════════════════════════════════
+        getChildren().addAll(
+                fixedRimShading,       // rim + skirt + groove
+                fixedBumpShading,      // bumps (concavità con ombra fissa)
+                bumpLightingOverlay,   // overlay globale: modula luminosità bumps per posizione
+                fixedPlatterShading,   // piatto rialzato (copre la zona interna dei bumps)
+                fixedDisplayShading,   // display concavo
+                rimHighlightArc,
+                rimShadowArc,
+                platterHighlightArc,
+                bezelChromeArc
+        );
 
-        // ── Interazione ───────────────────────────────────────────────────────
+        // ════════════════════════════════════════════════════════════════════
+        // ROTAZIONI — pivot a (0,0) del sistema locale del gruppo
+        // ════════════════════════════════════════════════════════════════════
+        Rotate rRimSkirt = new Rotate(0, 0, 0);
+        rRimSkirt.angleProperty().bind(deck.rotationAngleProperty());
+        rotatingRimSkirt.getTransforms().add(rRimSkirt);
+
+        Rotate rPlatter = new Rotate(0, 0, 0);
+        rPlatter.angleProperty().bind(deck.rotationAngleProperty());
+        rotatingPlatter.getTransforms().add(rPlatter);
+
+        Rotate rBumps = new Rotate(0, 0, 0);
+        rBumps.angleProperty().bind(deck.rotationAngleProperty());
+        rotatingBumps.getTransforms().add(rBumps);
+
+        Rotate rDisplay = new Rotate(0, 0, 0);
+        rDisplay.angleProperty().bind(deck.rotationAngleProperty());
+        rotatingDisplay.getTransforms().add(rDisplay);
+
+        // ════════════════════════════════════════════════════════════════════
+        // INTERAZIONE
+        // ════════════════════════════════════════════════════════════════════
         deck.setOnScroll(this::onScroll);
         deck.setOnMousePressed(this::onMousePressed);
         deck.setOnMouseDragged(this::onMouseDragged);
@@ -262,7 +369,19 @@ public class CDJDeckSkin extends SkinBase<DynamicDeck> {
         deck.setOnTouchMoved(this::onTouchMoved);
     }
 
-    // ─── Handlers ────────────────────────────────────────────────────────────
+    /** Crea un arco stilizzato (overlay fisso) con gradiente di stroke. */
+    private static Arc makeArc(double startAngle, double length, javafx.scene.paint.Paint stroke) {
+        Arc arc = new Arc();
+        arc.setType(ArcType.OPEN);
+        arc.setFill(Color.TRANSPARENT);
+        arc.setStartAngle(startAngle);
+        arc.setLength(length);
+        arc.setStroke(stroke);
+        arc.setMouseTransparent(true);
+        return arc;
+    }
+
+    // ─── Event handlers ───────────────────────────────────────────────────────
 
     private void onScroll(ScrollEvent e) {
         getSkinnable().setRotationAngle(getSkinnable().getRotationAngle() + e.getDeltaY() * 0.3);
@@ -279,7 +398,9 @@ public class CDJDeckSkin extends SkinBase<DynamicDeck> {
         oldMouseAngle = angle;
     }
 
-    private void onTouchPressed(TouchEvent e)  { oldMouseAngle = mouseAngle(e.getTouchPoint().getX(), e.getTouchPoint().getY()); }
+    private void onTouchPressed(TouchEvent e) {
+        oldMouseAngle = mouseAngle(e.getTouchPoint().getX(), e.getTouchPoint().getY());
+    }
 
     private void onTouchMoved(TouchEvent e) {
         double angle = mouseAngle(e.getTouchPoint().getX(), e.getTouchPoint().getY());
@@ -296,7 +417,7 @@ public class CDJDeckSkin extends SkinBase<DynamicDeck> {
         return Math.toDegrees(Math.atan2(my - cy, mx - cx));
     }
 
-    // ─── Sizing responsivo ────────────────────────────────────────────────────
+    // ─── Sizing ───────────────────────────────────────────────────────────────
     @Override protected double computeMinWidth(double h, double t, double r, double b, double l)  { return 50; }
     @Override protected double computeMinHeight(double w, double t, double r, double b, double l) { return 50; }
     @Override protected double computePrefWidth(double h, double t, double r, double b, double l)  { return 250; }
@@ -307,122 +428,136 @@ public class CDJDeckSkin extends SkinBase<DynamicDeck> {
     // ─── Layout responsivo ────────────────────────────────────────────────────
     @Override
     protected void layoutChildren(double x, double y, double w, double h) {
-        double minDim = Math.min(w, h);
-        double R = Math.max(1, minDim * 0.48);
+        final double R  = Math.max(1, Math.min(w, h) * 0.48);
+        final double cx = x + w / 2.0;
+        final double cy = y + h / 2.0;
 
-        // Raggi principali
-        double outerRimR   = R;
-        double skirtR      = R * 0.965;  // quasi al bordo → zona bumps più ampia
-        double platterR    = R * 0.775;  // piatto leggermente più piccolo
+        // ── Raggi ─────────────────────────────────────────────────────────────
+        final double outerRimR     = R;
+        final double skirtR        = R * 0.962;
+        final double grooveRingR   = R * 0.792;
+        final double platterR      = R * 0.775;
 
-        // Fossette sulla skirt
-        // La zona skirt va da platterR (0.775) a skirtR (0.965) → larghezza = 0.19 * R
-        // Il bump deve riempire quasi tutta quella larghezza
-        double bumpOrbit   = (skirtR + platterR) / 2.0;  // centro geometrico della corona
-        double bumpRadius  = (skirtR - platterR) * 0.46; // ~88% della semi-larghezza → quasi a filo
+        final double bumpOrbit     = (skirtR + platterR) / 2.0;
+        final double bumpRadius    = (skirtR - platterR) * 0.44;
 
-        // Display centrale
-        double bezelR        = R * 0.36;
-        double innerDisplayR = R * 0.325;
+        final double bezelR        = R * 0.360;
+        final double chromeRingR   = R * 0.338;
+        final double innerDisplayR = R * 0.322;
 
-        // Tick radiali
-        double tickOuterR  = R * 0.275;
-        double tickInnerR  = R * 0.130;
-        double tickWidth   = Math.max(0.5, R * 0.010);
+        final double strobeOuter   = innerDisplayR * 0.88;
+        final double strobeInner   = R * 0.115;
 
-        // Hub
-        double hubR        = R * 0.110;
+        final double hubR          = R * 0.095;
+        final double hubSpecR      = hubR * 0.55;
 
-        // Highlight arc sul rim
-        double rimGlowR    = outerRimR - R * 0.015;
+        // ── Effetti scalati ───────────────────────────────────────────────────
+        rimDropShadow.setRadius(Math.max(1, R * 0.060));
 
-        double cx = x + w / 2.0;
-        double cy = y + h / 2.0;
+        platterDropShadow.setRadius(Math.max(1, R * 0.080));
+        platterDropShadow.setOffsetY(R * 0.028);
+        platterEdgeDark.setRadius(Math.max(1, R * 0.055));
+        platterEdgeDark.setOffsetX(R * 0.016);
+        platterEdgeDark.setOffsetY(R * 0.032);
 
-        // ── Aggiorna effetti dinamicamente ────────────────────────────────────
-        platterShadow.setRadius(Math.max(1, R * 0.08));
-        platterShadow.setOffsetY(R * 0.028);
-        platterInner.setRadius(Math.max(1, R * 0.04));
+        bumpShadow.setRadius(Math.max(1, R * 0.024));
+        bumpShadow.setOffsetX(R * 0.010);
+        bumpShadow.setOffsetY(R * 0.014);
+        bumpHighlight.setRadius(Math.max(1, R * 0.014));
+        bumpHighlight.setOffsetX(-R * 0.008);
+        bumpHighlight.setOffsetY(-R * 0.010);
 
-        rimShadow.setRadius(Math.max(1, R * 0.05));
+        displayCavityInner.setRadius(Math.max(1, R * 0.032));
+        displayCavityInner.setOffsetX(R * 0.012);
+        displayCavityInner.setOffsetY(R * 0.022);
+        displayCavityOuter.setRadius(Math.max(1, R * 0.082));
 
-        bumpShadow.setRadius(Math.max(1, R * 0.025));
-        bumpShadow.setOffsetY(R * 0.012);
-        bumpHighlight.setRadius(Math.max(1, R * 0.010));
+        markerGlow.setRadius(Math.max(2, R * 0.040));
 
-        bezelShadow.setRadius(Math.max(1, R * 0.05));
-        bezelShadow.setOffsetY(R * 0.016);
+        // ── Pivot dei wrapper fissi (al centro del component) ─────────────────
+        // Pattern: fixedXxx.setLayoutX(cx) → il wrapper si muove al centro
+        //          rotatingXxx.setLayoutX(0) → il contenuto sta all'origine del wrapper
+        fixedRimShading.setLayoutX(cx);     fixedRimShading.setLayoutY(cy);
+        rotatingRimSkirt.setLayoutX(0);     rotatingRimSkirt.setLayoutY(0);
 
-        displayCavity.setRadius(Math.max(1, R * 0.072));
-        displayCavity.setOffsetY(R * 0.008);
-        displayCavity2.setRadius(Math.max(1, R * 0.024));
-        displayCavity2.setOffsetY(R * 0.020);
+        fixedPlatterShading.setLayoutX(cx); fixedPlatterShading.setLayoutY(cy);
+        rotatingPlatter.setLayoutX(0);      rotatingPlatter.setLayoutY(0);
 
-        markerGlow.setRadius(Math.max(2, R * 0.028));
+        fixedBumpShading.setLayoutX(cx);    fixedBumpShading.setLayoutY(cy);
+        rotatingBumps.setLayoutX(0);        rotatingBumps.setLayoutY(0);
 
-        // ── Pivot globale ─────────────────────────────────────────────────────
-        rotatingBase.setLayoutX(cx);         rotatingBase.setLayoutY(cy);
-        fixedLightingBumps.setLayoutX(cx);   fixedLightingBumps.setLayoutY(cy);
-        rotatingBumps.setLayoutX(0);         rotatingBumps.setLayoutY(0);
-        rotatingDisplay.setLayoutX(cx);      rotatingDisplay.setLayoutY(cy);
-        outerRimGlow.setLayoutX(cx);         outerRimGlow.setLayoutY(cy);
+        // L'overlay è centrato sul disco e non ruota
+        bumpLightingOverlay.setLayoutX(cx); bumpLightingOverlay.setLayoutY(cy);
 
-        // ── Cerchi base ───────────────────────────────────────────────────────
+        fixedDisplayShading.setLayoutX(cx); fixedDisplayShading.setLayoutY(cy);
+        rotatingDisplay.setLayoutX(0);      rotatingDisplay.setLayoutY(0);
+
+        rimHighlightArc.setLayoutX(cx);     rimHighlightArc.setLayoutY(cy);
+        rimShadowArc.setLayoutX(cx);        rimShadowArc.setLayoutY(cy);
+        platterHighlightArc.setLayoutX(cx); platterHighlightArc.setLayoutY(cy);
+        bezelChromeArc.setLayoutX(cx);      bezelChromeArc.setLayoutY(cy);
+
+        // ── Strati base ───────────────────────────────────────────────────────
         outerRim.setRadius(outerRimR);
-        rimHighlightRing.setRadius(outerRimR - R * 0.005);
-        rimHighlightRing.setStrokeWidth(Math.max(0.5, R * 0.008));
         skirt.setRadius(skirtR);
+        grooveRing.setRadius(grooveRingR);
+        // L'overlay occupa tutta la zona skirt (include il groove ring)
+        bumpLightingOverlay.setRadius(skirtR);
         mainPlatter.setRadius(platterR);
 
-        // ── Fossette ──────────────────────────────────────────────────────────
-        double angleStepBumps = 360.0 / NUM_BUMPS;
+        // ── Bumps ─────────────────────────────────────────────────────────────
+        final double bumpStep = 360.0 / NUM_BUMPS;
         for (int i = 0; i < NUM_BUMPS; i++) {
-            Circle bump = bumpList.get(i);
-            double angleRad = Math.toRadians(i * angleStepBumps);
-            bump.setCenterX(bumpOrbit * Math.cos(angleRad));
-            bump.setCenterY(bumpOrbit * Math.sin(angleRad));
-            bump.setRadius(bumpRadius);
+            double ang = Math.toRadians(i * bumpStep);
+            Circle b = bumpList.get(i);
+            b.setCenterX(bumpOrbit * Math.cos(ang));
+            b.setCenterY(bumpOrbit * Math.sin(ang));
+            b.setRadius(bumpRadius);
         }
 
         // ── Display ───────────────────────────────────────────────────────────
         displayBezel.setRadius(bezelR);
+        chromeRing.setRadius(chromeRingR);
+        chromeRing.setStrokeWidth(Math.max(0.5, R * 0.007));
         innerDisplay.setRadius(innerDisplayR);
 
-        // Anelli concentrici solcature
-        grooveRingOuter.setRadius(innerDisplayR * 0.82);
-        grooveRingOuter.setStrokeWidth(Math.max(0.5, R * 0.005));
-        grooveRingInner.setRadius(innerDisplayR * 0.60);
-        grooveRingInner.setStrokeWidth(Math.max(0.5, R * 0.004));
-
-        // ── Tick radiali ──────────────────────────────────────────────────────────────────────────
-        double angleStepTicks = 360.0 / NUM_STROBE;
-        for (int i = 0; i < NUM_STROBE; i++) {
-            Line tick = strobeTicks.get(i);
-            double angleRad = Math.toRadians(i * angleStepTicks);
-            if (i == 0 || i == 1) {
-                // Marker rossi: piu' lunghi e sporgenti verso l'esterno
-                tick.setStartX(tickInnerR * 0.80 * Math.cos(angleRad));
-                tick.setStartY(tickInnerR * 0.80 * Math.sin(angleRad));
-                tick.setEndX((tickOuterR + R * 0.045) * Math.cos(angleRad));
-                tick.setEndY((tickOuterR + R * 0.045) * Math.sin(angleRad));
-                tick.setStrokeWidth(Math.max(1.5, R * 0.009));
-            } else {
-                // Ogni 5 solchi uno leggermente piu' lungo
-                double innerScale = (i % 5 == 0) ? 0.90 : 1.0;
-                tick.setStartX(tickInnerR * innerScale * Math.cos(angleRad));
-                tick.setStartY(tickInnerR * innerScale * Math.sin(angleRad));
-                tick.setEndX(tickOuterR * Math.cos(angleRad));
-                tick.setEndY(tickOuterR * Math.sin(angleRad));
-                tick.setStrokeWidth(tickWidth);
-            }
+        // ── Strobe lines ──────────────────────────────────────────────────────
+        final double lineStep  = 360.0 / NUM_LINES;
+        final double lineWidth = Math.max(0.5, R * 0.0045);
+        for (int i = 0; i < NUM_LINES; i++) {
+            double ang = Math.toRadians(i * lineStep);
+            Line l = strobeLines.get(i);
+            l.setStartX(strobeInner * Math.cos(ang));
+            l.setStartY(strobeInner * Math.sin(ang));
+            l.setEndX(strobeOuter * Math.cos(ang));
+            l.setEndY(strobeOuter * Math.sin(ang));
+            l.setStrokeWidth(lineWidth);
         }
 
-        // ── Hub ───────────────────────────────────────────────────────────────
-        centerHub.setRadius(hubR);
+        // Marker rosso: verticale
+        redMarker.setStartX(0); redMarker.setStartY(-strobeOuter * 1.08);
+        redMarker.setEndX(0);   redMarker.setEndY( strobeOuter * 1.08);
+        redMarker.setStrokeWidth(Math.max(1.2, R * 0.008));
 
-        // ── Highlight arc ─────────────────────────────────────────────────────
-        outerRimGlow.setRadiusX(rimGlowR);
-        outerRimGlow.setRadiusY(rimGlowR);
-        outerRimGlow.setStrokeWidth(Math.max(1, R * 0.018));
+        // ── Hub ───────────────────────────────────────────────────────────────
+        hubBody.setRadius(hubR);
+        hubSpecular.setRadius(hubSpecR);
+        hubSpecular.setCenterX(-hubR * 0.20);
+        hubSpecular.setCenterY(-hubR * 0.24);
+
+        // ── Archi fissi ───────────────────────────────────────────────────────
+        double rimArcR  = outerRimR - R * 0.014;
+        rimHighlightArc.setRadiusX(rimArcR);   rimHighlightArc.setRadiusY(rimArcR);
+        rimHighlightArc.setStrokeWidth(Math.max(1.0, R * 0.024));
+        rimShadowArc.setRadiusX(rimArcR);       rimShadowArc.setRadiusY(rimArcR);
+        rimShadowArc.setStrokeWidth(Math.max(1.0, R * 0.024));
+
+        double platArcR = platterR - R * 0.010;
+        platterHighlightArc.setRadiusX(platArcR); platterHighlightArc.setRadiusY(platArcR);
+        platterHighlightArc.setStrokeWidth(Math.max(0.5, R * 0.012));
+
+        double bezArcR  = chromeRingR + R * 0.004;
+        bezelChromeArc.setRadiusX(bezArcR);    bezelChromeArc.setRadiusY(bezArcR);
+        bezelChromeArc.setStrokeWidth(Math.max(0.8, R * 0.016));
     }
 }
