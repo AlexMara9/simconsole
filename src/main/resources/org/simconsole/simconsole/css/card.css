@@ -1,7 +1,7 @@
 .card {
-    -fx-background-color: #1e1e1e;
+    -fx-background-color: #0e0e0e;
     -fx-background-radius: 12;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0, 0, 4);
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.8), 15, 0, 0, 5);
     -fx-padding: 0;
 }
 
