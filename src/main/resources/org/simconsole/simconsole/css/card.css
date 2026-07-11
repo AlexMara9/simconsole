@@ -1,5 +1,5 @@
 .card {
-    -fx-background-color: #0f0f0f;
+    -fx-background-color: #262626;
     -fx-background-radius: 12;
     -fx-effect: innershadow(gaussian, rgba(0,0,0,0.8), 15, 0, 0, 5);
     -fx-padding: 0;
