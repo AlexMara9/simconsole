@@ -208,7 +208,21 @@ public class StudioFaderSkin extends SliderSkin {
         // Gap fra il solco (track) e l'inizio delle tacche
         double gap = isVert ? trackW / 2.0 + w * 0.03 : trackH / 2.0 + h * 0.03;
 
-        double fontSize = Math.max(9, (isVert ? w : h) * 0.12);
+        // DynamicSlider standards for responsiveness
+        double majorDistance = (majorUnit / range) * usableTrack;
+        boolean showLabels = majorDistance > 12.0;
+        boolean showMinor = (majorDistance / (minorCount + 1)) > 4.0;
+
+        double maxFontByThickness = isVert ? (w * 0.25) : (h * 0.25);
+        double maxFontBySpacing = isVert ? (majorDistance * 0.8) : (majorDistance * 0.45);
+        if (!showLabels) {
+            maxFontBySpacing = isVert ? (usableTrack * 0.3) : (usableTrack * 0.2);
+        }
+        double idealFontSize = Math.min(maxFontByThickness, maxFontBySpacing);
+        double fontSize = Math.max(1, idealFontSize); 
+
+        double majorStroke = Math.max(1.0, fontSize * 0.15);
+        double minorStroke = Math.max(1.0, fontSize * 0.08);
 
         int majorIndex = 0;
         int minorIndex = 0;
@@ -222,8 +236,8 @@ public class StudioFaderSkin extends SliderSkin {
                 Line leftL = leftMajorTicks.get(majorIndex);
                 Line rightL = rightMajorTicks.get(majorIndex);
                 
-                leftL.setStyle("-fx-stroke: #dddddd; -fx-stroke-width: 2px; -fx-stroke-line-cap: butt;");
-                rightL.setStyle("-fx-stroke: #dddddd; -fx-stroke-width: 2px; -fx-stroke-line-cap: butt;");
+                leftL.setStyle(String.format(java.util.Locale.US, "-fx-stroke: #dddddd; -fx-stroke-width: %.1fpx; -fx-stroke-line-cap: butt;", majorStroke));
+                rightL.setStyle(String.format(java.util.Locale.US, "-fx-stroke: #dddddd; -fx-stroke-width: %.1fpx; -fx-stroke-line-cap: butt;", majorStroke));
 
                 if (isVert) {
                     double py = y + pos;
@@ -249,27 +263,34 @@ public class StudioFaderSkin extends SliderSkin {
                     Text leftText = leftTickLabels.get(majorIndex);
                     Text rightText = rightTickLabels.get(majorIndex);
                     
-                    leftText.setStyle(String.format(java.util.Locale.US, "-fx-font-size: %.1fpx; -fx-fill: #cccccc;", fontSize));
-                    rightText.setStyle(String.format(java.util.Locale.US, "-fx-font-size: %.1fpx; -fx-fill: #cccccc;", fontSize));
-                    
-                    leftText.applyCss(); 
-                    rightText.applyCss();
-                    
-                    double twL = leftText.getLayoutBounds().getWidth();
-                    double twR = rightText.getLayoutBounds().getWidth();
-                    double th = leftText.getLayoutBounds().getHeight();
-                    double textGap = fontSize * 0.5;
+                    boolean isExtreme = (v == min || Math.abs(v - max) < 0.001);
+                    boolean visible = showLabels || isExtreme;
+                    leftText.setVisible(visible);
+                    rightText.setVisible(visible);
 
-                    if (isVert) {
-                        leftText.setLayoutX(trackCenter - gap - tickLength - textGap - twL);
-                        leftText.setLayoutY(y + pos);
-                        rightText.setLayoutX(trackCenter + gap + tickLength + textGap);
-                        rightText.setLayoutY(y + pos);
-                    } else {
-                        leftText.setLayoutX(x + pos - twL / 2.0);
-                        leftText.setLayoutY(trackCenter - gap - tickLength - textGap - th / 2.0);
-                        rightText.setLayoutX(x + pos - twR / 2.0);
-                        rightText.setLayoutY(trackCenter + gap + tickLength + textGap + th / 2.0);
+                    if (visible) {
+                        leftText.setStyle(String.format(java.util.Locale.US, "-fx-font-size: %.1fpx; -fx-fill: #cccccc;", fontSize));
+                        rightText.setStyle(String.format(java.util.Locale.US, "-fx-font-size: %.1fpx; -fx-fill: #cccccc;", fontSize));
+                        
+                        leftText.applyCss(); 
+                        rightText.applyCss();
+                        
+                        double twL = leftText.getLayoutBounds().getWidth();
+                        double twR = rightText.getLayoutBounds().getWidth();
+                        double th = leftText.getLayoutBounds().getHeight();
+                        double textGap = fontSize * 0.5;
+
+                        if (isVert) {
+                            leftText.setLayoutX(trackCenter - gap - tickLength - textGap - twL);
+                            leftText.setLayoutY(y + pos);
+                            rightText.setLayoutX(trackCenter + gap + tickLength + textGap);
+                            rightText.setLayoutY(y + pos);
+                        } else {
+                            leftText.setLayoutX(x + pos - twL / 2.0);
+                            leftText.setLayoutY(trackCenter - gap - tickLength - textGap - th / 2.0);
+                            rightText.setLayoutX(x + pos - twR / 2.0);
+                            rightText.setLayoutY(trackCenter + gap + tickLength + textGap + th / 2.0);
+                        }
                     }
                 }
                 majorIndex++;
@@ -282,32 +303,37 @@ public class StudioFaderSkin extends SliderSkin {
                         Line leftM = leftMinorTicks.get(minorIndex);
                         Line rightM = rightMinorTicks.get(minorIndex);
                         
-                        leftM.setStyle("-fx-stroke: #888888; -fx-stroke-width: 1.5px;");
-                        rightM.setStyle("-fx-stroke: #888888; -fx-stroke-width: 1.5px;");
+                        leftM.setVisible(showMinor);
+                        rightM.setVisible(showMinor);
+                        
+                        if (showMinor) {
+                            leftM.setStyle(String.format(java.util.Locale.US, "-fx-stroke: #888888; -fx-stroke-width: %.1fpx;", minorStroke));
+                            rightM.setStyle(String.format(java.util.Locale.US, "-fx-stroke: #888888; -fx-stroke-width: %.1fpx;", minorStroke));
 
-                        double minorVal = v + minorUnitVal * i;
-                        double mPerc = range > 0 ? (minorVal - min) / range : 0;
-                        mPerc = Math.max(0, Math.min(1, mPerc));
-                        double mPos = startOffset + (isVert ? (1.0 - mPerc) : mPerc) * usableTrack;
+                            double minorVal = v + minorUnitVal * i;
+                            double mPerc = range > 0 ? (minorVal - min) / range : 0;
+                            mPerc = Math.max(0, Math.min(1, mPerc));
+                            double mPos = startOffset + (isVert ? (1.0 - mPerc) : mPerc) * usableTrack;
 
-                        if (isVert) {
-                            double py = y + mPos;
-                            leftM.setStartX(trackCenter - gap - minorLength);
-                            leftM.setEndX(trackCenter - gap);
-                            leftM.setStartY(py); leftM.setEndY(py);
+                            if (isVert) {
+                                double py = y + mPos;
+                                leftM.setStartX(trackCenter - gap - minorLength);
+                                leftM.setEndX(trackCenter - gap);
+                                leftM.setStartY(py); leftM.setEndY(py);
 
-                            rightM.setStartX(trackCenter + gap);
-                            rightM.setEndX(trackCenter + gap + minorLength);
-                            rightM.setStartY(py); rightM.setEndY(py);
-                        } else {
-                            double px = x + mPos;
-                            leftM.setStartY(trackCenter - gap - minorLength);
-                            leftM.setEndY(trackCenter - gap);
-                            leftM.setStartX(px); leftM.setEndX(px);
+                                rightM.setStartX(trackCenter + gap);
+                                rightM.setEndX(trackCenter + gap + minorLength);
+                                rightM.setStartY(py); rightM.setEndY(py);
+                            } else {
+                                double px = x + mPos;
+                                leftM.setStartY(trackCenter - gap - minorLength);
+                                leftM.setEndY(trackCenter - gap);
+                                leftM.setStartX(px); leftM.setEndX(px);
 
-                            rightM.setStartY(trackCenter + gap);
-                            rightM.setEndY(trackCenter + gap + minorLength);
-                            rightM.setStartX(px); rightM.setEndX(px);
+                                rightM.setStartY(trackCenter + gap);
+                                rightM.setEndY(trackCenter + gap + minorLength);
+                                rightM.setStartX(px); rightM.setEndX(px);
+                            }
                         }
                         minorIndex++;
                     }
