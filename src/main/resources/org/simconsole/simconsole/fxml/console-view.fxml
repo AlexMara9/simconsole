@@ -29,14 +29,9 @@
     </rowConstraints>
     <children>
       <fx:include minHeight="0.0" minWidth="0.0" source="master.fxml" GridPane.columnIndex="2" GridPane.columnSpan="4" />
-      <StackPane styleClass="card" stylesheets="@../css/card.css" GridPane.columnIndex="1">
-         <children>
-          
-            <!-- Left Deck -->
-            <DynamicDeck minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" />
-            <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" GridPane.columnIndex="1" />       
-         </children>
-      </StackPane>
+      <!-- Left Deck -->
+      <DynamicDeck minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="1" />
+      <fx:include minHeight="0.0" minWidth="0.0" source="signal-graph.fxml" GridPane.columnIndex="1" />
       <StackPane fx:id="playbackContainer" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/card.css" GridPane.columnSpan="4" GridPane.rowIndex="1">
          <children>
             <GridPane fx:id="playbackControlsContainer" minHeight="0.0" minWidth="0.0">
