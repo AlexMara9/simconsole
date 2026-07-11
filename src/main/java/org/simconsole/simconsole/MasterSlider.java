@@ -8,21 +8,21 @@ import javafx.scene.control.Skin;
  * Custom Slider implementing a Studio Mixing Console Fader.
  * Uses a thin track with symmetric tick marks and a 3D ribbed thumb.
  */
-public class StudioFader extends Slider {
+public class MasterSlider extends Slider {
 
-    public StudioFader() {
+    public MasterSlider() {
         super();
-        this.getStyleClass().add("studio-fader");
+        this.getStyleClass().add("master-slider");
     }
 
-    public StudioFader(double min, double max, double value) {
+    public MasterSlider(double min, double max, double value) {
         super(min, max, value);
-        this.getStyleClass().add("studio-fader");
+        this.getStyleClass().add("master-slider");
     }
 
     @Override
     protected Skin<?> createDefaultSkin() {
-        return new StudioFaderSkin(this);
+        return new MasterSliderSkin(this);
     }
 
     @Override

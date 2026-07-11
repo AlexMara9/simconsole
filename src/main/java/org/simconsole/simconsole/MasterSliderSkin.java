@@ -11,7 +11,7 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudioFaderSkin extends SliderSkin {
+public class MasterSliderSkin extends SliderSkin {
 
     private Node track;
     private Node thumb;
@@ -24,7 +24,7 @@ public class StudioFaderSkin extends SliderSkin {
     private final List<Text> leftTickLabels = new ArrayList<>();
     private final List<Text> rightTickLabels = new ArrayList<>();
 
-    public StudioFaderSkin(StudioFader slider) {
+    public MasterSliderSkin(MasterSlider slider) {
         super(slider);
 
         for (Node n : getChildren()) {
