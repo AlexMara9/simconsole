@@ -61,3 +61,69 @@
 .cue4 .round-button-led-ring.pressed {
     -fx-fill: #238b95;
 }
+
+/* --- MPC Pad Style for Cue Buttons --- */
+
+/* Base state (Dimmed pad) */
+.cue-button .round-button-outer-ring { -fx-fill: #111111; } /* Dark bezel */
+.cue-button .round-button-middle-ring { -fx-fill: #1a1a1a; }
+
+/* Dimmed dark tinted interiors */
+.cue-button.cue1 .round-button-outer-knob,
+.cue-button.cue1 .round-button-led-ring,
+.cue-button.cue1 .round-button-inner-knob {
+    -fx-fill: #3a0d0d; /* Dark Red */
+}
+
+.cue-button.cue2 .round-button-outer-knob,
+.cue-button.cue2 .round-button-led-ring,
+.cue-button.cue2 .round-button-inner-knob {
+    -fx-fill: #3a300d; /* Dark Yellow */
+}
+
+.cue-button.cue3 .round-button-outer-knob,
+.cue-button.cue3 .round-button-led-ring,
+.cue-button.cue3 .round-button-inner-knob {
+    -fx-fill: #1a3a0d; /* Dark Green */
+}
+
+.cue-button.cue4 .round-button-outer-knob,
+.cue-button.cue4 .round-button-led-ring,
+.cue-button.cue4 .round-button-inner-knob {
+    -fx-fill: #0d363a; /* Dark Blue */
+}
+
+/* Dimmed Text Colors */
+.cue-button.cue1 .round-button-text { -fx-fill: rgba(248, 59, 59, 0.4); }
+.cue-button.cue2 .round-button-text { -fx-fill: rgba(248, 204, 59, 0.4); }
+.cue-button.cue3 .round-button-text { -fx-fill: rgba(113, 248, 59, 0.4); }
+.cue-button.cue4 .round-button-text { -fx-fill: rgba(59, 232, 248, 0.4); }
+
+/* Lit state (Vibrant Glowing Pad) */
+.cue-button.pad-lit.cue1 .round-button-outer-knob,
+.cue-button.pad-lit.cue1 .round-button-led-ring,
+.cue-button.pad-lit.cue1 .round-button-inner-knob {
+    -fx-fill: linear-gradient(to bottom right, rgba(255, 120, 120, 0.95), rgba(248, 59, 59, 1.0));
+}
+.cue-button.pad-lit.cue1 .round-button-text { -fx-fill: #ffffff; }
+
+.cue-button.pad-lit.cue2 .round-button-outer-knob,
+.cue-button.pad-lit.cue2 .round-button-led-ring,
+.cue-button.pad-lit.cue2 .round-button-inner-knob {
+    -fx-fill: linear-gradient(to bottom right, rgba(255, 230, 120, 0.95), rgba(248, 204, 59, 1.0));
+}
+.cue-button.pad-lit.cue2 .round-button-text { -fx-fill: #ffffff; }
+
+.cue-button.pad-lit.cue3 .round-button-outer-knob,
+.cue-button.pad-lit.cue3 .round-button-led-ring,
+.cue-button.pad-lit.cue3 .round-button-inner-knob {
+    -fx-fill: linear-gradient(to bottom right, rgba(160, 255, 120, 0.95), rgba(113, 248, 59, 1.0));
+}
+.cue-button.pad-lit.cue3 .round-button-text { -fx-fill: #ffffff; }
+
+.cue-button.pad-lit.cue4 .round-button-outer-knob,
+.cue-button.pad-lit.cue4 .round-button-led-ring,
+.cue-button.pad-lit.cue4 .round-button-inner-knob {
+    -fx-fill: linear-gradient(to bottom right, rgba(120, 250, 255, 0.95), rgba(59, 232, 248, 1.0));
+}
+.cue-button.pad-lit.cue4 .round-button-text { -fx-fill: #ffffff; }

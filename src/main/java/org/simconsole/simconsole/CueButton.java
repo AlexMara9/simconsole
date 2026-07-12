@@ -19,6 +19,8 @@ public class CueButton extends LedButton {
         
         // The LED should be ON only when a bookmark is present
         this.selectedProperty().bind(hasBookmark);
+        
+        this.getStyleClass().add("cue-button");
     }
 
     @Override
