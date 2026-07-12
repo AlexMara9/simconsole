@@ -11,22 +11,34 @@ public class CueButtonSkin extends LedButtonSquareSkin {
     public CueButtonSkin(CueButton control) {
         super(control);
 
+        control.selectedProperty().addListener((obs, old, isSelected) -> updatePadState(control));
+        control.armedProperty().addListener((obs, old, isArmed) -> updatePadState(control));
+        updatePadState(control);
+
         // Add the bookmark logic here in the skin, keeping the controller clean
         control.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             if (event.isShiftDown()) {
                 // Remove bookmark
                 if (control.getHasBookmark()) {
                     control.setHasBookmark(false);
-                    control.setBookmarkPosition(-1);
                 }
             } else {
                 if (!control.getHasBookmark()) {
                     // Set bookmark
                     control.setHasBookmark(true);
-                    control.setBookmarkPosition(0.0); // Placeholder
                 }
             }
             event.consume();
         });
+    }
+
+    private void updatePadState(CueButton control) {
+        if (control.isSelected() || control.isArmed()) {
+            if (!control.getStyleClass().contains("pad-lit")) {
+                control.getStyleClass().add("pad-lit");
+            }
+        } else {
+            control.getStyleClass().remove("pad-lit");
+        }
     }
 }
