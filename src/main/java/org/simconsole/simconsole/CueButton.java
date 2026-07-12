@@ -11,7 +11,6 @@ import javafx.scene.control.Skin;
 public class CueButton extends LedButton {
 
     private final BooleanProperty hasBookmark = new SimpleBooleanProperty(false);
-    private double bookmarkPosition = -1; // Represents the song position, -1 means empty
 
     public CueButton() {
         super();
@@ -38,13 +37,5 @@ public class CueButton extends LedButton {
 
     public void setHasBookmark(boolean val) {
         hasBookmark.set(val);
-    }
-
-    public double getBookmarkPosition() {
-        return bookmarkPosition;
-    }
-
-    public void setBookmarkPosition(double val) {
-        this.bookmarkPosition = val;
     }
 }

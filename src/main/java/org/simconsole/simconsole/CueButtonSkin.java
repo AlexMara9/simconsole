@@ -21,13 +21,11 @@ public class CueButtonSkin extends LedButtonSquareSkin {
                 // Remove bookmark
                 if (control.getHasBookmark()) {
                     control.setHasBookmark(false);
-                    control.setBookmarkPosition(-1);
                 }
             } else {
                 if (!control.getHasBookmark()) {
                     // Set bookmark
                     control.setHasBookmark(true);
-                    control.setBookmarkPosition(0.0); // Placeholder
                 }
             }
             event.consume();
