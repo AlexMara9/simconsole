@@ -28,3 +28,28 @@
     -fx-tick-length: 0.6em;
     -fx-minor-tick-length: 0.4em;
 }
+
+/* --- Graphic Slider Styles --- */
+.graphic-slider-container {
+    -fx-background-color: #0d0d0d;
+    -fx-border-color: #333333;
+    -fx-border-width: 1px;
+}
+
+.graphic-slider-playhead {
+    -fx-stroke: #ff0000;
+    -fx-stroke-width: 2px;
+}
+
+.graphic-slider-title {
+    -fx-fill: rgba(255, 255, 255, 0.9);
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.graphic-slider-time {
+    -fx-fill: rgba(255, 255, 255, 0.6);
+    -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
+    -fx-font-size: 12px;
+}
