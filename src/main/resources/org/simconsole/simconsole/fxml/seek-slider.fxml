@@ -3,4 +3,4 @@
 <?import org.simconsole.simconsole.GraphicSlider?>
 
 
-<GraphicSlider fx:id="seekSlider" minHeight="0.0" minWidth="0.0" stylesheets="@../css/slider.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" />
+<GraphicSlider fx:id="seekSlider" minHeight="0.0" minWidth="0.0" stylesheets="@../css/slider.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.SeekSliderController" />
