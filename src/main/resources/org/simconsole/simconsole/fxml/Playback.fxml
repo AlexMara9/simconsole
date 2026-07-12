@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import org.simconsole.simconsole.LedButton?>
+<?import org.simconsole.simconsole.PlayButton?>
 
 <HBox fx:id="buttonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.PlaybackController">
    <children>
@@ -18,7 +19,7 @@
             </Region>
          </graphic>
       </LedButton>
-      <LedButton fx:id="playButton" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" roundShape="true" textSizeRatio="0.3" toggleMode="true">
+      <PlayButton fx:id="playButton" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" textSizeRatio="0.3">
          <graphic>
             <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" mouseTransparent="true">
                <styleClass>
@@ -27,7 +28,7 @@
                </styleClass>
             </Region>
          </graphic>
-      </LedButton>
+      </PlayButton>
    </children>
    <stylesheets>
       <URL value="@../css/button.css" />

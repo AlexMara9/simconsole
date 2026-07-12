@@ -29,11 +29,10 @@ public class LedButton extends ButtonBase {
         this.roundShape.addListener((obs, oldVal, isRound) -> {
             if (isRound) {
                 this.getStyleClass().setAll("dynamic-round-button");
-                this.setSkin(new LedButtonRoundSkin(this));
             } else {
                 this.getStyleClass().setAll("dynamic-square-button");
-                this.setSkin(new LedButtonSquareSkin(this));
             }
+            this.setSkin(createDefaultSkin());
         });
     }
 

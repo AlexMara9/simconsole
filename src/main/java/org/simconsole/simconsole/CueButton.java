@@ -2,6 +2,7 @@ package org.simconsole.simconsole;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.control.Skin;
 
 /**
  * Custom button for CUE points.
@@ -18,6 +19,11 @@ public class CueButton extends LedButton {
         
         // The LED should be ON only when a bookmark is present
         this.selectedProperty().bind(hasBookmark);
+    }
+
+    @Override
+    protected Skin<?> createDefaultSkin() {
+        return new CueButtonSkin(this);
     }
 
     public BooleanProperty hasBookmarkProperty() {
