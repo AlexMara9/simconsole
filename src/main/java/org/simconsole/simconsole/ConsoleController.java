@@ -18,6 +18,10 @@ public class ConsoleController {
 	@FXML private GridPane grid;
 	// playback
 	@FXML private HBox testest;
+    
+    // Injected included controllers
+    @FXML private PlaybackController playbackLeftController;
+    @FXML private PlaybackController playbackRightController;
 
 	/**
 	 * init function
@@ -26,6 +30,15 @@ public class ConsoleController {
 	public void initialize(){
 		initResponsiveness();
 	}
+    
+    public void setDecks(Deck leftDeck, Deck rightDeck) {
+        if (playbackLeftController != null) {
+            playbackLeftController.setDeck(leftDeck);
+        }
+        if (playbackRightController != null) {
+            playbackRightController.setDeck(rightDeck);
+        }
+    }
 
 	private void initResponsiveness(){
 		// grid & general UI scale
