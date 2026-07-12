@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.HBox?>
-<?import org.simconsole.simconsole.LedButton?>
+<?import org.simconsole.simconsole.CueButton?>
 
 <HBox fx:id="buttonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" stylesheets="@../css/button.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.CueController">
    <children>
-      <LedButton fx:id="cue1" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue1" text="1" textSizeRatio="0.4" toggleMode="true" />
-      <LedButton fx:id="cue2" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue2" text="2" textSizeRatio="0.4" toggleMode="true" />
-      <LedButton fx:id="cue3" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue3" text="3" textSizeRatio="0.4" toggleMode="true" />
-      <LedButton fx:id="cue4" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue4" text="4" textSizeRatio="0.4" toggleMode="true" />
+      <CueButton fx:id="cue1" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue1" text="1" textSizeRatio="0.4" />
+      <CueButton fx:id="cue2" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue2" text="2" textSizeRatio="0.4" />
+      <CueButton fx:id="cue3" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue3" text="3" textSizeRatio="0.4" />
+      <CueButton fx:id="cue4" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue4" text="4" textSizeRatio="0.4" />
    </children>
 </HBox>

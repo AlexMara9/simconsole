@@ -123,7 +123,7 @@ public class LedButtonSquareSkin extends SkinBase<LedButton> {
 
     private void updateVisualState() {
         LedButton control = getSkinnable();
-        boolean shouldBeLit = control.getToggleMode() ? (control.isSelected() || control.isArmed()) : control.isArmed();
+        boolean shouldBeLit = control.isSelected() || control.isArmed();
 
         if (shouldBeLit) {
             if (!ledRing.getStyleClass().contains("pressed")) {
