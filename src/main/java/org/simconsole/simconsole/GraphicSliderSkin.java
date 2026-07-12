@@ -115,8 +115,7 @@ public class GraphicSliderSkin extends SkinBase<GraphicSlider> {
         canvas.setWidth(w);
         canvas.setHeight(h);
         
-        // Font size proporzionale all'altezza
-        double fontSize = h * 0.25; 
+        double fontSize = Math.min(h * 0.25, w * 0.08);
         if (fontSize > 0) {
             String fontStyle = String.format(java.util.Locale.US, "-fx-font-size: %.1fpx;", fontSize);
             songNameText.setStyle(fontStyle);
