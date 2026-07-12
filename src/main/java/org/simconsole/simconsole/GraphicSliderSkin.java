@@ -74,19 +74,38 @@ public class GraphicSliderSkin extends SkinBase<GraphicSlider> {
         canvas.setWidth(w);
         canvas.setHeight(h);
         
+        // Font size proporzionale all'altezza
+        double fontSize = h * 0.25; 
+        if (fontSize > 0) {
+            String fontStyle = String.format(java.util.Locale.US, "-fx-font-size: %.1fpx;", fontSize);
+            songNameText.setStyle(fontStyle);
+            startTimeText.setStyle(fontStyle);
+            endTimeText.setStyle(fontStyle);
+            
+            songNameText.applyCss();
+            startTimeText.applyCss();
+            endTimeText.applyCss();
+        }
+
+        double marginX = w * 0.01;
+        double marginY = h * 0.05;
+        
         // Position texts
         songNameText.setTextOrigin(VPos.TOP);
-        songNameText.setLayoutX(10);
-        songNameText.setLayoutY(10);
+        songNameText.setLayoutX(marginX);
+        songNameText.setLayoutY(marginY);
 
         startTimeText.setTextOrigin(VPos.BOTTOM);
-        startTimeText.setLayoutX(10);
-        startTimeText.setLayoutY(h - 5);
+        startTimeText.setLayoutX(marginX);
+        startTimeText.setLayoutY(h - marginY);
 
         endTimeText.setTextOrigin(VPos.BOTTOM);
-        endTimeText.setLayoutY(h - 5);
-        endTimeText.setLayoutX(w - endTimeText.getLayoutBounds().getWidth() - 10);
+        endTimeText.setLayoutY(h - marginY);
+        endTimeText.setLayoutX(w - endTimeText.getLayoutBounds().getWidth() - marginX);
 
+        // Responsive playhead
+        double playheadWidth = Math.max(1, w * 0.003);
+        playhead.setStyle(String.format(java.util.Locale.US, "-fx-stroke-width: %.1fpx;", playheadWidth));
         playhead.setStartY(0);
         playhead.setEndY(h);
 
@@ -108,15 +127,18 @@ public class GraphicSliderSkin extends SkinBase<GraphicSlider> {
             data = dummyWaveform; // Fallback to mockup data
         }
 
-        // Mono color as requested by user (CDJ style blue)
-        gc.setFill(Color.web("#007aff")); 
-
+        gc.setStroke(Color.web("#007aff"));
+        
         double barWidth = w / data.length;
+        double strokeWidth = Math.max(0.5, barWidth * 0.8);
+        gc.setLineWidth(strokeWidth);
+
         for (int i = 0; i < data.length; i++) {
-            double barHeight = data[i] * h;
+            double barHeight = data[i] * h * 0.8; // 80% max height
             double x = i * barWidth;
-            double y = (h - barHeight) / 2; // Center vertically
-            gc.fillRect(x, y, Math.max(1, barWidth - 0.5), barHeight);
+            double y1 = (h - barHeight) / 2; 
+            double y2 = y1 + barHeight;
+            gc.strokeLine(x, y1, x, y2);
         }
     }
 
