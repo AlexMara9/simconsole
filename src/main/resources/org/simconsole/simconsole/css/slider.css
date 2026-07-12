@@ -42,7 +42,7 @@
 }
 
 .graphic-slider-title {
-    -fx-fill: rgba(255, 255, 255, 0.9);
+    -fx-fill: rgba(255, 255, 255, 0.5);
     -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
     -fx-font-weight: bold;
     -fx-font-size: 14px;
