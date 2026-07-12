@@ -5,9 +5,9 @@
 
 <HBox fx:id="buttonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" stylesheets="@../css/button.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.CueController">
    <children>
-      <CueButton fx:id="cue1" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue1" text="cue&#10;1" textSizeRatio="0.25" />
-      <CueButton fx:id="cue2" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue2" text="cue&#10;2" textSizeRatio="0.25" />
-      <CueButton fx:id="cue3" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue3" text="cue&#10;3" textSizeRatio="0.25" />
-      <CueButton fx:id="cue4" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue4" text="cue&#10;4" textSizeRatio="0.25" />
+      <CueButton fx:id="cue1" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue1" text="cue&#10;1" textSizeRatio="0.3" />
+      <CueButton fx:id="cue2" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue2" text="cue&#10;2" textSizeRatio="0.3" />
+      <CueButton fx:id="cue3" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue3" text="cue&#10;3" textSizeRatio="0.3" />
+      <CueButton fx:id="cue4" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" styleClass="cue4" text="cue&#10;4" textSizeRatio="0.3" />
    </children>
 </HBox>
