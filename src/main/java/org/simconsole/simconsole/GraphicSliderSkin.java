@@ -25,6 +25,7 @@ public class GraphicSliderSkin extends SkinBase<GraphicSlider> {
     private final Text startTimeText = new Text("0:00");
     private final Text endTimeText = new Text();
 
+    private final java.util.Map<String, javafx.scene.Group> cueNodes = new java.util.HashMap<>();
     private float[] dummyWaveform;
 
     public GraphicSliderSkin(GraphicSlider control) {
@@ -60,6 +61,46 @@ public class GraphicSliderSkin extends SkinBase<GraphicSlider> {
         // Interactivity
         container.setOnMousePressed(e -> seekTo(e.getX()));
         container.setOnMouseDragged(e -> seekTo(e.getX()));
+
+        // Cue Points listener
+        control.getCuePoints().addListener((javafx.collections.MapChangeListener<String, GraphicSlider.CuePoint>) change -> {
+            if (change.wasRemoved()) {
+                javafx.scene.Group oldNode = cueNodes.remove(change.getKey());
+                if (oldNode != null) {
+                    container.getChildren().remove(oldNode);
+                }
+            }
+            if (change.wasAdded()) {
+                addCueNode(change.getValueAdded());
+            }
+        });
+
+        // Setup cues that were added before the skin was initialized
+        for (GraphicSlider.CuePoint cue : control.getCuePoints().values()) {
+            addCueNode(cue);
+        }
+    }
+
+    private void addCueNode(GraphicSlider.CuePoint cue) {
+        javafx.scene.Group group = new javafx.scene.Group();
+        
+        Line line = new Line();
+        line.setStroke(cue.color);
+        line.getStyleClass().add("graphic-slider-cue");
+        
+        javafx.scene.shape.Polygon topTriangle = new javafx.scene.shape.Polygon();
+        topTriangle.setFill(cue.color);
+        
+        javafx.scene.shape.Polygon bottomTriangle = new javafx.scene.shape.Polygon();
+        bottomTriangle.setFill(cue.color);
+        
+        group.getChildren().addAll(line, topTriangle, bottomTriangle);
+        
+        // Add to container just after canvas (index 1) so it's under playhead
+        container.getChildren().add(1, group);
+        cueNodes.put(cue.id, group);
+        
+        positionCueNode(group, cue.position);
     }
 
     private void generateDummyWaveform() {
@@ -111,6 +152,59 @@ public class GraphicSliderSkin extends SkinBase<GraphicSlider> {
 
         drawWaveform();
         updatePlayhead();
+        
+        // Update all cue lines
+        for (java.util.Map.Entry<String, javafx.scene.Group> entry : cueNodes.entrySet()) {
+            GraphicSlider.CuePoint cue = getSkinnable().getCuePoints().get(entry.getKey());
+            if (cue != null) {
+                positionCueNode(entry.getValue(), cue.position);
+            }
+        }
+    }
+
+    private void positionCueNode(javafx.scene.Group group, double positionSeconds) {
+        double w = canvas.getWidth();
+        double h = canvas.getHeight();
+        if (w <= 0 || h <= 0) return;
+        
+        GraphicSlider control = getSkinnable();
+        double total = control.getTotalTime();
+        if (total <= 0) return;
+        
+        double progress = positionSeconds / total;
+        double x = progress * w;
+        
+        Line line = (Line) group.getChildren().get(0);
+        javafx.scene.shape.Polygon topTriangle = (javafx.scene.shape.Polygon) group.getChildren().get(1);
+        javafx.scene.shape.Polygon bottomTriangle = (javafx.scene.shape.Polygon) group.getChildren().get(2);
+        
+        line.setStartX(x);
+        line.setEndX(x);
+        line.setStartY(0);
+        line.setEndY(h);
+        
+        // Make cue lines thinner than playhead
+        double cueWidth = Math.max(1, w * 0.0015);
+        line.setStyle(String.format(java.util.Locale.US, "-fx-stroke-width: %.1fpx;", cueWidth));
+        
+        // Triangle logic
+        double triWidth = Math.max(6, Math.min(15, w * 0.015));
+        double halfTri = triWidth / 2.0;
+        double triHeight = triWidth;
+        
+        // Top triangle (pointing down)
+        topTriangle.getPoints().setAll(
+            x - halfTri, 0.0,
+            x + halfTri, 0.0,
+            x, triHeight
+        );
+        
+        // Bottom triangle (pointing up)
+        bottomTriangle.getPoints().setAll(
+            x - halfTri, h,
+            x + halfTri, h,
+            x, h - triHeight
+        );
     }
 
     private void drawWaveform() {

@@ -73,4 +73,39 @@ public class GraphicSlider extends Control {
     public void setWaveform(float[] value) {
         this.waveform.set(value);
     }
+
+    // --- Cue Points ---
+
+    public static class CuePoint {
+        public final String id;
+        public final double position; // in seconds
+        public final javafx.scene.paint.Color color;
+
+        public CuePoint(String id, double position, javafx.scene.paint.Color color) {
+            this.id = id;
+            this.position = position;
+            this.color = color;
+        }
+    }
+
+    private final javafx.collections.ObservableMap<String, CuePoint> cuePoints = javafx.collections.FXCollections.observableHashMap();
+
+    public void setCue(String id, javafx.scene.paint.Color color) {
+        cuePoints.put(id, new CuePoint(id, getCurrentTime(), color));
+    }
+
+    public void removeCue(String id) {
+        cuePoints.remove(id);
+    }
+
+    public void jumpToCue(String id) {
+        CuePoint cue = cuePoints.get(id);
+        if (cue != null) {
+            setCurrentTime(cue.position);
+        }
+    }
+
+    public javafx.collections.ObservableMap<String, CuePoint> getCuePoints() {
+        return cuePoints;
+    }
 }
