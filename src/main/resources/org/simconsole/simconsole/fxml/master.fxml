@@ -25,9 +25,9 @@
          <children>
             <MasterSlider orientation="VERTICAL" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" />
             <DynamicSlider fx:id="leftVolumeSlider" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" />
-            <LineKnob minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+            <LineKnob fx:id="leftPanKnob" min="-1.0" max="1.0" value="0.0" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1" GridPane.rowSpan="2" />
             <DynamicSlider fx:id="rightVolumeSlider" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="2" />
-            <LineKnob minHeight="0.0" minWidth="0.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2" />
+            <LineKnob fx:id="rightPanKnob" min="-1.0" max="1.0" value="0.0" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2" />
             <MasterSlider blockIncrement="0.1" majorTickUnit="0.5" max="1.0" min="-1.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>
       </GridPane>
