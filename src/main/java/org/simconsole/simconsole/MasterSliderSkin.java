@@ -78,8 +78,13 @@ public class MasterSliderSkin extends SliderSkin {
 
             if (slider.isShowTickLabels()) {
                 // Formatting decibels or pure values
-                String labelStr = String.format(java.util.Locale.US, "%.0f", val);
-                // The image had specific formatting, +12, -12, etc., but we use the value directly
+                String labelStr;
+                if (Math.abs(val - Math.round(val)) < 0.001) {
+                    labelStr = String.format(java.util.Locale.US, "%.0f", val);
+                } else {
+                    labelStr = String.format(java.util.Locale.US, "%.1f", val);
+                }
+                
                 Text leftText = new Text(labelStr);
                 Text rightText = new Text(labelStr);
                 leftText.setTextOrigin(javafx.geometry.VPos.CENTER);
