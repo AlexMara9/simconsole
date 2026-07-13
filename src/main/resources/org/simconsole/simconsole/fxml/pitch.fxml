@@ -5,10 +5,10 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import org.simconsole.simconsole.DynamicSlider?>
 <?import org.simconsole.simconsole.LedButton?>
+<?import org.simconsole.simconsole.PitchSlider?>
 
-<StackPane minHeight="0.0" minWidth="0.0" styleClass="controls-card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane minHeight="0.0" minWidth="0.0" styleClass="controls-card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.PitchController">
    <stylesheets>
       <URL value="@../css/card.css" />
       <URL value="@../css/slider.css" />
@@ -24,8 +24,8 @@
             <RowConstraints minHeight="0.0" percentHeight="20.0" valignment="CENTER" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" />
-            <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="♪" textSizeRatio="0.5" toggleMode="true" GridPane.rowIndex="1" />
+            <org.simconsole.simconsole.PitchSlider fx:id="pitchSlider" majorTickUnit="0.5" minHeight="0.0" minWidth="0.0" minorTickCount="4" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" />
+            <LedButton fx:id="keyLockButton" minHeight="0.0" minWidth="0.0" roundShape="true" text="♪" textSizeRatio="0.5" toggleMode="true" GridPane.rowIndex="1" />
          </children>
       </GridPane>
    </children>
