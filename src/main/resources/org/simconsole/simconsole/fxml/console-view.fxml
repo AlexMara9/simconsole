@@ -45,7 +45,7 @@
               </rowConstraints>
                <children>
                   <fx:include fx:id="playbackLeft" minHeight="0.0" minWidth="0.0" source="Playback.fxml" />
-                  <fx:include minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                  <fx:include fx:id="cueLeft" minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnIndex="1" GridPane.columnSpan="2" />
                   <fx:include fx:id="seekLeft" source="seek-slider.fxml" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                </children>
             </GridPane>
@@ -77,7 +77,7 @@
                   <RowConstraints minHeight="0.0" percentHeight="60.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <fx:include minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnSpan="2" />
+                  <fx:include fx:id="cueRight" minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnSpan="2" />
                   <fx:include fx:id="playbackRight" minHeight="0.0" minWidth="0.0" source="Playback.fxml" GridPane.columnIndex="2" />
                   <fx:include fx:id="seekRight" source="seek-slider.fxml" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                </children>

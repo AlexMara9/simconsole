@@ -8,6 +8,8 @@ public class SeekSliderController {
 
 	private boolean isUpdatingFromBackend = false;
 
+	public GraphicSlider getGraphicSlider() { return seekSlider; }
+
 	@FXML void initialize(){
 	}
 

@@ -26,6 +26,9 @@ public class ConsoleController {
     @FXML private SeekSliderController seekLeftController;
     @FXML private SeekSliderController seekRightController;
     
+    @FXML private CueController cueLeftController;
+    @FXML private CueController cueRightController;
+    
     @FXML private PitchController pitchLeftController;
     @FXML private PitchController pitchRightController;
     
@@ -61,6 +64,13 @@ public class ConsoleController {
         }
         if (pitchRightController != null) {
             pitchRightController.setDeck(rightDeck);
+        }
+        
+        if (cueLeftController != null && seekLeftController != null) {
+            cueLeftController.setDeckAndSlider(leftDeck, seekLeftController.getGraphicSlider());
+        }
+        if (cueRightController != null && seekRightController != null) {
+            cueRightController.setDeckAndSlider(rightDeck, seekRightController.getGraphicSlider());
         }
         
         if (deckLeft != null) {
