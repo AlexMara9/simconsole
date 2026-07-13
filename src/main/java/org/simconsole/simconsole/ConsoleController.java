@@ -53,18 +53,54 @@ public class ConsoleController {
             seekRightController.setDeck(rightDeck);
         }
         
-        // Timer per sincronizzare l'interfaccia con lo stato dei deck backend
+        if (deckLeft != null) {
+            deckLeft.scrubbingProperty().addListener((obs, oldVal, newVal) -> {
+                if (leftDeck != null) leftDeck.setScrubbing(newVal);
+            });
+            deckLeft.rotationAngleProperty().addListener((obs, oldVal, newVal) -> {
+                if (deckLeft.isScrubbing() && leftDeck != null && leftDeck.getCurrentTrack() != null) {
+                    double angleDelta = newVal.doubleValue() - oldVal.doubleValue();
+                    double timeDelta = (angleDelta / 360.0) * 1.8; // 1 giro = 1.8 secondi a 33.3 RPM
+                    double framesDelta = timeDelta * leftDeck.getCurrentTrack().getSampleRate();
+                    double newPlayhead = leftDeck.getPlayheadDouble() + framesDelta * 2.0;
+                    if (newPlayhead < 0) newPlayhead = 0;
+                    leftDeck.setPlayheadDouble(newPlayhead);
+                }
+            });
+        }
+        if (deckRight != null) {
+            deckRight.scrubbingProperty().addListener((obs, oldVal, newVal) -> {
+                if (rightDeck != null) rightDeck.setScrubbing(newVal);
+            });
+            deckRight.rotationAngleProperty().addListener((obs, oldVal, newVal) -> {
+                if (deckRight.isScrubbing() && rightDeck != null && rightDeck.getCurrentTrack() != null) {
+                    double angleDelta = newVal.doubleValue() - oldVal.doubleValue();
+                    double timeDelta = (angleDelta / 360.0) * 1.8;
+                    double framesDelta = timeDelta * rightDeck.getCurrentTrack().getSampleRate();
+                    double newPlayhead = rightDeck.getPlayheadDouble() + framesDelta * 2.0;
+                    if (newPlayhead < 0) newPlayhead = 0;
+                    rightDeck.setPlayheadDouble(newPlayhead);
+                }
+            });
+        }
+        
+        // Timer per sincronizzare l'interfaccia con lo stato dei deck backend (Backend -> UI)
         javafx.animation.AnimationTimer timer = new javafx.animation.AnimationTimer() {
             @Override
             public void handle(long now) {
+                // Utilizziamo un delta fisso (assumendo 60fps) invece del tempo reale per calcolare
+                // l'angolo di rotazione. Questo elimina completamente il "micro-lag" visivo causato
+                // dalle normali fluttuazioni di timing (jitter) del thread grafico di JavaFX.
+                double rotationDelta = (1.0 / 60.0 / 1.8) * 360.0; // 33.3 RPM a 60 fps fissi
+
                 if (deckLeft != null && leftDeck != null) {
-                    if (deckLeft.isSpinning() != leftDeck.isPlaying()) {
-                        deckLeft.setSpinning(leftDeck.isPlaying());
+                    if (!deckLeft.isScrubbing() && leftDeck.isPlaying() && leftDeck.getCurrentTrack() != null) {
+                        deckLeft.setRotationAngle(deckLeft.getRotationAngle() + rotationDelta);
                     }
                 }
                 if (deckRight != null && rightDeck != null) {
-                    if (deckRight.isSpinning() != rightDeck.isPlaying()) {
-                        deckRight.setSpinning(rightDeck.isPlaying());
+                    if (!deckRight.isScrubbing() && rightDeck.isPlaying() && rightDeck.getCurrentTrack() != null) {
+                        deckRight.setRotationAngle(deckRight.getRotationAngle() + rotationDelta);
                     }
                 }
             }

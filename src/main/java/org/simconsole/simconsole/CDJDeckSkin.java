@@ -16,9 +16,12 @@ public class CDJDeckSkin extends SkinBase<DynamicDeck> {
     private final Rotate rotateTransform;
 
     private double oldMouseAngle;
+    private final javafx.animation.PauseTransition scrollFallbackTimer = new javafx.animation.PauseTransition(javafx.util.Duration.millis(300));
 
     public CDJDeckSkin(DynamicDeck deck) {
         super(deck);
+
+        scrollFallbackTimer.setOnFinished(e -> getSkinnable().setScrubbing(false));
 
         // ── Carica l'immagine del vinile (PNG con alpha circolare) ───────────
         Image vinylImage = new Image(
@@ -40,20 +43,44 @@ public class CDJDeckSkin extends SkinBase<DynamicDeck> {
         getChildren().add(vinylView);
 
         // ── Interazione ───────────────────────────────────────────────────────
+        deck.setOnScrollStarted(this::onScrollStarted);
         deck.setOnScroll(this::onScroll);
+        deck.setOnScrollFinished(this::onScrollFinished);
         deck.setOnMousePressed(this::onMousePressed);
+        deck.setOnMouseReleased(this::onMouseReleased);
         deck.setOnMouseDragged(this::onMouseDragged);
         deck.setOnTouchPressed(this::onTouchPressed);
+        deck.setOnTouchReleased(this::onTouchReleased);
         deck.setOnTouchMoved(this::onTouchMoved);
     }
 
     // ─── Handlers ────────────────────────────────────────────────────────────
 
+    private void onScrollStarted(ScrollEvent e) {
+        getSkinnable().setScrubbing(true);
+    }
+
+    private void onScrollFinished(ScrollEvent e) {
+        scrollFallbackTimer.stop();
+        getSkinnable().setScrubbing(false);
+    }
+
     private void onScroll(ScrollEvent e) {
+        if (!getSkinnable().isScrubbing()) {
+            getSkinnable().setScrubbing(true);
+        }
+        scrollFallbackTimer.playFromStart(); // Reset timer on every tiny scroll event
         getSkinnable().setRotationAngle(getSkinnable().getRotationAngle() + e.getDeltaY() * 0.3);
     }
 
-    private void onMousePressed(MouseEvent e)  { oldMouseAngle = mouseAngle(e.getX(), e.getY()); }
+    private void onMousePressed(MouseEvent e) {
+        getSkinnable().setScrubbing(true);
+        oldMouseAngle = mouseAngle(e.getX(), e.getY());
+    }
+
+    private void onMouseReleased(MouseEvent e) {
+        getSkinnable().setScrubbing(false);
+    }
 
     private void onMouseDragged(MouseEvent e) {
         double angle = mouseAngle(e.getX(), e.getY());
@@ -64,7 +91,14 @@ public class CDJDeckSkin extends SkinBase<DynamicDeck> {
         oldMouseAngle = angle;
     }
 
-    private void onTouchPressed(TouchEvent e)  { oldMouseAngle = mouseAngle(e.getTouchPoint().getX(), e.getTouchPoint().getY()); }
+    private void onTouchPressed(TouchEvent e) {
+        getSkinnable().setScrubbing(true);
+        oldMouseAngle = mouseAngle(e.getTouchPoint().getX(), e.getTouchPoint().getY());
+    }
+
+    private void onTouchReleased(TouchEvent e) {
+        getSkinnable().setScrubbing(false);
+    }
 
     private void onTouchMoved(TouchEvent e) {
         double angle = mouseAngle(e.getTouchPoint().getX(), e.getTouchPoint().getY());
