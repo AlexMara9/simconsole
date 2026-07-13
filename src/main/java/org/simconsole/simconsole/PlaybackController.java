@@ -5,11 +5,18 @@ import javafx.fxml.FXML;
 public class PlaybackController {
 
     @FXML private PlayButton playButton;
+    @FXML private LedButton rewindButton;
     private Deck deck;
 
     @FXML
     public void initialize() {
-        // Initialization logic if needed
+        if (rewindButton != null) {
+            rewindButton.setOnAction(e -> {
+                if (deck != null) {
+                    deck.setPlayheadDouble(0.0);
+                }
+            });
+        }
     }
     
     public void setDeck(Deck deck) {
