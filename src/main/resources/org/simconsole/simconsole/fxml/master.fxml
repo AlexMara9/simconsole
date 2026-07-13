@@ -23,7 +23,7 @@
             <RowConstraints minHeight="0.0" percentHeight="20.0" valignment="CENTER" />
          </rowConstraints>
          <children>
-            <MasterSlider orientation="VERTICAL" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" />
+            <MasterSlider fx:id="masterVolumeSlider" orientation="VERTICAL" value="100.0" max="100.0" min="0.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" />
             <DynamicSlider fx:id="leftVolumeSlider" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" />
             <LineKnob fx:id="leftPanKnob" min="-1.0" max="1.0" value="0.0" minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1" GridPane.rowSpan="2" />
             <DynamicSlider fx:id="rightVolumeSlider" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="2" />

@@ -12,6 +12,7 @@ public class AudioProcessor {
     private Thread playbackThread;
 
     private static final double FADE_SPEED = 0.0005;
+    public static volatile double masterVolume = 1.0;
 
     // Biquad filters for EQ
     private final BiquadFilter eqLowL = new BiquadFilter(BiquadFilter.FilterType.LOW_SHELF, 44100, 150, 0.707, 0.0);
@@ -134,6 +135,9 @@ public class AudioProcessor {
                             left *= leftGain;
                             right *= rightGain;
                         }
+
+                        left *= masterVolume;
+                        right *= masterVolume;
                         
                         // Hard limiter come in normal playback
                         left = Math.max(-1.0, Math.min(1.0, left));
@@ -226,6 +230,9 @@ public class AudioProcessor {
                                 left *= leftGain;
                                 right *= rightGain;
                             }
+
+                            left *= masterVolume;
+                            right *= masterVolume;
 
                             left = Math.max(-1.0, Math.min(1.0, left));
                             right = Math.max(-1.0, Math.min(1.0, right));

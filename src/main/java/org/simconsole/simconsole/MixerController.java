@@ -10,11 +10,18 @@ public class MixerController {
     @FXML private LineKnob leftPanKnob;
     @FXML private LineKnob rightPanKnob;
 
+    @FXML private MasterSlider masterVolumeSlider;
+
     private Deck leftDeck;
     private Deck rightDeck;
 
     @FXML
     public void initialize() {
+        if (masterVolumeSlider != null) {
+            masterVolumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+                AudioProcessor.masterVolume = newVal.doubleValue() / 100.0;
+            });
+        }
         if (leftVolumeSlider != null) {
             leftVolumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
                 if (leftDeck != null) {
@@ -51,6 +58,10 @@ public class MixerController {
         this.rightDeck = rightDeck;
         
         // Inizializza i valori correnti (dal range 0.0-1.0 al range slider 0-100)
+        if (masterVolumeSlider != null) {
+            masterVolumeSlider.setValue(AudioProcessor.masterVolume * 100.0);
+        }
+        
         if (this.leftDeck != null) {
             if (leftVolumeSlider != null) leftVolumeSlider.setValue(this.leftDeck.getControls().getVolume() * 100.0);
             if (leftPanKnob != null) leftPanKnob.setValue(-this.leftDeck.getControls().getPan());
