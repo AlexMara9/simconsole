@@ -22,10 +22,10 @@ public class CueController {
         this.deck = deck;
         this.slider = slider;
         
-        setupCue(cue1, "CUE1", javafx.scene.paint.Color.web("#1eff00")); // Verde
-        setupCue(cue2, "CUE2", javafx.scene.paint.Color.web("#ff2a2a")); // Rosso
-        setupCue(cue3, "CUE3", javafx.scene.paint.Color.web("#ffb300")); // Arancio/Giallo
-        setupCue(cue4, "CUE4", javafx.scene.paint.Color.web("#00bfff")); // Azzurro
+        setupCue(cue1, "CUE1", javafx.scene.paint.Color.web("#f83b3b")); // Rosso (cue1)
+        setupCue(cue2, "CUE2", javafx.scene.paint.Color.web("#f8cc3b")); // Giallo (cue2)
+        setupCue(cue3, "CUE3", javafx.scene.paint.Color.web("#71f83b")); // Verde (cue3)
+        setupCue(cue4, "CUE4", javafx.scene.paint.Color.web("#3be8f8")); // Azzurro (cue4)
     }
 
     private void setupCue(CueButton btn, String id, javafx.scene.paint.Color color) {
