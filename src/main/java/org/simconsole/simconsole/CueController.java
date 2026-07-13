@@ -35,10 +35,10 @@ public class CueController {
         btn.setOnMouseClicked(e -> {
             if (slider == null || deck == null) return;
 
-            if (e.getButton() == javafx.scene.input.MouseButton.SECONDARY) {
-                // Tasto destro: Rimuovi CUE
+            if (e.getButton() == javafx.scene.input.MouseButton.SECONDARY || e.isShiftDown()) {
+                // Tasto destro o Shift+Click: Rimuovi CUE
                 slider.removeCue(id);
-                btn.setSelected(false);
+                btn.setHasBookmark(false); // Spegni il pulsante (non usare setSelected perché è bindato)
             } else if (e.getButton() == javafx.scene.input.MouseButton.PRIMARY) {
                 // Tasto sinistro: Imposta CUE o Salta al CUE
                 if (slider.getCuePoints().containsKey(id)) {
@@ -55,7 +55,7 @@ public class CueController {
                 } else {
                     // CUE non impostato -> Imposta alla posizione corrente
                     slider.setCue(id, color);
-                    btn.setSelected(true); // Accendi il pulsante
+                    btn.setHasBookmark(true); // Accendi il pulsante
                 }
             }
         });
