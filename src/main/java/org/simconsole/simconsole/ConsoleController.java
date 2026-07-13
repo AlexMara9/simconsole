@@ -23,6 +23,9 @@ public class ConsoleController {
     @FXML private PlaybackController playbackLeftController;
     @FXML private PlaybackController playbackRightController;
     
+    @FXML private SeekSliderController seekLeftController;
+    @FXML private SeekSliderController seekRightController;
+    
     // Injected decks
     @FXML private DynamicDeck deckLeft;
     @FXML private DynamicDeck deckRight;
@@ -41,6 +44,13 @@ public class ConsoleController {
         }
         if (playbackRightController != null) {
             playbackRightController.setDeck(rightDeck);
+        }
+        
+        if (seekLeftController != null) {
+            seekLeftController.setDeck(leftDeck);
+        }
+        if (seekRightController != null) {
+            seekRightController.setDeck(rightDeck);
         }
         
         // Timer per sincronizzare l'interfaccia con lo stato dei deck backend
