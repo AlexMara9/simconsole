@@ -30,7 +30,7 @@
     <children>
       <fx:include minHeight="0.0" minWidth="0.0" source="master.fxml" GridPane.columnIndex="2" GridPane.columnSpan="4" />
       <!-- Left Deck -->
-      <DynamicDeck minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="1" />
+      <DynamicDeck fx:id="deckLeft" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="1" />
       <StackPane fx:id="playbackContainer" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/card.css" GridPane.columnSpan="4" GridPane.rowIndex="1">
          <children>
             <GridPane fx:id="playbackControlsContainer" minHeight="0.0" minWidth="0.0">
@@ -63,7 +63,7 @@
       </VBox>
 
       <!-- Right Deck -->
-      <DynamicDeck minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+      <DynamicDeck fx:id="deckRight" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="6" GridPane.rowIndex="0" />
       <StackPane fx:id="playbackContainer1" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/card.css" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="1">
          <children>
             <GridPane fx:id="playbackControlsContainer1" minHeight="0.0" minWidth="0.0">

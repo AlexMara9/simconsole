@@ -22,6 +22,10 @@ public class ConsoleController {
     // Injected included controllers
     @FXML private PlaybackController playbackLeftController;
     @FXML private PlaybackController playbackRightController;
+    
+    // Injected decks
+    @FXML private DynamicDeck deckLeft;
+    @FXML private DynamicDeck deckRight;
 
 	/**
 	 * init function
@@ -38,6 +42,24 @@ public class ConsoleController {
         if (playbackRightController != null) {
             playbackRightController.setDeck(rightDeck);
         }
+        
+        // Timer per sincronizzare l'interfaccia con lo stato dei deck backend
+        javafx.animation.AnimationTimer timer = new javafx.animation.AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (deckLeft != null && leftDeck != null) {
+                    if (deckLeft.isSpinning() != leftDeck.isPlaying()) {
+                        deckLeft.setSpinning(leftDeck.isPlaying());
+                    }
+                }
+                if (deckRight != null && rightDeck != null) {
+                    if (deckRight.isSpinning() != rightDeck.isPlaying()) {
+                        deckRight.setSpinning(rightDeck.isPlaying());
+                    }
+                }
+            }
+        };
+        timer.start();
     }
 
 	private void initResponsiveness(){
