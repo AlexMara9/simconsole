@@ -9,7 +9,7 @@
 <?import org.simconsole.simconsole.LineKnob?>
 <?import org.simconsole.simconsole.MasterSlider?>
 
-<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.MixerController">
    <children>
       <GridPane minHeight="0.0" minWidth="0.0">
          <columnConstraints>
@@ -24,9 +24,9 @@
          </rowConstraints>
          <children>
             <MasterSlider orientation="VERTICAL" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" />
-            <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" />
+            <DynamicSlider fx:id="leftVolumeSlider" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" />
             <LineKnob minHeight="0.0" minWidth="0.0" GridPane.rowIndex="1" GridPane.rowSpan="2" />
-            <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="2" />
+            <DynamicSlider fx:id="rightVolumeSlider" minHeight="0.0" minWidth="0.0" orientation="VERTICAL" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="2" />
             <LineKnob minHeight="0.0" minWidth="0.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.rowSpan="2" />
             <MasterSlider blockIncrement="0.1" majorTickUnit="0.5" max="1.0" min="-1.0" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
          </children>

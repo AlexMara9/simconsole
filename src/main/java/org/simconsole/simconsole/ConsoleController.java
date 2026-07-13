@@ -32,6 +32,11 @@ public class ConsoleController {
     @FXML private PitchController pitchLeftController;
     @FXML private PitchController pitchRightController;
     
+    @FXML private MixerController mixerController;
+    
+    private Deck leftDeck;
+    private Deck rightDeck;
+    
     // Injected decks
     @FXML private DynamicDeck deckLeft;
     @FXML private DynamicDeck deckRight;
@@ -45,6 +50,10 @@ public class ConsoleController {
 	}
     
     public void setDecks(Deck leftDeck, Deck rightDeck) {
+        this.leftDeck = leftDeck;
+        this.rightDeck = rightDeck;
+
+        // Propaga i deck ai controller secondari
         if (playbackLeftController != null) {
             playbackLeftController.setDeck(leftDeck);
         }
@@ -71,6 +80,10 @@ public class ConsoleController {
         }
         if (cueRightController != null && seekRightController != null) {
             cueRightController.setDeckAndSlider(rightDeck, seekRightController.getGraphicSlider());
+        }
+        
+        if (mixerController != null) {
+            mixerController.setDecks(leftDeck, rightDeck);
         }
         
         if (deckLeft != null) {
