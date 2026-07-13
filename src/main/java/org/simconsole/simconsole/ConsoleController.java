@@ -26,6 +26,9 @@ public class ConsoleController {
     @FXML private SeekSliderController seekLeftController;
     @FXML private SeekSliderController seekRightController;
     
+    @FXML private PitchController pitchLeftController;
+    @FXML private PitchController pitchRightController;
+    
     // Injected decks
     @FXML private DynamicDeck deckLeft;
     @FXML private DynamicDeck deckRight;
@@ -51,6 +54,13 @@ public class ConsoleController {
         }
         if (seekRightController != null) {
             seekRightController.setDeck(rightDeck);
+        }
+        
+        if (pitchLeftController != null) {
+            pitchLeftController.setDeck(leftDeck);
+        }
+        if (pitchRightController != null) {
+            pitchRightController.setDeck(rightDeck);
         }
         
         if (deckLeft != null) {
