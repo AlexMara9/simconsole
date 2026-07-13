@@ -101,16 +101,18 @@ public class ConsoleController {
                 // Utilizziamo un delta fisso (assumendo 60fps) invece del tempo reale per calcolare
                 // l'angolo di rotazione. Questo elimina completamente il "micro-lag" visivo causato
                 // dalle normali fluttuazioni di timing (jitter) del thread grafico di JavaFX.
-                double rotationDelta = (1.0 / 60.0 / 1.8) * 360.0; // 33.3 RPM a 60 fps fissi
+                double baseRotationDelta = (1.0 / 60.0 / 1.8) * 360.0; // 33.3 RPM a 60 fps fissi
 
                 if (deckLeft != null && leftDeck != null) {
                     if (!deckLeft.isScrubbing() && leftDeck.isPlaying() && leftDeck.getCurrentTrack() != null) {
-                        deckLeft.setRotationAngle(deckLeft.getRotationAngle() + rotationDelta);
+                        double pitch = leftDeck.getControls().getPitch();
+                        deckLeft.setRotationAngle(deckLeft.getRotationAngle() + baseRotationDelta * pitch);
                     }
                 }
                 if (deckRight != null && rightDeck != null) {
                     if (!deckRight.isScrubbing() && rightDeck.isPlaying() && rightDeck.getCurrentTrack() != null) {
-                        deckRight.setRotationAngle(deckRight.getRotationAngle() + rotationDelta);
+                        double pitch = rightDeck.getControls().getPitch();
+                        deckRight.setRotationAngle(deckRight.getRotationAngle() + baseRotationDelta * pitch);
                     }
                 }
             }
