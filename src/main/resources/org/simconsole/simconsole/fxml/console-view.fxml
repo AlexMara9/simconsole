@@ -13,14 +13,14 @@
 
 <GridPane fx:id="grid" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="496.0" styleClass="main-container" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.ConsoleController">
     <columnConstraints>
-        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="5.0" />
-        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="20.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="8.0" />
+        <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="17.0" />
         <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="10.0" />
       <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="15.0" />
       <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="15.0" />
       <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="10.0" />
-      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="20.0" />
-      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="5.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="17.0" />
+      <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="8.0" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints minHeight="0.0" percentHeight="35.0" vgrow="ALWAYS" />
@@ -28,9 +28,9 @@
         <RowConstraints minHeight="0.0" percentHeight="50.0" vgrow="ALWAYS" />
     </rowConstraints>
     <children>
-      <fx:include minHeight="0.0" minWidth="0.0" source="master.fxml" GridPane.columnIndex="2" GridPane.columnSpan="4" />
+      <fx:include fx:id="mixer" minHeight="0.0" minWidth="0.0" source="master.fxml" GridPane.columnIndex="2" GridPane.columnSpan="4" />
       <!-- Left Deck -->
-      <DynamicDeck minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="1" />
+      <DynamicDeck fx:id="deckLeft" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="1" />
       <StackPane fx:id="playbackContainer" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/card.css" GridPane.columnSpan="4" GridPane.rowIndex="1">
          <children>
             <GridPane fx:id="playbackControlsContainer" minHeight="0.0" minWidth="0.0">
@@ -44,15 +44,15 @@
                 <RowConstraints minHeight="0.0" percentHeight="60.0" />
               </rowConstraints>
                <children>
-                  <fx:include minHeight="0.0" minWidth="0.0" source="Playback.fxml" />
-                  <fx:include minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnIndex="1" GridPane.columnSpan="2" />
-                  <fx:include source="seek-slider.fxml" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                  <fx:include fx:id="playbackLeft" minHeight="0.0" minWidth="0.0" source="Playback.fxml" />
+                  <fx:include fx:id="cueLeft" minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                  <fx:include fx:id="seekLeft" source="seek-slider.fxml" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </children>
       </StackPane>
-      <fx:include minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <fx:include source="pitch.fxml" />
+      <fx:include fx:id="effectsLeft" minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <fx:include fx:id="pitchLeft" source="pitch.fxml" />
 
       <!-- Center Song List -->
       <VBox alignment="TOP_CENTER" styleClass="card" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2">
@@ -63,7 +63,7 @@
       </VBox>
 
       <!-- Right Deck -->
-      <DynamicDeck minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+      <DynamicDeck fx:id="deckRight" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="6" GridPane.rowIndex="0" />
       <StackPane fx:id="playbackContainer1" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/card.css" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="1">
          <children>
             <GridPane fx:id="playbackControlsContainer1" minHeight="0.0" minWidth="0.0">
@@ -77,15 +77,15 @@
                   <RowConstraints minHeight="0.0" percentHeight="60.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <fx:include minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnSpan="2" />
-                  <fx:include minHeight="0.0" minWidth="0.0" source="Playback.fxml" GridPane.columnIndex="2" />
-                  <fx:include source="seek-slider.fxml" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                  <fx:include fx:id="cueRight" minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnSpan="2" />
+                  <fx:include fx:id="playbackRight" minHeight="0.0" minWidth="0.0" source="Playback.fxml" GridPane.columnIndex="2" />
+                  <fx:include fx:id="seekRight" source="seek-slider.fxml" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </children>
       </StackPane>
-      <fx:include source="effects.fxml" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <fx:include source="pitch.fxml" GridPane.columnIndex="7" />
+      <fx:include fx:id="effectsRight" source="effects.fxml" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <fx:include fx:id="pitchRight" source="pitch.fxml" GridPane.columnIndex="7" />
 
     </children>
 </GridPane>

@@ -80,7 +80,13 @@ public class DynamicSliderSkin extends SliderSkin {
             customTicksPane.getChildren().add(majorLine);
 
             if (slider.isShowTickLabels()) {
-                Text text = new Text(Double.toString(val));
+                String labelStr;
+                if (Math.abs(val - Math.round(val)) < 0.001) {
+                    labelStr = String.format(java.util.Locale.US, "%.0f", val);
+                } else {
+                    labelStr = String.format(java.util.Locale.US, "%.1f", val);
+                }
+                Text text = new Text(labelStr);
                 text.getStyleClass().add("slider-tick-label");
                 text.setTextOrigin(javafx.geometry.VPos.CENTER); // Garantisce centering verticale corretto
                 tickLabels.add(text);

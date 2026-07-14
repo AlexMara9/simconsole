@@ -21,10 +21,12 @@ public class SimConsole extends Application {
 		stage.setScene(scene);
 		stage.show();
 
+		// --- INIZIO AREA TEST (DA RIMUOVERE IN FUTURO QUANDO CI SARA' IL CARICAMENTO DA UI) ---
 		Tracks trackA = new Tracks("C:\\Users\\Pietro\\Downloads\\bassi.wav");
 		Tracks trackB = new Tracks("C:\\Users\\Pietro\\Downloads\\mixaggio.wav");
 		Tracks trackC = new Tracks("C:\\Users\\Pietro\\Downloads\\LosingIt.wav");
 		Tracks trackD = new Tracks("C:\\Users\\Pietro\\Downloads\\Nightcrawler.wav");
+		// --- FINE AREA TEST ---
 
 		
 		//t1
@@ -45,5 +47,7 @@ public class SimConsole extends Application {
 
 		d1.loadTrack(trackD);
 		d2.loadTrack(trackC);
+        
+        consoleController.setDecks(d1, d2);
 	}
 }

@@ -12,6 +12,7 @@ public class AudioProcessor {
     private Thread playbackThread;
 
     private static final double FADE_SPEED = 0.0005;
+    public static volatile double masterVolume = 1.0;
 
     // Biquad filters for EQ
     private final BiquadFilter eqLowL = new BiquadFilter(BiquadFilter.FilterType.LOW_SHELF, 44100, 150, 0.707, 0.0);
@@ -51,68 +52,78 @@ public class AudioProcessor {
             byte[] outputBuffer = new byte[framesPerWrite * 4];
             float[] inputFloatBuffer = new float[framesPerWrite * 2];
             float[] outputFloatBuffer = new float[framesPerWrite * 2];
+            boolean wasScrubbing = false;
+            double scratchLocalPlayhead = 0;
+            double scratchVelocity = 0;
+            double scratchVolume = 0;
             Sonic sonic = new Sonic(44100, 2);
 
             while (!Thread.currentThread().isInterrupted()) {
                 double[] audioData = deck.getAudioData();
                 DeckControls controls = deck.getControls();
                 
-                double targetPitch = controls != null ? controls.getPitch() : 1.0;
-                boolean keyLock = controls != null && controls.isKeyLock();
-                boolean isPlaying = deck.isPlaying();
-                double playhead = deck.getPlayheadDouble();
-                double internalVolume = deck.getInternalVolume();
-                
-                // Aggiorna i filtri Biquad con i valori da controls
-                if (controls != null) {
-                    eqLowL.setGain(controls.getEqLow());
-                    eqLowR.setGain(controls.getEqLow());
-                    eqMidL.setGain(controls.getEqMid());
-                    eqMidR.setGain(controls.getEqMid());
-                    eqHighL.setGain(controls.getEqHigh());
-                    eqHighR.setGain(controls.getEqHigh());
-                }
-
-                // Configura Sonic: se Key Lock è acceso cambia la 'speed', altrimenti il 'rate' (effetto vinile)
-                if (keyLock) {
-                    sonic.setSpeed((float) targetPitch);
-                    sonic.setRate(1.0f);
-                } else {
-                    sonic.setSpeed(1.0f);
-                    sonic.setRate((float) targetPitch);
-                }
-
-                // Continua a dare in pasto audio a Sonic finché non ha abbastanza campioni per la cassa
-                while (sonic.samplesAvailable() < framesPerWrite && (isPlaying || internalVolume > 0)) {
+                if (deck.isScrubbing()) {
+                    if (!wasScrubbing) {
+                        scratchLocalPlayhead = deck.getPlayheadDouble();
+                        scratchVelocity = 0;
+                        scratchVolume = 1.0; // Start at full volume since we are interrupting playback
+                    }
+                    wasScrubbing = true;
+                    
+                    double targetPlayhead = deck.getPlayheadDouble();
                     int inputFramesRead = 0;
                     
-                    for (int i = 0; i < framesPerWrite && audioData != null && playhead < audioData.length - 3; i++) {
-                        // 1. SMOOTH VOLUME RAMPING
-                        double targetVolume = isPlaying && controls != null ? controls.getVolume() : 0.0;
-                        if (internalVolume < targetVolume) {
-                            internalVolume = Math.min(targetVolume, internalVolume + FADE_SPEED);
-                        } else if (internalVolume > targetVolume) {
-                            internalVolume = Math.max(targetVolume, internalVolume - FADE_SPEED);
+                    // Calcolo della velocità bersaglio (targetVelocity) per questo blocco audio (512 campioni).
+                    // Vogliamo coprire la distanza (diff) in circa 3000 campioni (circa 60-70ms) 
+                    // per un effetto vinile molto fluido e pastoso.
+                    double diff = targetPlayhead - scratchLocalPlayhead;
+                    double targetVelocity = diff / 1500.0; 
+                    
+                    // Cap alla velocità massima di scratch (es. 4x = 8.0, dato che 2.0 è velocità normale)
+                    if (targetVelocity > 8.0) targetVelocity = 8.0;
+                    if (targetVelocity < -8.0) targetVelocity = -8.0;
+                    
+                    for (int i = 0; i < framesPerWrite && audioData != null; i++) {
+                        
+                        // Interpolazione morbidissima della velocità per ogni singolo campione audio (44100Hz)
+                        // Questo elimina totalmente i transienti e i click!
+                        scratchVelocity += (targetVelocity - scratchVelocity) * 0.002;
+                        
+                        scratchLocalPlayhead += scratchVelocity;
+                        
+                        if (scratchLocalPlayhead < 0) { scratchLocalPlayhead = 0; scratchVelocity = 0; }
+                        if (scratchLocalPlayhead >= audioData.length - 2) { scratchLocalPlayhead = audioData.length - 2; scratchVelocity = 0; }
+                        
+                        // Anti DC-offset: se siamo praticamente fermi, facciamo fade out del volume
+                        if (Math.abs(scratchVelocity) > 0.02 || Math.abs(targetPlayhead - scratchLocalPlayhead) > 5.0) {
+                            scratchVolume = Math.min(1.0, scratchVolume + 0.005); // Fade in veloce
+                        } else {
+                            scratchVolume = Math.max(0.0, scratchVolume - 0.002); // Fade out dolce
                         }
-
-                        int index = (int) playhead;
-                        if (index % 2 != 0) index--; // Allineamento stereo
                         
-                        double left = audioData[index];
-                        double right = audioData[index + 1];
+                        int index = (int) scratchLocalPlayhead;
+                        if (index % 2 != 0) index--;
                         
-                        // Avanziamo SEMPRE di 2 (1 frame = L+R). Il pitch/speed lo gestisce Sonic!
-                        playhead += 2.0; 
-
-                        // 2. APPLICAZIONE CONTROLLI DI BASE
-                        left *= internalVolume;
-                        right *= internalVolume;
-
-                        // 3. APPLICAZIONE DSP (EQ E PAN)
+                        double left = 0;
+                        double right = 0;
+                        
+                        if (index >= 0 && index < audioData.length - 3) {
+                            // Linear interpolation for sub-sample accuracy (smooth pitch)
+                            double frac = (scratchLocalPlayhead - index) / 2.0;
+                            left = audioData[index];
+                            right = audioData[index + 1];
+                            left = left + frac * (audioData[index + 2] - left);
+                            right = right + frac * (audioData[index + 3] - right);
+                        }
+                        
+                        double baseVolume = controls != null ? controls.getVolume() : 1.0;
+                        left *= scratchVolume * baseVolume;
+                        right *= scratchVolume * baseVolume;
+                        
+                        // Applica EQ per coerenza timbrica
                         left = eqLowL.process(left);
                         left = eqMidL.process(left);
                         left = eqHighL.process(left);
-
                         right = eqLowR.process(right);
                         right = eqMidR.process(right);
                         right = eqHighR.process(right);
@@ -125,54 +136,149 @@ public class AudioProcessor {
                             right *= rightGain;
                         }
 
-                        // 4. HARD LIMITER
+                        left *= masterVolume;
+                        right *= masterVolume;
+                        
+                        // Hard limiter come in normal playback
                         left = Math.max(-1.0, Math.min(1.0, left));
                         right = Math.max(-1.0, Math.min(1.0, right));
-
-                        inputFloatBuffer[inputFramesRead * 2] = (float) left;
-                        inputFloatBuffer[inputFramesRead * 2 + 1] = (float) right;
+                        
+                        outputFloatBuffer[i * 2] = (float) left;
+                        outputFloatBuffer[i * 2 + 1] = (float) right;
                         inputFramesRead++;
                     }
                     
-                    // Salva le variazioni di stato sul deck (playhead e internalVolume)
-                    deck.setPlayheadDouble(playhead);
-                    deck.setInternalVolume(internalVolume);
-
                     if (inputFramesRead > 0) {
-                        sonic.writeFloatToStream(inputFloatBuffer, inputFramesRead);
-                    } else {
-                        break; // Fine file o deck fermo
-                    }
-                }
-
-                if (audioData != null && deck.getPlayheadDouble() >= audioData.length - 3 && deck.isPlaying()) {
-                    deck.setPlaying(false);
-                    sonic.flushStream();
-                }
-
-                // 5. ESTRAZIONE DA SONIC E CONVERSIONE PCM
-                int framesToRead = Math.min(framesPerWrite, sonic.samplesAvailable());
-                if (framesToRead > 0) {
-                    int read = sonic.readFloatFromStream(outputFloatBuffer, framesToRead);
-                    int bufferIndex = 0;
-                    
-                    for (int i = 0; i < read * 2; i += 2) {
-                        short pcmL = (short) (outputFloatBuffer[i] * 32767.0f);
-                        short pcmR = (short) (outputFloatBuffer[i + 1] * 32767.0f);
-
-                        outputBuffer[bufferIndex++] = (byte) (pcmL & 0xFF);
-                        outputBuffer[bufferIndex++] = (byte) ((pcmL >> 8) & 0xFF);
-                        outputBuffer[bufferIndex++] = (byte) (pcmR & 0xFF);
-                        outputBuffer[bufferIndex++] = (byte) ((pcmR >> 8) & 0xFF);
+                        int bufferIndex = 0;
+                        for (int i = 0; i < inputFramesRead * 2; i += 2) {
+                            short pcmL = (short) (outputFloatBuffer[i] * 32767.0f);
+                            short pcmR = (short) (outputFloatBuffer[i + 1] * 32767.0f);
+                            outputBuffer[bufferIndex++] = (byte) (pcmL & 0xFF);
+                            outputBuffer[bufferIndex++] = (byte) ((pcmL >> 8) & 0xFF);
+                            outputBuffer[bufferIndex++] = (byte) (pcmR & 0xFF);
+                            outputBuffer[bufferIndex++] = (byte) ((pcmR >> 8) & 0xFF);
+                        }
+                        if (speakerLine != null && speakerLine.isOpen()) {
+                            speakerLine.write(outputBuffer, 0, bufferIndex);
+                        }
                     }
                     
-                    if (speakerLine != null && speakerLine.isOpen()) {
-                        speakerLine.write(outputBuffer, 0, bufferIndex);
-                    }
                 } else {
-                    // Scriviamo zeri se il lettore è in pausa per mantenere la scheda audio "calda"
-                    if (speakerLine != null && speakerLine.isOpen()) {
-                        speakerLine.write(new byte[framesPerWrite * 4], 0, framesPerWrite * 4);
+                    if (wasScrubbing) {
+                        deck.setPlayheadDouble(scratchLocalPlayhead);
+                        sonic = new Sonic(44100, 2); // Reset sonic completely
+                        wasScrubbing = false;
+                    }
+
+                    double targetPitch = controls != null ? controls.getPitch() : 1.0;
+                    boolean keyLock = controls != null && controls.isKeyLock();
+                    boolean isPlaying = deck.isPlaying();
+                    double playhead = deck.getPlayheadDouble();
+                    double internalVolume = deck.getInternalVolume();
+                    
+                    if (controls != null) {
+                        eqLowL.setGain(controls.getEqLow());
+                        eqLowR.setGain(controls.getEqLow());
+                        eqMidL.setGain(controls.getEqMid());
+                        eqMidR.setGain(controls.getEqMid());
+                        eqHighL.setGain(controls.getEqHigh());
+                        eqHighR.setGain(controls.getEqHigh());
+                    }
+
+                    if (keyLock) {
+                        sonic.setSpeed((float) targetPitch);
+                        sonic.setRate(1.0f);
+                    } else {
+                        sonic.setSpeed(1.0f);
+                        sonic.setRate((float) targetPitch);
+                    }
+
+                    while (sonic.samplesAvailable() < framesPerWrite && (isPlaying || internalVolume > 0)) {
+                        int inputFramesRead = 0;
+                        
+                        for (int i = 0; i < framesPerWrite && audioData != null && playhead < audioData.length - 3; i++) {
+                            double targetVolume = isPlaying && controls != null ? controls.getVolume() : 0.0;
+                            if (internalVolume < targetVolume) {
+                                internalVolume = Math.min(targetVolume, internalVolume + FADE_SPEED);
+                            } else if (internalVolume > targetVolume) {
+                                internalVolume = Math.max(targetVolume, internalVolume - FADE_SPEED);
+                            }
+
+                            int index = (int) playhead;
+                            if (index % 2 != 0) index--; 
+                            
+                            double left = audioData[index];
+                            double right = audioData[index + 1];
+                            
+                            playhead += 2.0; 
+
+                            left *= internalVolume;
+                            right *= internalVolume;
+
+                            left = eqLowL.process(left);
+                            left = eqMidL.process(left);
+                            left = eqHighL.process(left);
+
+                            right = eqLowR.process(right);
+                            right = eqMidR.process(right);
+                            right = eqHighR.process(right);
+
+                            if (controls != null) {
+                                double pan = controls.getPan();
+                                double leftGain = Math.min(1.0, Math.max(0.0, 1.0 + pan));
+                                double rightGain = Math.min(1.0, Math.max(0.0, 1.0 - pan));
+                                left *= leftGain;
+                                right *= rightGain;
+                            }
+
+                            left *= masterVolume;
+                            right *= masterVolume;
+
+                            left = Math.max(-1.0, Math.min(1.0, left));
+                            right = Math.max(-1.0, Math.min(1.0, right));
+
+                            inputFloatBuffer[inputFramesRead * 2] = (float) left;
+                            inputFloatBuffer[inputFramesRead * 2 + 1] = (float) right;
+                            inputFramesRead++;
+                        }
+                        
+                        deck.setPlayheadDouble(playhead);
+                        deck.setInternalVolume(internalVolume);
+
+                        if (inputFramesRead > 0) {
+                            sonic.writeFloatToStream(inputFloatBuffer, inputFramesRead);
+                        } else {
+                            break; 
+                        }
+                    }
+
+                    if (audioData != null && deck.getPlayheadDouble() >= audioData.length - 3 && deck.isPlaying()) {
+                        deck.setPlaying(false);
+                        sonic.flushStream();
+                    }
+
+                    int framesToRead = Math.min(framesPerWrite, sonic.samplesAvailable());
+                    if (framesToRead > 0) {
+                        int read = sonic.readFloatFromStream(outputFloatBuffer, framesToRead);
+                        int bufferIndex = 0;
+                        
+                        for (int i = 0; i < read * 2; i += 2) {
+                            short pcmL = (short) (outputFloatBuffer[i] * 32767.0f);
+                            short pcmR = (short) (outputFloatBuffer[i + 1] * 32767.0f);
+
+                            outputBuffer[bufferIndex++] = (byte) (pcmL & 0xFF);
+                            outputBuffer[bufferIndex++] = (byte) ((pcmL >> 8) & 0xFF);
+                            outputBuffer[bufferIndex++] = (byte) (pcmR & 0xFF);
+                            outputBuffer[bufferIndex++] = (byte) ((pcmR >> 8) & 0xFF);
+                        }
+                        
+                        if (speakerLine != null && speakerLine.isOpen()) {
+                            speakerLine.write(outputBuffer, 0, bufferIndex);
+                        }
+                    } else {
+                        if (speakerLine != null && speakerLine.isOpen()) {
+                            speakerLine.write(new byte[framesPerWrite * 4], 0, framesPerWrite * 4);
+                        }
                     }
                 }
             }

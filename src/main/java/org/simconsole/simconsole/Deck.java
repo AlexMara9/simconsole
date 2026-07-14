@@ -6,6 +6,7 @@ public class Deck {
     private double[] audioData;
     private volatile double playhead;
     private volatile boolean isPlaying;
+    private volatile boolean scrubbing = false;
     private Tracks currentTrack;
     private volatile double internalVolume;
     
@@ -47,6 +48,14 @@ public class Deck {
     
     public void setPlaying(boolean playing) {
         this.isPlaying = playing;
+    }
+
+    public boolean isScrubbing() {
+        return scrubbing;
+    }
+
+    public void setScrubbing(boolean scrubbing) {
+        this.scrubbing = scrubbing;
     }
 
     public void seekTrack(double offset) {

@@ -11,31 +11,11 @@ import javafx.scene.control.Skin;
 public class DynamicDeck extends Control {
 
     // Proprietà
-    private final BooleanProperty spinning = new SimpleBooleanProperty(this, "spinning", false);
-    private final DoubleProperty spinSpeed = new SimpleDoubleProperty(this, "spinSpeed", 1.0); // gradi per frame
+    private final BooleanProperty scrubbing = new SimpleBooleanProperty(this, "scrubbing", false);
     private final DoubleProperty rotationAngle = new SimpleDoubleProperty(this, "rotationAngle", 0.0);
-
-    private AnimationTimer spinTimer;
 
     public DynamicDeck() {
         getStyleClass().add("dynamic-deck");
-
-        // Motore di animazione per il giro automatico
-        spinTimer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                setRotationAngle(getRotationAngle() + getSpinSpeed());
-            }
-        };
-
-        // Ascoltatore che fa partire o fermare il motore
-        spinning.addListener((obs, old, isSpinning) -> {
-            if (isSpinning) {
-                spinTimer.start();
-            } else {
-                spinTimer.stop();
-            }
-        });
     }
 
     @Override
@@ -45,24 +25,14 @@ public class DynamicDeck extends Control {
 
     // --- Property Getters/Setters ---
 
-    public final BooleanProperty spinningProperty() {
-        return spinning;
+    public final BooleanProperty scrubbingProperty() {
+        return scrubbing;
     }
-    public final boolean isSpinning() {
-        return spinning.get();
+    public final boolean isScrubbing() {
+        return scrubbing.get();
     }
-    public final void setSpinning(boolean value) {
-        spinning.set(value);
-    }
-
-    public final DoubleProperty spinSpeedProperty() {
-        return spinSpeed;
-    }
-    public final double getSpinSpeed() {
-        return spinSpeed.get();
-    }
-    public final void setSpinSpeed(double value) {
-        spinSpeed.set(value);
+    public final void setScrubbing(boolean value) {
+        scrubbing.set(value);
     }
 
     public final DoubleProperty rotationAngleProperty() {
@@ -72,8 +42,6 @@ public class DynamicDeck extends Control {
         return rotationAngle.get();
     }
     public final void setRotationAngle(double value) {
-        // Non normalizziamo l'angolo (es. % 360) per permettere ai listener 
-        // di leggere delta fluidi e continui senza "salti" negativi.
         rotationAngle.set(value);
     }
 }

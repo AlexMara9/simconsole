@@ -9,7 +9,7 @@
 <?import org.simconsole.simconsole.LedButton?>
 <?import org.simconsole.simconsole.LedKnob?>
 
-<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.EffectsController">
    <children>
       <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" StackPane.alignment="CENTER">
         <columnConstraints>
@@ -36,9 +36,9 @@
                   <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" />
                </rowConstraints>
                <children>
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Low" toggleMode="true" GridPane.columnIndex="1" />
-                  <LedKnob leftLabel="-12" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="RLow" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <LedButton fx:id="eqLowEnableBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="Low" toggleMode="true" GridPane.columnIndex="1" />
+                  <LedKnob fx:id="eqLowKnob" leftLabel="-12" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                  <LedButton fx:id="eqLowResetBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="RLow" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1">
@@ -53,9 +53,9 @@
                   <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" />
                </rowConstraints>
                <children>
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Mid" toggleMode="true" GridPane.columnIndex="1" />
-                  <LedKnob leftLabel="-12" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="RMid" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <LedButton fx:id="eqMidEnableBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="Mid" toggleMode="true" GridPane.columnIndex="1" />
+                  <LedKnob fx:id="eqMidKnob" leftLabel="-12" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                  <LedButton fx:id="eqMidResetBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="RMid" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="2">
@@ -70,9 +70,9 @@
                   <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" />
                </rowConstraints>
                <children>
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="High" toggleMode="true" GridPane.columnIndex="1" />
-                  <LedKnob leftLabel="-12" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="RHigh" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <LedButton fx:id="eqHighEnableBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="High" toggleMode="true" GridPane.columnIndex="1" />
+                  <LedKnob fx:id="eqHighKnob" leftLabel="-12" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                  <LedButton fx:id="eqHighResetBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="RHigh" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
             </GridPane>
             <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" GridPane.columnIndex="2" GridPane.rowIndex="2" />
