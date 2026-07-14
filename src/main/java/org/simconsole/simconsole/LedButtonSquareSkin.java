@@ -37,6 +37,8 @@ public class LedButtonSquareSkin extends SkinBase<LedButton> {
         ledRing.getStyleClass().add("round-button-led-ring");
         innerKnob.getStyleClass().add("round-button-inner-knob");
         textNode.getStyleClass().add("round-button-text");
+        textNode.setBoundsType(javafx.scene.text.TextBoundsType.VISUAL);
+        textNode.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
         textNode.textProperty().bind(control.textProperty());
 
