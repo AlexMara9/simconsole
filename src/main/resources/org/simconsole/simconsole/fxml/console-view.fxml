@@ -51,7 +51,7 @@
             </GridPane>
          </children>
       </StackPane>
-      <fx:include minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <fx:include fx:id="effectsLeft" minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <fx:include fx:id="pitchLeft" source="pitch.fxml" />
 
       <!-- Center Song List -->
@@ -84,7 +84,7 @@
             </GridPane>
          </children>
       </StackPane>
-      <fx:include source="effects.fxml" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <fx:include fx:id="effectsRight" source="effects.fxml" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <fx:include fx:id="pitchRight" source="pitch.fxml" GridPane.columnIndex="7" />
 
     </children>

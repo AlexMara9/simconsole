@@ -33,6 +33,9 @@ public class ConsoleController {
     @FXML private PitchController pitchRightController;
     
     @FXML private MixerController mixerController;
+
+    @FXML private EffectsController effectsLeftController;
+    @FXML private EffectsController effectsRightController;
     
     private Deck leftDeck;
     private Deck rightDeck;
@@ -84,6 +87,13 @@ public class ConsoleController {
         
         if (mixerController != null) {
             mixerController.setDecks(leftDeck, rightDeck);
+        }
+
+        if (effectsLeftController != null) {
+            effectsLeftController.setDeck(leftDeck);
+        }
+        if (effectsRightController != null) {
+            effectsRightController.setDeck(rightDeck);
         }
         
         if (deckLeft != null) {
