@@ -24,9 +24,9 @@ public class PlaybackController {
         
         playButton.selectedProperty().addListener((obs, oldVal, newVal) -> {
             if (deck != null) {
-                if (newVal) {
+                if (!newVal) { // Se non premuto (luce chiara) -> Play
                     deck.play();
-                } else {
+                } else {       // Se premuto (scuro) -> Pause
                     deck.pause();
                 }
             }
@@ -36,8 +36,8 @@ public class PlaybackController {
         javafx.animation.AnimationTimer timer = new javafx.animation.AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (deck != null && playButton.isSelected() != deck.isPlaying()) {
-                    playButton.setSelected(deck.isPlaying());
+                if (deck != null && playButton.isSelected() == deck.isPlaying()) {
+                    playButton.setSelected(!deck.isPlaying()); // Se in riproduzione, selected=false
                 }
             }
         };
