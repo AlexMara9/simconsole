@@ -29,8 +29,6 @@ public class CueController {
     }
 
     private void setupCue(CueButton btn, String id, javafx.scene.paint.Color color) {
-        // Impostiamo il testo col nome del cue
-        btn.setText(id.replace("CUE", ""));
 
         btn.setOnMouseClicked(e -> {
             if (slider == null || deck == null) return;
