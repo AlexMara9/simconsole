@@ -19,7 +19,6 @@ public class LedButtonRoundSkin extends SkinBase<LedButton> {
     private final Circle middleRing = new Circle();
     private final Circle outerKnob = new Circle();
     private final Circle ledRing = new Circle();
-    private final Circle innerKnob = new Circle();
     private final Text textNode = new Text();
 
     private final StackPane container = new StackPane();
@@ -34,12 +33,11 @@ public class LedButtonRoundSkin extends SkinBase<LedButton> {
         middleRing.getStyleClass().add("round-button-middle-ring");
         outerKnob.getStyleClass().add("round-button-outer-knob");
         ledRing.getStyleClass().add("round-button-led-ring");
-        innerKnob.getStyleClass().add("round-button-inner-knob");
         textNode.getStyleClass().add("round-button-text");
 
         textNode.textProperty().bind(control.textProperty());
 
-        container.getChildren().addAll(outerRing, middleRing, outerKnob, ledRing, innerKnob, textNode);
+        container.getChildren().addAll(outerRing, middleRing, outerKnob, ledRing, textNode);
         getChildren().add(container);
 
         control.graphicProperty().addListener((obs, oldNode, newNode) -> updateGraphic(oldNode, newNode));
@@ -84,8 +82,10 @@ public class LedButtonRoundSkin extends SkinBase<LedButton> {
         outerRing.radiusProperty().bind(minDim.multiply(0.45));
         middleRing.radiusProperty().bind(minDim.multiply(0.43));
         outerKnob.radiusProperty().bind(minDim.multiply(0.41));
-        ledRing.radiusProperty().bind(minDim.multiply(0.36));
-        innerKnob.radiusProperty().bind(minDim.multiply(0.33));
+        
+        // La linea del LED passa al centro tra 0.33 e 0.36 -> 0.345
+        ledRing.radiusProperty().bind(minDim.multiply(0.345));
+        ledRing.strokeWidthProperty().bind(minDim.multiply(0.03));
 
         container.layoutBoundsProperty().addListener((obs, oldBounds, bounds) -> {
             updateContentSize(bounds.getWidth(), bounds.getHeight(), control.getTextSizeRatio());

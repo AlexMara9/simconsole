@@ -7,11 +7,14 @@
 }
 
 .round-button-led-ring {
-    -fx-fill: linear-gradient(to bottom right, #33ccff, #007aff);
+    -fx-fill: transparent;
+    -fx-stroke: radial-gradient(center 50% 50%, radius 50%, #33ccff, #007aff);
+    -fx-stroke-type: centered;
 }
 
 .round-button-led-ring.pressed {
-    -fx-fill: linear-gradient(to bottom right, #007aff, #004b9e); /* Inscurito leggermente quando premuto */
+    -fx-fill: transparent;
+    -fx-stroke: radial-gradient(center 50% 50%, radius 50%, #007aff, #004b9e);
 }
 
 .round-button-middle-ring {
@@ -70,27 +73,27 @@
 
 /* Dimmed dark tinted interiors */
 .cue-button.cue1 .round-button-outer-knob,
-.cue-button.cue1 .round-button-led-ring,
-.cue-button.cue1 .round-button-inner-knob {
+.cue-button.cue1 .round-button-led-ring {
     -fx-fill: #3a0d0d; /* Dark Red */
+    -fx-stroke: #3a0d0d;
 }
 
 .cue-button.cue2 .round-button-outer-knob,
-.cue-button.cue2 .round-button-led-ring,
-.cue-button.cue2 .round-button-inner-knob {
+.cue-button.cue2 .round-button-led-ring {
     -fx-fill: #3a300d; /* Dark Yellow */
+    -fx-stroke: #3a300d;
 }
 
 .cue-button.cue3 .round-button-outer-knob,
-.cue-button.cue3 .round-button-led-ring,
-.cue-button.cue3 .round-button-inner-knob {
+.cue-button.cue3 .round-button-led-ring {
     -fx-fill: #1a3a0d; /* Dark Green */
+    -fx-stroke: #1a3a0d;
 }
 
 .cue-button.cue4 .round-button-outer-knob,
-.cue-button.cue4 .round-button-led-ring,
-.cue-button.cue4 .round-button-inner-knob {
+.cue-button.cue4 .round-button-led-ring {
     -fx-fill: #0d363a; /* Dark Blue */
+    -fx-stroke: #0d363a;
 }
 
 /* Dimmed Text Colors */
@@ -101,29 +104,29 @@
 
 /* Lit state (Vibrant Glowing Pad) */
 .cue-button.pad-lit.cue1 .round-button-outer-knob,
-.cue-button.pad-lit.cue1 .round-button-led-ring,
-.cue-button.pad-lit.cue1 .round-button-inner-knob {
+.cue-button.pad-lit.cue1 .round-button-led-ring {
     -fx-fill: linear-gradient(to bottom right, rgba(255, 120, 120, 0.95), rgba(248, 59, 59, 1.0));
+    -fx-stroke: linear-gradient(to bottom right, rgba(255, 120, 120, 0.95), rgba(248, 59, 59, 1.0));
 }
 .cue-button.pad-lit.cue1 .round-button-text { -fx-fill: #ffffff; }
 
 .cue-button.pad-lit.cue2 .round-button-outer-knob,
-.cue-button.pad-lit.cue2 .round-button-led-ring,
-.cue-button.pad-lit.cue2 .round-button-inner-knob {
+.cue-button.pad-lit.cue2 .round-button-led-ring {
     -fx-fill: linear-gradient(to bottom right, rgba(255, 230, 120, 0.95), rgba(248, 204, 59, 1.0));
+    -fx-stroke: linear-gradient(to bottom right, rgba(255, 230, 120, 0.95), rgba(248, 204, 59, 1.0));
 }
 .cue-button.pad-lit.cue2 .round-button-text { -fx-fill: #ffffff; }
 
 .cue-button.pad-lit.cue3 .round-button-outer-knob,
-.cue-button.pad-lit.cue3 .round-button-led-ring,
-.cue-button.pad-lit.cue3 .round-button-inner-knob {
+.cue-button.pad-lit.cue3 .round-button-led-ring {
     -fx-fill: linear-gradient(to bottom right, rgba(160, 255, 120, 0.95), rgba(113, 248, 59, 1.0));
+    -fx-stroke: linear-gradient(to bottom right, rgba(160, 255, 120, 0.95), rgba(113, 248, 59, 1.0));
 }
 .cue-button.pad-lit.cue3 .round-button-text { -fx-fill: #ffffff; }
 
 .cue-button.pad-lit.cue4 .round-button-outer-knob,
-.cue-button.pad-lit.cue4 .round-button-led-ring,
-.cue-button.pad-lit.cue4 .round-button-inner-knob {
+.cue-button.pad-lit.cue4 .round-button-led-ring {
     -fx-fill: linear-gradient(to bottom right, rgba(120, 250, 255, 0.95), rgba(59, 232, 248, 1.0));
+    -fx-stroke: linear-gradient(to bottom right, rgba(120, 250, 255, 0.95), rgba(59, 232, 248, 1.0));
 }
 .cue-button.pad-lit.cue4 .round-button-text { -fx-fill: #ffffff; }

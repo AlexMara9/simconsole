@@ -19,7 +19,6 @@ public class LedButtonSquareSkin extends SkinBase<LedButton> {
     private final Rectangle middleRing = new Rectangle();
     private final Rectangle outerKnob = new Rectangle();
     private final Rectangle ledRing = new Rectangle();
-    private final Rectangle innerKnob = new Rectangle();
     private final Text textNode = new Text();
 
     private final StackPane container = new StackPane();
@@ -35,14 +34,13 @@ public class LedButtonSquareSkin extends SkinBase<LedButton> {
         middleRing.getStyleClass().add("round-button-middle-ring");
         outerKnob.getStyleClass().add("round-button-outer-knob");
         ledRing.getStyleClass().add("round-button-led-ring");
-        innerKnob.getStyleClass().add("round-button-inner-knob");
         textNode.getStyleClass().add("round-button-text");
         textNode.setBoundsType(javafx.scene.text.TextBoundsType.VISUAL);
         textNode.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
         textNode.textProperty().bind(control.textProperty());
 
-        container.getChildren().addAll(outerRing, middleRing, outerKnob, ledRing, innerKnob, textNode);
+        container.getChildren().addAll(outerRing, middleRing, outerKnob, ledRing, textNode);
         getChildren().add(container);
 
         control.graphicProperty().addListener((obs, oldNode, newNode) -> updateGraphic(oldNode, newNode));
@@ -87,8 +85,10 @@ public class LedButtonSquareSkin extends SkinBase<LedButton> {
         bindRect(outerRing, minDim, 0.90, 0.20);
         bindRect(middleRing, minDim, 0.86, 0.18);
         bindRect(outerKnob, minDim, 0.82, 0.16);
-        bindRect(ledRing, minDim, 0.72, 0.12);
-        bindRect(innerKnob, minDim, 0.66, 0.10);
+        
+        // La linea del LED passa al centro tra 0.66 e 0.72 -> 0.69
+        bindRect(ledRing, minDim, 0.69, 0.13);
+        ledRing.strokeWidthProperty().bind(minDim.multiply(0.06));
 
         container.layoutBoundsProperty().addListener((obs, oldBounds, bounds) -> {
             updateContentSize(bounds.getWidth(), bounds.getHeight(), control.getTextSizeRatio());
