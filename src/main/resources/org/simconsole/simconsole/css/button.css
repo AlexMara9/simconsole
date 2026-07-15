@@ -8,13 +8,14 @@
 
 .round-button-led-ring {
     -fx-fill: transparent;
-    -fx-stroke: radial-gradient(center 50% 50%, radius 50%, #33ccff, #007aff);
+    -fx-stroke: radial-gradient(center 50% 50%, radius 50%, #1a8cff, #005ce6);
     -fx-stroke-type: centered;
 }
 
 .round-button-led-ring.pressed {
     -fx-fill: transparent;
-    -fx-stroke: radial-gradient(center 50% 50%, radius 50%, #007aff, #004b9e);
+    -fx-stroke: radial-gradient(center 50% 50%, radius 50%, #ccf5ff, #00d4ff);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 212, 255, 0.8), 12, 0.6, 0, 0);
 }
 
 .round-button-middle-ring {

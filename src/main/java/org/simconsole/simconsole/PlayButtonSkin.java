@@ -25,7 +25,7 @@ public class PlayButtonSkin extends LedButtonRoundSkin {
         Node graphic = control.getGraphic();
         if (graphic != null) {
             graphic.getStyleClass().removeAll("icon-play", "icon-pause");
-            graphic.getStyleClass().add(isPlaying ? "icon-play" : "icon-pause");
+            graphic.getStyleClass().add(isPlaying ? "icon-pause" : "icon-play");
         }
     }
 }
