@@ -129,12 +129,22 @@ public class ConsoleController {
         
         // Timer per sincronizzare l'interfaccia con lo stato dei deck backend (Backend -> UI)
         javafx.animation.AnimationTimer timer = new javafx.animation.AnimationTimer() {
+            private long lastUpdate = 0;
+            
             @Override
             public void handle(long now) {
-                // Utilizziamo un delta fisso (assumendo 60fps) invece del tempo reale per calcolare
-                // l'angolo di rotazione. Questo elimina completamente il "micro-lag" visivo causato
-                // dalle normali fluttuazioni di timing (jitter) del thread grafico di JavaFX.
-                double baseRotationDelta = (1.0 / 60.0 / 1.8) * 360.0; // 33.3 RPM a 60 fps fissi
+                if (lastUpdate == 0) {
+                    lastUpdate = now;
+                    return;
+                }
+                double elapsedSeconds = (now - lastUpdate) / 1_000_000_000.0;
+                lastUpdate = now;
+                
+                // Evitiamo salti enormi se il thread UI si blocca per un attimo (es. durante il resize)
+                if (elapsedSeconds > 0.1) elapsedSeconds = 0.016; 
+                
+                // Calcoliamo quanti gradi deve ruotare in base al tempo effettivamente trascorso
+                double baseRotationDelta = (elapsedSeconds / 1.8) * 360.0; // 33.3 RPM
 
                 if (deckLeft != null && leftDeck != null) {
                     if (!deckLeft.isScrubbing() && leftDeck.isPlaying() && leftDeck.getCurrentTrack() != null) {
