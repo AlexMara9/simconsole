@@ -79,9 +79,9 @@ public class AudioProcessor {
                     double diff = targetPlayhead - scratchLocalPlayhead;
                     double targetVelocity = diff / 1500.0; 
                     
-                    // Cap alla velocità massima di scratch (es. 4x = 8.0, dato che 2.0 è velocità normale)
-                    if (targetVelocity > 8.0) targetVelocity = 8.0;
-                    if (targetVelocity < -8.0) targetVelocity = -8.0;
+                    // Cap rimosso per permettere velocità di scratch realistiche (nessun limite)
+                    if (targetVelocity > 200.0) targetVelocity = 200.0; // Solo un limite estremo di sicurezza
+                    if (targetVelocity < -200.0) targetVelocity = -200.0;
                     
                     for (int i = 0; i < framesPerWrite && audioData != null; i++) {
                         
