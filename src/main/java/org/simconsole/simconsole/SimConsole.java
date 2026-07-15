@@ -43,7 +43,11 @@ public class SimConsole extends Application {
 		AudioProcessor processor2 = new AudioProcessor(d2);
 		processor2.startPlayback();
 
-		d1.loadTrack(trackD);
+		d1.loadTrack(trackA);
 		d2.loadTrack(trackC);
+		
+		d1.play(); // Start playback on deck 1 after loading
+		
+		consoleController.setDecks(d1, d2);
 	}
 }

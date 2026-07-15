@@ -21,6 +21,12 @@ public class AudioProcessor {
     private final BiquadFilter eqHighL = new BiquadFilter(BiquadFilter.FilterType.HIGH_SHELF, 44100, 4000, 0.707, 0.0);
     private final BiquadFilter eqHighR = new BiquadFilter(BiquadFilter.FilterType.HIGH_SHELF, 44100, 4000, 0.707, 0.0);
 
+    // Nuovi effetti: Flanger e Reverb
+    private final Flanger flangerL = new Flanger(44100);
+    private final Flanger flangerR = new Flanger(44100);
+    private final Reverb reverb = new Reverb(44100);
+    private final Echo eco = new Echo(44100);
+
     public AudioProcessor(Deck deck) {
         this.deck = deck;
     }
@@ -71,6 +77,20 @@ public class AudioProcessor {
                     eqMidR.setGain(controls.getEqMid());
                     eqHighL.setGain(controls.getEqHigh());
                     eqHighR.setGain(controls.getEqHigh());
+                    
+                    // Aggiorna Flanger e Reverb
+                    flangerL.setEnabled(controls.isFlangerEnabled());
+                    flangerR.setEnabled(controls.isFlangerEnabled());
+                    flangerL.setWet(controls.getFlangerWet());
+                    flangerR.setWet(controls.getFlangerWet());
+                    flangerL.setBellEnabled(controls.isFlangerBellEnabled());
+                    flangerR.setBellEnabled(controls.isFlangerBellEnabled());
+
+                    reverb.setEnabled(controls.isReverbEnabled());
+                    reverb.setWet(controls.getReverbWet());
+                    
+                    eco.setEnabled(controls.isEcoEnabled());
+                    eco.setWet(controls.getEcoWet());
                 }
 
                 // Configura Sonic: se Key Lock è acceso cambia la 'speed', altrimenti il 'rate' (effetto vinile)
@@ -124,6 +144,20 @@ public class AudioProcessor {
                             left *= leftGain;
                             right *= rightGain;
                         }
+
+                        // Applica Flanger
+                        left = flangerL.process(left);
+                        right = flangerR.process(right);
+
+                        // Applica Reverb
+                        double[] revOut = reverb.process(left, right);
+                        left = revOut[0];
+                        right = revOut[1];
+
+                        // Applica Echo
+                        double[] ecoOut = eco.process(left, right);
+                        left = ecoOut[0];
+                        right = ecoOut[1];
 
                         // 4. HARD LIMITER
                         left = Math.max(-1.0, Math.min(1.0, left));

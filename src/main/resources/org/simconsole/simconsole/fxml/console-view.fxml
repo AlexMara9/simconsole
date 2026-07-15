@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import org.simconsole.simconsole.DynamicDeck?>
 
 <!-- Import Custom Components -->
@@ -53,16 +54,46 @@
             </GridPane>
          </children>
       </StackPane>
-      <fx:include minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <fx:include fx:id="leftEffects" minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <fx:include source="pitch.fxml" />
 
-      <!-- Center Song List -->
-      <VBox alignment="TOP_CENTER" styleClass="card" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2">
+      <!-- Center Playlist and Search -->
+      <GridPane styleClass="card" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2">
+         <columnConstraints>
+            <ColumnConstraints percentWidth="35.0" />
+            <ColumnConstraints percentWidth="65.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints vgrow="ALWAYS" />
+         </rowConstraints>
          <children>
-            <Label alignment="CENTER" maxWidth="Infinity" styleClass="section-label" text="PLAYLIST" />
-            <ListView fx:id="songList" VBox.vgrow="ALWAYS" />
+            <!-- Left Side: Search (35%) -->
+            <VBox alignment="TOP_CENTER" spacing="5" style="-fx-padding: 0 5 0 0;" GridPane.columnIndex="0">
+               <children>
+                  <HBox alignment="CENTER" spacing="5">
+                     <Label text="🔍" style="-fx-text-fill: white; -fx-font-size: 14px;" />
+                     <javafx.scene.control.TextField fx:id="searchField" promptText="Search Audius..." HBox.hgrow="ALWAYS" style="-fx-background-color: #222222; -fx-text-fill: white; -fx-border-color: #555555; -fx-border-radius: 3; -fx-background-radius: 3;" />
+                  </HBox>
+                  <ListView fx:id="searchList" VBox.vgrow="ALWAYS" />
+                  <javafx.scene.control.Button fx:id="localButton" text="+ LOCAL" maxWidth="Infinity" styleClass="power-btn" style="-fx-font-family: 'Segoe UI', 'Inter', sans-serif; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;" />
+               </children>
+            </VBox>
+            
+            <!-- Right Side: Playlist (65%) -->
+            <VBox alignment="TOP_CENTER" style="-fx-padding: 0 0 0 5;" GridPane.columnIndex="1">
+               <children>
+                  <Label alignment="CENTER" maxWidth="Infinity" styleClass="section-label" text="PLAYLIST" />
+                  <javafx.scene.control.TableView fx:id="playlistTable" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <javafx.scene.control.TableColumn fx:id="colTitle" text="Title" prefWidth="250" />
+                        <javafx.scene.control.TableColumn fx:id="colDuration" text="Time" prefWidth="80" />
+                        <javafx.scene.control.TableColumn fx:id="colState" text="State" prefWidth="100" />
+                     </columns>
+                  </javafx.scene.control.TableView>
+               </children>
+            </VBox>
          </children>
-      </VBox>
+      </GridPane>
 
       <!-- Right Deck -->
       <DynamicDeck minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="6" GridPane.rowIndex="0" />
@@ -87,7 +118,7 @@
             </GridPane>
          </children>
       </StackPane>
-      <fx:include source="effects.fxml" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <fx:include fx:id="rightEffects" source="effects.fxml" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <fx:include source="pitch.fxml" GridPane.columnIndex="7" />
 
     </children>

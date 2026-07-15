@@ -61,3 +61,35 @@
 .cue4 .round-button-led-ring.pressed {
     -fx-fill: #238b95;
 }
+
+#ecoBtn .round-button-led-ring, #flangerBtn .round-button-led-ring, #reverbBtn .round-button-led-ring {
+    -fx-fill: #225522;
+}
+
+#ecoBtn .round-button-led-ring.pressed, #flangerBtn .round-button-led-ring.pressed, #reverbBtn .round-button-led-ring.pressed {
+    -fx-fill: #90ee90;
+}
+
+.power-btn {
+    -fx-background-color: linear-gradient(to bottom, #f0f0f0, #c0c0c0);
+    -fx-background-radius: 50%;
+    -fx-background-insets: 0, 1;
+    -fx-border-color: #a0a0a0;
+    -fx-border-radius: 50%;
+    -fx-padding: 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 3, 0, 0, 1);
+    -fx-cursor: hand;
+}
+.power-btn:selected {
+    -fx-background-color: linear-gradient(to bottom, #d0d0d0, #e0e0e0);
+    -fx-effect: innershadow(three-pass-box, rgba(0,0,0,0.4), 4, 0, 0, 2);
+}
+.power-btn .svg-path {
+    -fx-stroke: #888888;
+    -fx-stroke-width: 2.5;
+    -fx-stroke-line-cap: round;
+    -fx-fill: transparent;
+}
+.power-btn:selected .svg-path {
+    -fx-stroke: #90ee90;
+}

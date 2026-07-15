@@ -22,6 +22,16 @@ public class BiquadFilter {
         this.q = q;
         setGain(gainDB);
     }
+    
+    public void setFrequency(double frequency) {
+        this.frequency = frequency;
+        updateCoefficients();
+    }
+    
+    public void setQ(double q) {
+        this.q = q;
+        updateCoefficients();
+    }
 
     public void setGain(double gainDB) {
         this.gainDB = gainDB;

@@ -5,11 +5,15 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import org.simconsole.simconsole.DynamicSlider?>
 <?import org.simconsole.simconsole.LedButton?>
 <?import org.simconsole.simconsole.LedKnob?>
 
-<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.EffectsController">
    <children>
       <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" StackPane.alignment="CENTER">
         <columnConstraints>
@@ -18,64 +22,76 @@
             <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="33.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints fillHeight="false" minHeight="0.0" percentHeight="50.0" valignment="CENTER" />
-            <RowConstraints minHeight="0.0" percentHeight="5.0" valignment="CENTER" />
-            <RowConstraints minHeight="0.0" percentHeight="45.0" valignment="CENTER" />
+          <RowConstraints fillHeight="false" minHeight="0.0" percentHeight="40.0" valignment="CENTER" />
+            <RowConstraints minHeight="0.0" percentHeight="2.0" valignment="CENTER" />
+            <RowConstraints minHeight="0.0" percentHeight="58.0" valignment="CENTER" />
         </rowConstraints>
          <children>
-            <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Eco" toggleMode="true" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0">
+            <VBox alignment="CENTER" spacing="10" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2" style="-fx-padding: 10;">
+                <HBox alignment="CENTER_LEFT" spacing="10" VBox.vgrow="ALWAYS" maxWidth="Infinity" style="-fx-background-color: #222222; -fx-background-radius: 6; -fx-border-color: #000000; -fx-border-radius: 6; -fx-padding: 5;">
+                    <LedButton fx:id="ecoBtn" minHeight="25" minWidth="25" text="⏻" toggleMode="true" roundShape="true" textSizeRatio="0.5" />
+                    <Label fx:id="fx3Label" text="Echo" minWidth="75" prefWidth="75" maxWidth="75" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                    <DynamicSlider fx:id="ecoKnob" min="0.0" max="1.0" value="0.5" HBox.hgrow="ALWAYS" />
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="10" VBox.vgrow="ALWAYS" maxWidth="Infinity" style="-fx-background-color: #222222; -fx-background-radius: 6; -fx-border-color: #000000; -fx-border-radius: 6; -fx-padding: 5;">
+                    <LedButton fx:id="flangerBtn" minHeight="25" minWidth="25" text="⏻" toggleMode="true" roundShape="true" textSizeRatio="0.5" />
+                    <Label fx:id="fx1Label" text="Flanger" minWidth="75" prefWidth="75" maxWidth="75" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                    <DynamicSlider fx:id="flangerKnob" min="0.0" max="1.0" value="0.5" HBox.hgrow="ALWAYS" />
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="10" VBox.vgrow="ALWAYS" maxWidth="Infinity" style="-fx-background-color: #222222; -fx-background-radius: 6; -fx-border-color: #000000; -fx-border-radius: 6; -fx-padding: 5;">
+                    <LedButton fx:id="reverbBtn" minHeight="25" minWidth="25" text="⏻" toggleMode="true" roundShape="true" textSizeRatio="0.5" />
+                    <Label fx:id="fx2Label" text="Reverb" minWidth="75" prefWidth="75" maxWidth="75" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                    <DynamicSlider fx:id="reverbKnob" min="0.0" max="1.0" value="0.5" HBox.hgrow="ALWAYS" />
+                </HBox>
+            </VBox>
+            <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="0">
                <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="25.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="50.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="25.0" />
+                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" />
-                  <RowConstraints minHeight="0.0" percentHeight="50.0" valignment="CENTER" />
-                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" />
+                  <RowConstraints minHeight="0.0" percentHeight="30.0" valignment="CENTER" />
+                  <RowConstraints minHeight="0.0" percentHeight="70.0" valignment="CENTER" />
                </rowConstraints>
                <children>
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Low" toggleMode="true" GridPane.columnIndex="1" />
-                  <LedKnob leftLabel="-12" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="RLow" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <HBox alignment="CENTER" spacing="5" GridPane.rowIndex="0">
+                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Low" toggleMode="true" />
+                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Rst" />
+                  </HBox>
+                  <LedKnob fx:id="eqLowKnob" leftLabel="-12db" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12db" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="1">
                <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="25.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="50.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="25.0" />
+                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" />
-                  <RowConstraints minHeight="0.0" percentHeight="50.0" valignment="CENTER" />
-                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" />
+                  <RowConstraints minHeight="0.0" percentHeight="30.0" valignment="CENTER" />
+                  <RowConstraints minHeight="0.0" percentHeight="70.0" valignment="CENTER" />
                </rowConstraints>
                <children>
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Mid" toggleMode="true" GridPane.columnIndex="1" />
-                  <LedKnob leftLabel="-12" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="RMid" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <HBox alignment="CENTER" spacing="5" GridPane.rowIndex="0">
+                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Mid" toggleMode="true" />
+                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Rst" />
+                  </HBox>
+                  <LedKnob fx:id="eqMidKnob" leftLabel="-12db" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12db" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="2">
                <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="25.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="50.0" />
-                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="25.0" />
+                  <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="100.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" />
-                  <RowConstraints minHeight="0.0" percentHeight="50.0" valignment="CENTER" />
-                  <RowConstraints minHeight="0.0" percentHeight="25.0" valignment="CENTER" />
+                  <RowConstraints minHeight="0.0" percentHeight="30.0" valignment="CENTER" />
+                  <RowConstraints minHeight="0.0" percentHeight="70.0" valignment="CENTER" />
                </rowConstraints>
                <children>
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="High" toggleMode="true" GridPane.columnIndex="1" />
-                  <LedKnob leftLabel="-12" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12" GridPane.columnSpan="3" GridPane.rowIndex="1" />
-                  <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="RHigh" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <HBox alignment="CENTER" spacing="5" GridPane.rowIndex="0">
+                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="High" toggleMode="true" />
+                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Rst" />
+                  </HBox>
+                  <LedKnob fx:id="eqHighKnob" leftLabel="-12db" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12db" GridPane.rowIndex="1" />
                </children>
             </GridPane>
-            <DynamicSlider minHeight="0.0" minWidth="0.0" orientation="VERTICAL" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>
