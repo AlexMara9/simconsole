@@ -216,7 +216,8 @@ public class DynamicSliderSkin extends SliderSkin {
             double minorLen = isVert ? tickAreaW * 0.12 : tickAreaH * 0.12;
             double textMargin = isVert ? tickAreaW * 0.05 : tickAreaH * 0.05; // Gap responsivo!
 
-            double maxFontByThickness = isVert ? (tickAreaW * 0.35) : (tickAreaH * 0.6);
+            double responsiveBase = isVert ? Math.min(w, h * 0.25) : Math.min(h, w * 0.25);
+            double maxFontByThickness = responsiveBase * 0.25;
             double maxFontBySpacing = isVert ? (majorDistance * 0.8) : (majorDistance * 0.45);
             if (!showLabels) {
                 maxFontBySpacing = isVert ? (usableTrack * 0.3) : (usableTrack * 0.2);

@@ -120,8 +120,13 @@ public class MasterSliderSkin extends SliderSkin {
         double trackH = isVert ? h : Math.max(3, h * 0.04);
 
         // --- THUMB SIZE (Rectangular Fader) ---
-        double thumbW = isVert ? w * 0.40 : h * 0.80;
-        double thumbH = isVert ? w * 0.80 : h * 0.40;
+        // Calcoliamo una base responsiva che tenga conto anche dell'altra dimensione 
+        // per evitare che il thumb diventi gigantesco in contenitori troppo larghi/alti.
+        double responsiveBase = isVert ? Math.min(w, h * 0.25) : Math.min(h, w * 0.25);
+        
+        double thumbW = isVert ? responsiveBase * 0.60 : responsiveBase * 1.20;
+        double thumbH = isVert ? responsiveBase * 1.20 : responsiveBase * 0.60;
+        
         thumbW = Math.max(10, thumbW);
         thumbH = Math.max(10, thumbH);
 
@@ -218,7 +223,8 @@ public class MasterSliderSkin extends SliderSkin {
         boolean showLabels = majorDistance > 12.0;
         boolean showMinor = (majorDistance / (minorCount + 1)) > 4.0;
 
-        double maxFontByThickness = isVert ? (w * 0.25) : (h * 0.25);
+        double responsiveBase = isVert ? Math.min(w, h * 0.25) : Math.min(h, w * 0.25);
+        double maxFontByThickness = responsiveBase * 0.25;
         double maxFontBySpacing = isVert ? (majorDistance * 0.8) : (majorDistance * 0.45);
         if (!showLabels) {
             maxFontBySpacing = isVert ? (usableTrack * 0.3) : (usableTrack * 0.2);
