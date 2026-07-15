@@ -19,6 +19,7 @@ public class SimConsole extends Application {
 		stage.setMinHeight((int)(1080/6));
 		stage.setMinWidth((int)(1920/6));
 		stage.setScene(scene);
+		stage.setMaximized(true);
 		stage.show();
 
 		// --- INIZIO AREA TEST (DA RIMUOVERE IN FUTURO QUANDO CI SARA' IL CARICAMENTO DA UI) ---
