@@ -254,6 +254,8 @@ public class GraphicSliderSkin extends SkinBase<GraphicSlider> {
         double x = progress * canvas.getWidth();
         playhead.setStartX(x);
         playhead.setEndX(x);
+        
+        startTimeText.setText(formatTime(current));
     }
 
     private void seekTo(double x) {
