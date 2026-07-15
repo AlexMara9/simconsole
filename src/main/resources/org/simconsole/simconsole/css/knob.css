@@ -41,7 +41,7 @@
 
 /* Dynamic Dot Knob (Led) */
 .knob-indicator-dot {
-    -fx-fill: #8af83b;
+    -fx-fill: linear-gradient(to bottom right, #33ccff, #007aff);
 }
 
 .knob-dot {
@@ -49,5 +49,5 @@
 }
 
 .knob-dot-active {
-    -fx-fill: #8af83b;
+    -fx-fill: linear-gradient(to bottom right, #33ccff, #007aff);
 }

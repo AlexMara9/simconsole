@@ -7,11 +7,11 @@
 }
 
 .round-button-led-ring {
-    -fx-fill: #8af83b;
+    -fx-fill: linear-gradient(to bottom right, #33ccff, #007aff);
 }
 
 .round-button-led-ring.pressed {
-    -fx-fill: #5a9e22; /* Inscurito leggermente quando premuto */
+    -fx-fill: linear-gradient(to bottom right, #007aff, #004b9e); /* Inscurito leggermente quando premuto */
 }
 
 .round-button-middle-ring {
