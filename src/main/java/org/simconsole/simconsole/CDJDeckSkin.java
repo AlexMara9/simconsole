@@ -16,7 +16,7 @@ public class CDJDeckSkin extends SkinBase<DynamicDeck> {
     private final Rotate rotateTransform;
 
     private double oldMouseAngle;
-    private final javafx.animation.PauseTransition scrollFallbackTimer = new javafx.animation.PauseTransition(javafx.util.Duration.millis(300));
+    private final javafx.animation.PauseTransition scrollFallbackTimer = new javafx.animation.PauseTransition(javafx.util.Duration.millis(80));
 
     public CDJDeckSkin(DynamicDeck deck) {
         super(deck);
