@@ -36,12 +36,16 @@ public class ConsoleController {
 
 	// Playlist & Search UI
 	@FXML private TextField searchField;
+	@FXML private Button searchButton;
+	@FXML private javafx.scene.control.ProgressIndicator searchProgress;
 	@FXML private ListView<Tracks> searchList;
 	@FXML private Button localButton;
 	@FXML private TableView<Tracks> playlistTable;
 	@FXML private TableColumn<Tracks, String> colTitle;
 	@FXML private TableColumn<Tracks, String> colDuration;
 	@FXML private TableColumn<Tracks, String> colState;
+	@FXML private TableColumn<Tracks, Tracks> colLeft;
+	@FXML private TableColumn<Tracks, Tracks> colRight;
 
 	private TrackList trackList = new TrackList("Main Playlist");
 	
@@ -67,20 +71,92 @@ public class ConsoleController {
 		});
 		colState.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getState().toString()));
 
+		colLeft.setCellValueFactory(data -> new javafx.beans.property.SimpleObjectProperty<>(data.getValue()));
+		colLeft.setCellFactory(col -> new javafx.scene.control.TableCell<>() {
+			private final Button btn = new Button("L");
+			{
+				btn.setOnAction(e -> {
+					Tracks t = getItem();
+					if (t != null && (t.getState() == Tracks.TrackState.READY || t.getState() == Tracks.TrackState.LOCAL)) {
+						if (leftDeck != null) leftDeck.loadTrack(t);
+						playlistTable.refresh();
+					}
+				});
+				btn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: #555; -fx-border-radius: 3; -fx-cursor: hand;");
+			}
+			@Override
+			protected void updateItem(Tracks item, boolean empty) {
+				super.updateItem(item, empty);
+				if (empty || item == null) {
+					setGraphic(null);
+				} else {
+					if (leftDeck != null && leftDeck.getCurrentTrack() == item) {
+						btn.setStyle("-fx-background-color: #007aff; -fx-text-fill: white; -fx-border-radius: 3; -fx-cursor: hand;");
+					} else {
+						btn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: #555; -fx-border-radius: 3; -fx-cursor: hand;");
+					}
+					setGraphic(btn);
+					setAlignment(javafx.geometry.Pos.CENTER);
+				}
+			}
+		});
+
+		colRight.setCellValueFactory(data -> new javafx.beans.property.SimpleObjectProperty<>(data.getValue()));
+		colRight.setCellFactory(col -> new javafx.scene.control.TableCell<>() {
+			private final Button btn = new Button("R");
+			{
+				btn.setOnAction(e -> {
+					Tracks t = getItem();
+					if (t != null && (t.getState() == Tracks.TrackState.READY || t.getState() == Tracks.TrackState.LOCAL)) {
+						if (rightDeck != null) rightDeck.loadTrack(t);
+						playlistTable.refresh();
+					}
+				});
+				btn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: #555; -fx-border-radius: 3; -fx-cursor: hand;");
+			}
+			@Override
+			protected void updateItem(Tracks item, boolean empty) {
+				super.updateItem(item, empty);
+				if (empty || item == null) {
+					setGraphic(null);
+				} else {
+					if (rightDeck != null && rightDeck.getCurrentTrack() == item) {
+						btn.setStyle("-fx-background-color: #007aff; -fx-text-fill: white; -fx-border-radius: 3; -fx-cursor: hand;");
+					} else {
+						btn.setStyle("-fx-background-color: transparent; -fx-text-fill: white; -fx-border-color: #555; -fx-border-radius: 3; -fx-cursor: hand;");
+					}
+					setGraphic(btn);
+					setAlignment(javafx.geometry.Pos.CENTER);
+				}
+			}
+		});
+
+		playlistTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		playlistTable.setItems(trackList.getObservableTracks());
 
 		// Search functionality
-		searchField.setOnAction(e -> {
+		Runnable performSearch = () -> {
 			String query = searchField.getText();
 			if (query != null && !query.isBlank()) {
+				searchButton.setVisible(false);
+				searchButton.setManaged(false);
+				searchProgress.setVisible(true);
+				searchProgress.setManaged(true);
 				CompletableFuture.runAsync(() -> {
 					List<Tracks> results = MusicApiService.search(query, 10);
 					Platform.runLater(() -> {
 						searchList.getItems().setAll(results);
+						searchProgress.setVisible(false);
+						searchProgress.setManaged(false);
+						searchButton.setVisible(true);
+						searchButton.setManaged(true);
 					});
 				});
 			}
-		});
+		};
+
+		searchField.setOnAction(e -> performSearch.run());
+		searchButton.setOnAction(e -> performSearch.run());
 
 		// Double-click to add track from search list to playlist
 		searchList.setOnMouseClicked(e -> {

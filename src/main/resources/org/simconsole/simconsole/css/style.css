@@ -58,6 +58,18 @@
     -fx-background-color: #666666;
 }
 
+/* Hide scrollbars for search list */
+#searchList .scroll-bar {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+    -fx-padding: 0;
+}
+#searchList .scroll-bar * {
+    -fx-opacity: 0;
+    -fx-padding: 0;
+}
+
 /* ── TableView ───────────────────────────────────────────────── */
 .table-view {
     -fx-background-color: transparent;

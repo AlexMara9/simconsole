@@ -115,8 +115,46 @@ public class MusicApiService {
         if (start < 0) return null;
         start += marker.length();
         int end = json.indexOf('"', start);
+        while (end > 0 && json.charAt(end - 1) == '\\') {
+            end = json.indexOf('"', end + 1);
+        }
         if (end < 0) return null;
-        return json.substring(start, end);
+        return unescapeJsonString(json.substring(start, end));
+    }
+
+    private static String unescapeJsonString(String text) {
+        if (text == null) return null;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c == '\\' && i + 1 < text.length()) {
+                char next = text.charAt(i + 1);
+                if (next == 'u' && i + 5 < text.length()) {
+                    String hex = text.substring(i + 2, i + 6);
+                    try {
+                        sb.append((char) Integer.parseInt(hex, 16));
+                        i += 5;
+                    } catch (NumberFormatException e) {
+                        sb.append(c).append(next);
+                        i++;
+                    }
+                } else {
+                    if (next == '"') sb.append('"');
+                    else if (next == '\\') sb.append('\\');
+                    else if (next == '/') sb.append('/');
+                    else if (next == 'b') sb.append('\b');
+                    else if (next == 'f') sb.append('\f');
+                    else if (next == 'n') sb.append('\n');
+                    else if (next == 'r') sb.append('\r');
+                    else if (next == 't') sb.append('\t');
+                    else sb.append(c).append(next);
+                    i++;
+                }
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 
     private static long extractLong(String json, String key) {
