@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class SimConsole extends Application {
+	private AudioProcessor processor1;
+	private AudioProcessor processor2;
+
 	@Override
 	public void start(Stage stage) throws IOException {
 		FXMLLoader fxmlLoader = new FXMLLoader(SimConsole.class.getResource("fxml/console-view.fxml"));
@@ -35,7 +38,7 @@ public class SimConsole extends Application {
 		DeckControls c1 = new DeckControls();
 		d1.setControls(c1);
 
-		AudioProcessor processor1 = new AudioProcessor(d1);
+		processor1 = new AudioProcessor(d1);
 		processor1.startPlayback();
 
 		//t2
@@ -43,12 +46,18 @@ public class SimConsole extends Application {
 		DeckControls c2 = new DeckControls();
 		d2.setControls(c2);
 
-		AudioProcessor processor2 = new AudioProcessor(d2);
+		processor2 = new AudioProcessor(d2);
 		processor2.startPlayback();
 
 		d1.loadTrack(trackD);
 		d2.loadTrack(trackC);
         
         consoleController.setDecks(d1, d2);
+	}
+
+	@Override
+	public void stop() {
+		if (processor1 != null) processor1.stopPlayback();
+		if (processor2 != null) processor2.stopPlayback();
 	}
 }

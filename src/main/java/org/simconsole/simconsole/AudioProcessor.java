@@ -285,6 +285,16 @@ public class AudioProcessor {
         });
 
         playbackThread.setPriority(Thread.MAX_PRIORITY);
+        playbackThread.setDaemon(true);
         playbackThread.start();
+    }
+
+    public void stopPlayback() {
+        if (playbackThread != null) {
+            playbackThread.interrupt();
+        }
+        if (speakerLine != null) {
+            speakerLine.close();
+        }
     }
 }
