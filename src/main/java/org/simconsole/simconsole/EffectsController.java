@@ -15,14 +15,17 @@ public class EffectsController {
     @FXML private LedButton ecoBtn;
     @FXML private Label fx3Label;
     @FXML private DynamicSlider ecoKnob;
+    @FXML private Label ecoValLabel;
 
     @FXML private LedButton flangerBtn;
     @FXML private DynamicSlider flangerKnob;
     @FXML private Label fx1Label;
+    @FXML private Label flangerValLabel;
 
     @FXML private LedButton reverbBtn;
     @FXML private DynamicSlider reverbKnob;
     @FXML private Label fx2Label;
+    @FXML private Label reverbValLabel;
 
     @FXML
     public void initialize() {
@@ -33,6 +36,14 @@ public class EffectsController {
         updateSliderIdleState(ecoKnob, false);
         updateSliderIdleState(flangerKnob, false);
         updateSliderIdleState(reverbKnob, false);
+
+        if (ecoValLabel != null) ecoValLabel.setText(String.format("%.0f%%", ecoKnob.getValue() * 100));
+        if (flangerValLabel != null) flangerValLabel.setText(String.format("%.0f%%", flangerKnob.getValue() * 100));
+        if (reverbValLabel != null) reverbValLabel.setText(String.format("%.0f%%", reverbKnob.getValue() * 100));
+
+        if (ecoValLabel != null) ecoValLabel.setOpacity(0.4);
+        if (flangerValLabel != null) flangerValLabel.setOpacity(0.4);
+        if (reverbValLabel != null) reverbValLabel.setOpacity(0.4);
 
         // Initialize listeners. They will sync with deckControls when it's set.
         setupListeners();
@@ -46,10 +57,13 @@ public class EffectsController {
 
     private void updateSliderIdleState(DynamicSlider slider, boolean isOn) {
         if (slider == null) return;
+        slider.setDisable(!isOn);
         if (isOn) {
             slider.setStyle("");
+            slider.setOpacity(1.0);
         } else {
             slider.setStyle("-track-filled: #555555;");
+            slider.setOpacity(0.4);
         }
     }
 
@@ -93,11 +107,13 @@ public class EffectsController {
             ecoBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
                 updateLabelColor(fx3Label, newVal);
                 updateSliderIdleState(ecoKnob, newVal);
+                if (ecoValLabel != null) ecoValLabel.setOpacity(newVal ? 1.0 : 0.4);
                 if (deckControls != null) deckControls.setEcoEnabled(newVal);
             });
         }
         if (ecoKnob != null) {
             ecoKnob.valueProperty().addListener((obs, oldVal, newVal) -> {
+                if (ecoValLabel != null) ecoValLabel.setText(String.format("%.0f%%", newVal.doubleValue() * 100));
                 if (deckControls != null) deckControls.setEcoWet(newVal.doubleValue());
             });
         }
@@ -106,11 +122,13 @@ public class EffectsController {
             flangerBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
                 updateLabelColor(fx1Label, newVal);
                 updateSliderIdleState(flangerKnob, newVal);
+                if (flangerValLabel != null) flangerValLabel.setOpacity(newVal ? 1.0 : 0.4);
                 if (deckControls != null) deckControls.setFlangerEnabled(newVal);
             });
         }
         if (flangerKnob != null) {
             flangerKnob.valueProperty().addListener((obs, oldVal, newVal) -> {
+                if (flangerValLabel != null) flangerValLabel.setText(String.format("%.0f%%", newVal.doubleValue() * 100));
                 if (deckControls != null) deckControls.setFlangerWet(newVal.doubleValue());
             });
         }
@@ -119,11 +137,13 @@ public class EffectsController {
             reverbBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
                 updateLabelColor(fx2Label, newVal);
                 updateSliderIdleState(reverbKnob, newVal);
+                if (reverbValLabel != null) reverbValLabel.setOpacity(newVal ? 1.0 : 0.4);
                 if (deckControls != null) deckControls.setReverbEnabled(newVal);
             });
         }
         if (reverbKnob != null) {
             reverbKnob.valueProperty().addListener((obs, oldVal, newVal) -> {
+                if (reverbValLabel != null) reverbValLabel.setText(String.format("%.0f%%", newVal.doubleValue() * 100));
                 if (deckControls != null) deckControls.setReverbWet(newVal.doubleValue());
             });
         }

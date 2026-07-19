@@ -19,6 +19,10 @@ public class SimConsole extends Application {
 		stage.setMinHeight((int)(1080/6));
 		stage.setMinWidth((int)(1920/6));
 		stage.setScene(scene);
+		stage.setOnCloseRequest(e -> {
+			javafx.application.Platform.exit();
+			System.exit(0);
+		});
 		stage.show();
 
 		Tracks trackA = new Tracks("C:\\Users\\Pietro\\Downloads\\bassi.wav");

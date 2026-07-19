@@ -30,18 +30,30 @@
             <VBox alignment="CENTER" spacing="10" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2" style="-fx-padding: 10;">
                 <HBox alignment="CENTER_LEFT" spacing="10" VBox.vgrow="ALWAYS" maxWidth="Infinity" style="-fx-background-color: #222222; -fx-background-radius: 6; -fx-border-color: #000000; -fx-border-radius: 6; -fx-padding: 5;">
                     <LedButton fx:id="ecoBtn" minHeight="25" minWidth="25" text="⏻" toggleMode="true" roundShape="true" textSizeRatio="0.5" />
-                    <Label fx:id="fx3Label" text="Echo" minWidth="75" prefWidth="75" maxWidth="75" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                    <Label fx:id="fx3Label" text="Echo" minWidth="60" prefWidth="60" maxWidth="60" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
                     <DynamicSlider fx:id="ecoKnob" min="0.0" max="1.0" value="0.5" HBox.hgrow="ALWAYS" />
+                    <HBox alignment="CENTER_RIGHT" minWidth="90" prefWidth="90" maxWidth="90" spacing="4">
+                        <Label fx:id="ecoValLabel" text="50%" style="-fx-text-fill: #4db8ff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                        <Label text="wet" style="-fx-padding: 0 10 0 0; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                    </HBox>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="10" VBox.vgrow="ALWAYS" maxWidth="Infinity" style="-fx-background-color: #222222; -fx-background-radius: 6; -fx-border-color: #000000; -fx-border-radius: 6; -fx-padding: 5;">
                     <LedButton fx:id="flangerBtn" minHeight="25" minWidth="25" text="⏻" toggleMode="true" roundShape="true" textSizeRatio="0.5" />
-                    <Label fx:id="fx1Label" text="Flanger" minWidth="75" prefWidth="75" maxWidth="75" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                    <Label fx:id="fx1Label" text="Flanger" minWidth="60" prefWidth="60" maxWidth="60" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
                     <DynamicSlider fx:id="flangerKnob" min="0.0" max="1.0" value="0.5" HBox.hgrow="ALWAYS" />
+                    <HBox alignment="CENTER_RIGHT" minWidth="90" prefWidth="90" maxWidth="90" spacing="4">
+                        <Label fx:id="flangerValLabel" text="50%" style="-fx-text-fill: #4db8ff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                        <Label text="wet" style="-fx-padding: 0 10 0 0; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                    </HBox>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="10" VBox.vgrow="ALWAYS" maxWidth="Infinity" style="-fx-background-color: #222222; -fx-background-radius: 6; -fx-border-color: #000000; -fx-border-radius: 6; -fx-padding: 5;">
                     <LedButton fx:id="reverbBtn" minHeight="25" minWidth="25" text="⏻" toggleMode="true" roundShape="true" textSizeRatio="0.5" />
-                    <Label fx:id="fx2Label" text="Reverb" minWidth="75" prefWidth="75" maxWidth="75" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                    <Label fx:id="fx2Label" text="Reverb" minWidth="60" prefWidth="60" maxWidth="60" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
                     <DynamicSlider fx:id="reverbKnob" min="0.0" max="1.0" value="0.5" HBox.hgrow="ALWAYS" />
+                    <HBox alignment="CENTER_RIGHT" minWidth="90" prefWidth="90" maxWidth="90" spacing="4">
+                        <Label fx:id="reverbValLabel" text="50%" style="-fx-text-fill: #4db8ff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                        <Label text="wet" style="-fx-padding: 0 10 0 0; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                    </HBox>
                 </HBox>
             </VBox>
             <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="0">

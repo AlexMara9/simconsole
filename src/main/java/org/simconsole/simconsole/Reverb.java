@@ -14,7 +14,7 @@ public class Reverb {
 
     // Parameters
     private volatile boolean enabled = false;
-    private volatile double wet = 0.5;
+    private volatile double wet = 0.0;
     private volatile double roomSize = 0.84; // Feedback coefficient
     private volatile double damping = 0.5;   // Lowpass filter coefficient
 

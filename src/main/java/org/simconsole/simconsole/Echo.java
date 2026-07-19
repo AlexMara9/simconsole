@@ -8,7 +8,7 @@ public class Echo {
 
     // Parameters
     private volatile boolean enabled = false;
-    private volatile double wetAmount = 0.5; // 0.0 to 1.0
+    private volatile double wetAmount = 0.0; // 0.0 to 1.0
     private volatile double delayTimeSec = 0.3; // 300ms
     private volatile double feedback = 0.5; 
     

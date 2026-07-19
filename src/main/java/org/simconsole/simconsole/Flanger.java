@@ -11,7 +11,7 @@ public class Flanger {
     private volatile double depth = 0.5;    // 0.0 to 1.0
     private volatile double rate = 0.5;     // LFO Speed: 0.1 to 5.0 Hz
     private volatile double feedback = 0.6; // feedback coefficient
-    private volatile double wet = 0.5;      // mix
+    private volatile double wet = 0.0;      // mix
 
     // Bell filter parameters
     private volatile boolean bellEnabled = true;
