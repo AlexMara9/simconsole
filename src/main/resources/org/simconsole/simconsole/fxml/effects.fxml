@@ -12,8 +12,9 @@
 <?import org.simconsole.simconsole.DynamicSlider?>
 <?import org.simconsole.simconsole.LedButton?>
 <?import org.simconsole.simconsole.LedKnob?>
+<?import org.simconsole.simconsole.ResponsiveLabel?>
 
-<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.EffectsController">
+<StackPane fx:id="rootPane" minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.EffectsController">
    <children>
       <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" StackPane.alignment="CENTER">
         <columnConstraints>
@@ -39,58 +40,73 @@
                <children>
                   <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #222222; -fx-background-radius: 0.5em; -fx-border-color: #000000; -fx-border-radius: 0.5em; -fx-padding: 0.5em;" GridPane.rowIndex="0">
                      <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="20.0" />
-                        <ColumnConstraints halignment="LEFT" minWidth="0.0" percentWidth="35.0" />
-                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="45.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="15.0" />
+                        <ColumnConstraints halignment="LEFT" minWidth="0.0" percentWidth="25.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="35.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="25.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="0.0" percentHeight="100.0" valignment="CENTER" />
                      </rowConstraints>
                      <children>
-                        <LedButton fx:id="ecoBtn" minHeight="0.0" minWidth="0.0" text="⏻" toggleMode="true" roundShape="true" textSizeRatio="0.5" GridPane.columnIndex="0" />
-                        <Label fx:id="fx3Label" text="Echo" minHeight="0.0" minWidth="0.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 1.2em; -fx-font-weight: bold; -fx-font-family: 'Segoe UI', 'Inter', sans-serif;" GridPane.columnIndex="1" />
+                        <LedButton fx:id="ecoBtn" minHeight="0.0" minWidth="0.0" toggleMode="true" roundShape="true" textSizeRatio="0.35" GridPane.columnIndex="0">
+                            <graphic>
+                                <javafx.scene.layout.Region styleClass="power-icon" />
+                            </graphic>
+                        </LedButton>
+                        <ResponsiveLabel fx:id="fx3Label" text="Echo" minHeight="0.0" minWidth="0.0" textSizeRatio="0.35" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-weight: bold;" GridPane.columnIndex="1" />
                         <DynamicSlider fx:id="ecoKnob" min="0.0" max="1.0" value="0.5" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="2" />
-                         <HBox alignment="CENTER_RIGHT" minWidth="90" prefWidth="90" maxWidth="90" spacing="4">
-                             <Label fx:id="ecoValLabel" text="50%" style="-fx-text-fill: #4db8ff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
-                             <Label text="wet" style="-fx-padding: 0 10 0 0; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                         <HBox alignment="CENTER_RIGHT" spacing="2" GridPane.columnIndex="3" minWidth="0.0">
+                             <ResponsiveLabel fx:id="ecoValLabel" text="50%" minWidth="0.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" textSizeRatio="0.45" style="-fx-text-fill: #4db8ff; -fx-font-weight: bold;" />
+                             <ResponsiveLabel fx:id="ecoWetLabel" text="wet" minWidth="0.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" textSizeRatio="0.4" style="-fx-padding: 0 5 0 0; -fx-text-fill: #ffffff; -fx-font-weight: bold;" />
                          </HBox>
                      </children>
                   </GridPane>
                   <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #222222; -fx-background-radius: 0.5em; -fx-border-color: #000000; -fx-border-radius: 0.5em; -fx-padding: 0.5em;" GridPane.rowIndex="1">
                      <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="20.0" />
-                        <ColumnConstraints halignment="LEFT" minWidth="0.0" percentWidth="35.0" />
-                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="45.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="15.0" />
+                        <ColumnConstraints halignment="LEFT" minWidth="0.0" percentWidth="25.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="35.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="25.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="0.0" percentHeight="100.0" valignment="CENTER" />
                      </rowConstraints>
                      <children>
-                        <LedButton fx:id="flangerBtn" minHeight="0.0" minWidth="0.0" text="⏻" toggleMode="true" roundShape="true" textSizeRatio="0.5" GridPane.columnIndex="0" />
-                        <Label fx:id="fx1Label" text="Flanger" minHeight="0.0" minWidth="0.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 1.2em; -fx-font-weight: bold; -fx-font-family: 'Segoe UI', 'Inter', sans-serif;" GridPane.columnIndex="1" />
+                        <LedButton fx:id="flangerBtn" minHeight="0.0" minWidth="0.0" toggleMode="true" roundShape="true" textSizeRatio="0.35" GridPane.columnIndex="0">
+                            <graphic>
+                                <javafx.scene.layout.Region styleClass="power-icon" />
+                            </graphic>
+                        </LedButton>
+                        <ResponsiveLabel fx:id="fx1Label" text="Flanger" minHeight="0.0" minWidth="0.0" textSizeRatio="0.25" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-weight: bold;" GridPane.columnIndex="1" />
                         <DynamicSlider fx:id="flangerKnob" min="0.0" max="1.0" value="0.5" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="2" />
-                         <HBox alignment="CENTER_RIGHT" minWidth="90" prefWidth="90" maxWidth="90" spacing="4">
-                             <Label fx:id="flangerValLabel" text="50%" style="-fx-text-fill: #4db8ff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
-                             <Label text="wet" style="-fx-padding: 0 10 0 0; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                         <HBox alignment="CENTER_RIGHT" spacing="2" GridPane.columnIndex="3" minWidth="0.0">
+                             <ResponsiveLabel fx:id="flangerValLabel" text="50%" minWidth="0.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" textSizeRatio="0.45" style="-fx-text-fill: #4db8ff; -fx-font-weight: bold;" />
+                             <ResponsiveLabel fx:id="flangerWetLabel" text="wet" minWidth="0.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" textSizeRatio="0.4" style="-fx-padding: 0 5 0 0; -fx-text-fill: #ffffff; -fx-font-weight: bold;" />
                          </HBox>
                      </children>
                   </GridPane>
                   <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #222222; -fx-background-radius: 0.5em; -fx-border-color: #000000; -fx-border-radius: 0.5em; -fx-padding: 0.5em;" GridPane.rowIndex="2">
                      <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="20.0" />
-                        <ColumnConstraints halignment="LEFT" minWidth="0.0" percentWidth="35.0" />
-                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="45.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="15.0" />
+                        <ColumnConstraints halignment="LEFT" minWidth="0.0" percentWidth="25.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="35.0" />
+                        <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="25.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="0.0" percentHeight="100.0" valignment="CENTER" />
                      </rowConstraints>
                      <children>
-                        <LedButton fx:id="reverbBtn" minHeight="0.0" minWidth="0.0" text="⏻" toggleMode="true" roundShape="true" textSizeRatio="0.5" GridPane.columnIndex="0" />
-                        <Label fx:id="fx2Label" text="Reverb" minHeight="0.0" minWidth="0.0" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-size: 1.2em; -fx-font-weight: bold; -fx-font-family: 'Segoe UI', 'Inter', sans-serif;" GridPane.columnIndex="1" />
+                        <LedButton fx:id="reverbBtn" minHeight="0.0" minWidth="0.0" toggleMode="true" roundShape="true" textSizeRatio="0.35" GridPane.columnIndex="0">
+                            <graphic>
+                                <javafx.scene.layout.Region styleClass="power-icon" />
+                            </graphic>
+                        </LedButton>
+                        <ResponsiveLabel fx:id="fx2Label" text="Reverb" minHeight="0.0" minWidth="0.0" textSizeRatio="0.25" style="-fx-background-color: transparent; -fx-text-fill: #ffffff; -fx-font-weight: bold;" GridPane.columnIndex="1" />
                         <DynamicSlider fx:id="reverbKnob" min="0.0" max="1.0" value="0.5" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="2" />
-                         <HBox alignment="CENTER_RIGHT" minWidth="90" prefWidth="90" maxWidth="90" spacing="4">
-                             <Label fx:id="reverbValLabel" text="50%" style="-fx-text-fill: #4db8ff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
-                             <Label text="wet" style="-fx-padding: 0 10 0 0; -fx-text-fill: #ffffff; -fx-font-size: 16px; -fx-font-weight: bold; -fx-font-family: Arial, sans-serif;" />
+                         <HBox alignment="CENTER_RIGHT" spacing="2" GridPane.columnIndex="3" minWidth="0.0">
+                             <ResponsiveLabel fx:id="reverbValLabel" text="50%" minWidth="0.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" textSizeRatio="0.45" style="-fx-text-fill: #4db8ff; -fx-font-weight: bold;" />
+                             <ResponsiveLabel fx:id="reverbWetLabel" text="wet" minWidth="0.0" HBox.hgrow="ALWAYS" maxWidth="Infinity" textSizeRatio="0.4" style="-fx-padding: 0 5 0 0; -fx-text-fill: #ffffff; -fx-font-weight: bold;" />
                          </HBox>
                      </children>
                   </GridPane>

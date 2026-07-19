@@ -52,7 +52,7 @@ public class EffectsController {
     private void updateLabelColor(Label label, boolean isOn) {
         if (label == null) return;
         String color = isOn ? "#90ee90" : "#ffffff";
-        label.setStyle("-fx-background-color: transparent; -fx-text-fill: " + color + "; -fx-font-size: 1.2em; -fx-font-weight: bold; -fx-font-family: 'Segoe UI', 'Inter', sans-serif;");
+        label.setStyle("-fx-background-color: transparent; -fx-text-fill: " + color + "; -fx-font-weight: bold;");
     }
 
     private void updateSliderIdleState(DynamicSlider slider, boolean isOn) {
