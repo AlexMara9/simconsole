@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import org.simconsole.simconsole.DynamicDeck?>
 
 <!-- Import Custom Components -->
@@ -54,13 +55,8 @@
       <fx:include fx:id="effectsLeft" minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <fx:include fx:id="pitchLeft" source="pitch.fxml" />
 
-      <!-- Center Song List -->
-      <VBox alignment="TOP_CENTER" styleClass="card" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2">
-         <children>
-            <Label alignment="CENTER" maxWidth="Infinity" styleClass="section-label" text="PLAYLIST" />
-            <ListView fx:id="songList" VBox.vgrow="ALWAYS" />
-         </children>
-      </VBox>
+      <!-- Center Playlist and Search -->
+      <fx:include fx:id="playlist" source="playlist.fxml" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2" />
 
       <!-- Right Deck -->
       <DynamicDeck fx:id="deckRight" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="6" GridPane.rowIndex="0" />

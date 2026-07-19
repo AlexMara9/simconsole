@@ -3,6 +3,17 @@ package org.simconsole.simconsole;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Controller that connects the UI to the app logic
@@ -44,9 +55,8 @@ public class ConsoleController {
     @FXML private DynamicDeck deckLeft;
     @FXML private DynamicDeck deckRight;
 
-	/**
-	 * init function
-	 */
+	@FXML private PlaylistController playlistController;
+
 	@FXML
 	public void initialize(){
 		initResponsiveness();
@@ -91,9 +101,15 @@ public class ConsoleController {
 
         if (effectsLeftController != null) {
             effectsLeftController.setDeck(leftDeck);
+            effectsLeftController.setDeckControls(leftDeck.getControls());
         }
         if (effectsRightController != null) {
             effectsRightController.setDeck(rightDeck);
+            effectsRightController.setDeckControls(rightDeck.getControls());
+        }
+        
+        if (playlistController != null) {
+            playlistController.setDecks(leftDeck, rightDeck);
         }
         
         if (deckLeft != null) {
@@ -162,6 +178,8 @@ public class ConsoleController {
         };
         timer.start();
     }
+
+
 
 	private void initResponsiveness(){
 		// grid & general UI scale

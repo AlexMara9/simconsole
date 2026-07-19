@@ -1,0 +1,127 @@
+package org.simconsole.simconsole;
+
+public class Reverb {
+    // 4 delay lines per channel for a simple feedback delay network
+    private final double[] delayL1, delayL2, delayL3, delayL4;
+    private final double[] delayR1, delayR2, delayR3, delayR4;
+    
+    private int idxL1, idxL2, idxL3, idxL4;
+    private int idxR1, idxR2, idxR3, idxR4;
+
+    // Previous outputs for lowpass damping
+    private double dampL1, dampL2, dampL3, dampL4;
+    private double dampR1, dampR2, dampR3, dampR4;
+
+    // Parameters
+    private volatile boolean enabled = false;
+    private volatile double wet = 0.0;
+    private volatile double roomSize = 0.84; // Feedback coefficient
+    private volatile double damping = 0.5;   // Lowpass filter coefficient
+
+    public Reverb(double sampleRate) {
+        // Prime numbers for delay lengths to avoid metallic resonances
+        // Scaled roughly for 44.1kHz
+        delayL1 = new double[1117];
+        delayL2 = new double[1357];
+        delayL3 = new double[1423];
+        delayL4 = new double[1621];
+
+        delayR1 = new double[1187];
+        delayR2 = new double[1297];
+        delayR3 = new double[1481];
+        delayR4 = new double[1583];
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public void setWet(double wet) {
+        this.wet = Math.max(0.0, Math.min(1.0, wet));
+    }
+
+    public void setRoomSize(double roomSize) {
+        this.roomSize = Math.max(0.0, Math.min(0.98, roomSize));
+    }
+
+    public void setDamping(double damping) {
+        this.damping = Math.max(0.0, Math.min(1.0, damping));
+    }
+
+    public double[] process(double inputL, double inputR) {
+        if (!enabled || wet <= 0.001) {
+            // Write zeros to buffers to avoid bursts when turning on
+            // Or just don't process. We'll simply bypass to save CPU.
+            // But to avoid clicks/bursts of old audio, we probably should clear it if we wanted to be perfectly clean.
+            // For simplicity, we just bypass.
+            return new double[]{inputL, inputR};
+        }
+
+        // Read outputs from delay lines
+        double outL1 = delayL1[idxL1];
+        double outL2 = delayL2[idxL2];
+        double outL3 = delayL3[idxL3];
+        double outL4 = delayL4[idxL4];
+
+        double outR1 = delayR1[idxR1];
+        double outR2 = delayR2[idxR2];
+        double outR3 = delayR3[idxR3];
+        double outR4 = delayR4[idxR4];
+
+        // Apply damping (lowpass filter)
+        dampL1 = dampL1 * damping + outL1 * (1.0 - damping);
+        dampL2 = dampL2 * damping + outL2 * (1.0 - damping);
+        dampL3 = dampL3 * damping + outL3 * (1.0 - damping);
+        dampL4 = dampL4 * damping + outL4 * (1.0 - damping);
+
+        dampR1 = dampR1 * damping + outR1 * (1.0 - damping);
+        dampR2 = dampR2 * damping + outR2 * (1.0 - damping);
+        dampR3 = dampR3 * damping + outR3 * (1.0 - damping);
+        dampR4 = dampR4 * damping + outR4 * (1.0 - damping);
+
+        // Mix outputs for the wet signal
+        double wetL = (dampL1 + dampL2 + dampL3 + dampL4) * 0.25;
+        double wetR = (dampR1 + dampR2 + dampR3 + dampR4) * 0.25;
+
+        // Calculate Householder feedback
+        double sumL = (dampL1 + dampL2 + dampL3 + dampL4) * 0.5;
+        double sumR = (dampR1 + dampR2 + dampR3 + dampR4) * 0.5;
+
+        double inL1 = inputL + (dampL1 - sumL) * roomSize;
+        double inL2 = inputL + (dampL2 - sumL) * roomSize;
+        double inL3 = inputL + (dampL3 - sumL) * roomSize;
+        double inL4 = inputL + (dampL4 - sumL) * roomSize;
+
+        double inR1 = inputR + (dampR1 - sumR) * roomSize;
+        double inR2 = inputR + (dampR2 - sumR) * roomSize;
+        double inR3 = inputR + (dampR3 - sumR) * roomSize;
+        double inR4 = inputR + (dampR4 - sumR) * roomSize;
+
+        // Write to delay lines
+        delayL1[idxL1] = inL1;
+        delayL2[idxL2] = inL2;
+        delayL3[idxL3] = inL3;
+        delayL4[idxL4] = inL4;
+
+        delayR1[idxR1] = inR1;
+        delayR2[idxR2] = inR2;
+        delayR3[idxR3] = inR3;
+        delayR4[idxR4] = inR4;
+
+        // Increment indices
+        idxL1 = (idxL1 + 1) % delayL1.length;
+        idxL2 = (idxL2 + 1) % delayL2.length;
+        idxL3 = (idxL3 + 1) % delayL3.length;
+        idxL4 = (idxL4 + 1) % delayL4.length;
+
+        idxR1 = (idxR1 + 1) % delayR1.length;
+        idxR2 = (idxR2 + 1) % delayR2.length;
+        idxR3 = (idxR3 + 1) % delayR3.length;
+        idxR4 = (idxR4 + 1) % delayR4.length;
+
+        return new double[]{
+            inputL * (1.0 - wet) + wetL * wet,
+            inputR * (1.0 - wet) + wetR * wet
+        };
+    }
+}

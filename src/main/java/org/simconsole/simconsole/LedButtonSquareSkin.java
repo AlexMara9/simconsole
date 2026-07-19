@@ -119,6 +119,8 @@ public class LedButtonSquareSkin extends SkinBase<LedButton> {
                 javafx.scene.layout.Region reg = (javafx.scene.layout.Region) graphic;
                 reg.setPrefWidth(contentSize);
                 reg.setPrefHeight(contentSize);
+                reg.setMinSize(javafx.scene.layout.Region.USE_PREF_SIZE, javafx.scene.layout.Region.USE_PREF_SIZE);
+                reg.setMaxSize(javafx.scene.layout.Region.USE_PREF_SIZE, javafx.scene.layout.Region.USE_PREF_SIZE);
             }
         }
     }

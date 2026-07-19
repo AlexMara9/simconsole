@@ -99,13 +99,17 @@ public class Tracks {
     /** Display name: "Artist – Title" for API tracks, filename for local tracks. */
     @Override
     public String toString() {
-        if (artist != null && title != null && !artist.isBlank() && !title.isBlank()) {
+        boolean hasArtist = artist != null && !artist.isBlank();
+        boolean hasTitle = title != null && !title.isBlank();
+        
+        if (hasArtist && hasTitle) {
             return artist + " – " + title;
-        }
-        if (filePath != null) {
+        } else if (hasTitle) {
+            return title;
+        } else if (filePath != null) {
             return new java.io.File(filePath).getName();
         }
-        return title != null ? title : "Unknown";
+        return "Unknown";
     }
 
     private void generateWaveformPreview() {

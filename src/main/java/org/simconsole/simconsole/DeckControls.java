@@ -21,6 +21,39 @@ public class DeckControls {
         this.pitch = Math.max(0.1, Math.min(3.0, pitch)); // Range 10% - 300%
     }
 
+    // --- Nuovi Effetti: Flanger e Reverb ---
+    private volatile boolean flangerEnabled = false;
+    private volatile double flangerWet = 0.5;
+    private volatile boolean flangerBellEnabled = true;
+
+    private volatile boolean reverbEnabled = false;
+    private volatile double reverbWet = 0.5;
+
+    public void setFlangerEnabled(boolean enabled) { this.flangerEnabled = enabled; }
+    public boolean isFlangerEnabled() { return this.flangerEnabled; }
+
+    public void setFlangerWet(double wet) { this.flangerWet = wet; }
+    public double getFlangerWet() { return this.flangerWet; }
+
+    public void setFlangerBellEnabled(boolean enabled) { this.flangerBellEnabled = enabled; }
+    public boolean isFlangerBellEnabled() { return this.flangerBellEnabled; }
+
+    public void setReverbEnabled(boolean enabled) { this.reverbEnabled = enabled; }
+    public boolean isReverbEnabled() { return this.reverbEnabled; }
+
+    public void setReverbWet(double wet) { this.reverbWet = wet; }
+    public double getReverbWet() { return this.reverbWet; }
+
+    private volatile boolean ecoEnabled = false;
+    private volatile double ecoWet = 0.5;
+
+    public void setEcoEnabled(boolean enabled) { this.ecoEnabled = enabled; }
+    public boolean isEcoEnabled() { return this.ecoEnabled; }
+
+    public void setEcoWet(double wet) { this.ecoWet = wet; }
+    public double getEcoWet() { return this.ecoWet; }
+    // ---------------------------------------
+
     public double getPitch() {
         return pitch;
     }

@@ -20,6 +20,10 @@ public class SimConsole extends Application {
 		stage.setMinWidth((int)(1920/6));
 		stage.setScene(scene);
 		stage.setMaximized(true);
+		stage.setOnCloseRequest(e -> {
+			javafx.application.Platform.exit();
+			System.exit(0);
+		});
 		stage.show();
 
 		// --- INIZIO AREA TEST (DA RIMUOVERE IN FUTURO QUANDO CI SARA' IL CARICAMENTO DA UI) ---
@@ -48,7 +52,7 @@ public class SimConsole extends Application {
 
 		d1.loadTrack(trackD);
 		d2.loadTrack(trackC);
-        
+
         consoleController.setDecks(d1, d2);
 	}
 }
