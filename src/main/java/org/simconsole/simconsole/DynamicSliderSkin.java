@@ -72,7 +72,6 @@ public class DynamicSliderSkin extends SliderSkin {
         if (majorUnit <= 0) return;
 
         for (double val = min; val <= max; val += majorUnit) {
-            System.out.println(val);
             Line majorLine = new Line();
             majorLine.getStyleClass().add("slider-tick-major");
             majorLine.setStyle("-fx-stroke: #aaaaaa; -fx-stroke-width: 2px;"); // CSS Hook
