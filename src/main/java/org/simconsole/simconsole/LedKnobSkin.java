@@ -85,7 +85,7 @@ public class LedKnobSkin extends SkinBase<LedKnob> {
         double cx = w / 2;
         double cy = h / 2;
 
-        double fontSize = size * 0.15;
+        double fontSize = size * 0.115;
         if (fontSize > 0) {
             String fontStyle = String.format(java.util.Locale.US, "-fx-font-size: %.1fpx;", fontSize);
             leftText.setStyle(fontStyle);
