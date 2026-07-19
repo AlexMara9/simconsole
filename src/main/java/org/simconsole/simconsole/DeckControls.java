@@ -16,6 +16,7 @@ public class DeckControls {
     private volatile double eqHighDb = 0.0;
 
     private static final double MAX_EQ_GAIN_DB = 12.0;
+    private static final double MIN_EQ_GAIN_DB = -26.0;
 
     public void setPitch(double pitch) {
         this.pitch = Math.max(0.1, Math.min(3.0, pitch)); // Range 10% - 300%
@@ -92,7 +93,7 @@ public class DeckControls {
     }
 
     public void setEqLow(double gainDb) {
-        this.eqLowDb = Math.max(-MAX_EQ_GAIN_DB, Math.min(MAX_EQ_GAIN_DB, gainDb));
+        this.eqLowDb = Math.max(MIN_EQ_GAIN_DB, Math.min(MAX_EQ_GAIN_DB, gainDb));
     }
 
     public double getEqLow() {
@@ -100,7 +101,7 @@ public class DeckControls {
     }
 
     public void setEqMid(double gainDb) {
-        this.eqMidDb = Math.max(-MAX_EQ_GAIN_DB, Math.min(MAX_EQ_GAIN_DB, gainDb));
+        this.eqMidDb = Math.max(MIN_EQ_GAIN_DB, Math.min(MAX_EQ_GAIN_DB, gainDb));
     }
 
     public double getEqMid() {
@@ -108,7 +109,7 @@ public class DeckControls {
     }
 
     public void setEqHigh(double gainDb) {
-        this.eqHighDb = Math.max(-MAX_EQ_GAIN_DB, Math.min(MAX_EQ_GAIN_DB, gainDb));
+        this.eqHighDb = Math.max(MIN_EQ_GAIN_DB, Math.min(MAX_EQ_GAIN_DB, gainDb));
     }
 
     public double getEqHigh() {

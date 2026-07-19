@@ -27,10 +27,8 @@ public class SimConsole extends Application {
 		stage.show();
 
 		// --- INIZIO AREA TEST (DA RIMUOVERE IN FUTURO QUANDO CI SARA' IL CARICAMENTO DA UI) ---
-		Tracks trackA = new Tracks("C:\\Users\\Pietro\\Downloads\\bassi.wav");
-		Tracks trackB = new Tracks("C:\\Users\\Pietro\\Downloads\\mixaggio.wav");
-		Tracks trackC = new Tracks("C:\\Users\\Pietro\\Downloads\\LosingIt.wav");
-		Tracks trackD = new Tracks("C:\\Users\\Pietro\\Downloads\\Nightcrawler.wav");
+		Tracks trackC = new Tracks("/home/mara/Downloads/td.wav");
+		Tracks trackD = new Tracks("/home/mara/Downloads/pit.mp3");
 		// --- FINE AREA TEST ---
 
 		

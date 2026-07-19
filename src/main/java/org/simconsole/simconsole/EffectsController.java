@@ -65,7 +65,7 @@ public class EffectsController {
             eqLowEnableBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
                 DeckControls dc = getActiveControls();
                 if (dc != null && eqLowKnob != null) {
-                    dc.setEqLow(!newVal ? eqLowKnob.getValue() : 0.0);
+                    dc.setEqLow(!newVal ? eqLowKnob.getValue() : -40.0);
                 }
             });
         }
@@ -73,7 +73,7 @@ public class EffectsController {
             eqMidEnableBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
                 DeckControls dc = getActiveControls();
                 if (dc != null && eqMidKnob != null) {
-                    dc.setEqMid(!newVal ? eqMidKnob.getValue() : 0.0);
+                    dc.setEqMid(!newVal ? eqMidKnob.getValue() : -40.0);
                 }
             });
         }
@@ -81,7 +81,7 @@ public class EffectsController {
             eqHighEnableBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
                 DeckControls dc = getActiveControls();
                 if (dc != null && eqHighKnob != null) {
-                    dc.setEqHigh(!newVal ? eqHighKnob.getValue() : 0.0);
+                    dc.setEqHigh(!newVal ? eqHighKnob.getValue() : -40.0);
                 }
             });
         }

@@ -122,8 +122,8 @@
                </rowConstraints>
                <children>
                   <HBox alignment="CENTER" spacing="5" GridPane.rowIndex="0">
-                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Low" toggleMode="true" />
-                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Rst" />
+                      <LedButton fx:id="eqLowEnableBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="Low" toggleMode="true" />
+                      <LedButton fx:id="eqLowResetBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="Rst" />
                   </HBox>
                   <LedKnob fx:id="eqLowKnob" leftLabel="-12db" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12db" GridPane.rowIndex="1" />
                </children>
@@ -138,8 +138,8 @@
                </rowConstraints>
                <children>
                   <HBox alignment="CENTER" spacing="5" GridPane.rowIndex="0">
-                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Mid" toggleMode="true" />
-                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Rst" />
+                      <LedButton fx:id="eqMidEnableBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="Mid" toggleMode="true" />
+                      <LedButton fx:id="eqMidResetBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="Rst" />
                   </HBox>
                   <LedKnob fx:id="eqMidKnob" leftLabel="-12db" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12db" GridPane.rowIndex="1" />
                </children>
@@ -154,8 +154,8 @@
                </rowConstraints>
                <children>
                   <HBox alignment="CENTER" spacing="5" GridPane.rowIndex="0">
-                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="High" toggleMode="true" />
-                      <LedButton minHeight="0.0" minWidth="0.0" roundShape="true" text="Rst" />
+                      <LedButton fx:id="eqHighEnableBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="High" toggleMode="true" />
+                      <LedButton fx:id="eqHighResetBtn" minHeight="0.0" minWidth="0.0" roundShape="true" text="Rst" />
                   </HBox>
                   <LedKnob fx:id="eqHighKnob" leftLabel="-12db" max="12.0" min="-12.0" minHeight="0.0" minWidth="0.0" rightLabel="12db" GridPane.rowIndex="1" />
                </children>
