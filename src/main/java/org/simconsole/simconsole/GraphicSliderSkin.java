@@ -216,8 +216,8 @@ public class GraphicSliderSkin extends SkinBase<GraphicSlider> {
 
         GraphicSlider control = getSkinnable();
         float[] data = control.getWaveform();
-        if (data == null) {
-            data = dummyWaveform; // Fallback to mockup data
+        if (data == null || data.length == 0) {
+            return; 
         }
 
         gc.setStroke(Color.web("#007aff"));

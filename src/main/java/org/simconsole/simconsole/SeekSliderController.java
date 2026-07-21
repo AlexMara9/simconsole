@@ -45,7 +45,7 @@ public class SeekSliderController {
 						seekSlider.setTotalTime(totalSec);
 						seekSlider.setWaveform(currentTrack.getWaveformPreview());
 					} else {
-						seekSlider.setSongName("No Track");
+						seekSlider.setSongName("no track");
 						seekSlider.setTotalTime(1.0);
 						seekSlider.setWaveform(new float[0]);
 					}

@@ -47,16 +47,16 @@
                <children>
                   <fx:include fx:id="playbackLeft" minHeight="0.0" minWidth="0.0" source="Playback.fxml" />
                   <fx:include fx:id="cueLeft" minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnIndex="1" GridPane.columnSpan="2" />
-                  <fx:include fx:id="seekLeft" source="seek-slider.fxml" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                  <fx:include fx:id="seekLeft" minHeight="0.0" minWidth="0.0" source="seek-slider.fxml" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </children>
       </StackPane>
       <fx:include fx:id="effectsLeft" minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <fx:include fx:id="pitchLeft" source="pitch.fxml" />
+      <fx:include fx:id="pitchLeft" minHeight="0.0" minWidth="0.0" source="pitch.fxml" />
 
       <!-- Center Playlist and Search -->
-      <fx:include fx:id="playlist" source="playlist.fxml" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2" />
+      <fx:include fx:id="playlist" minHeight="0.0" minWidth="0.0" source="playlist.fxml" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2" />
 
       <!-- Right Deck -->
       <DynamicDeck fx:id="deckRight" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="6" GridPane.rowIndex="0" />
@@ -75,13 +75,13 @@
                <children>
                   <fx:include fx:id="cueRight" minHeight="0.0" minWidth="0.0" source="cue.fxml" GridPane.columnSpan="2" />
                   <fx:include fx:id="playbackRight" minHeight="0.0" minWidth="0.0" source="Playback.fxml" GridPane.columnIndex="2" />
-                  <fx:include fx:id="seekRight" source="seek-slider.fxml" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+                  <fx:include fx:id="seekRight" minHeight="0.0" minWidth="0.0" source="seek-slider.fxml" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </children>
       </StackPane>
-      <fx:include fx:id="effectsRight" source="effects.fxml" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <fx:include fx:id="pitchRight" source="pitch.fxml" GridPane.columnIndex="7" />
+      <fx:include fx:id="effectsRight" minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+      <fx:include fx:id="pitchRight" minHeight="0.0" minWidth="0.0" source="pitch.fxml" GridPane.columnIndex="7" />
 
     </children>
 </GridPane>

@@ -10,7 +10,7 @@ import javafx.scene.control.Skin;
  */
 public class GraphicSlider extends Control {
 
-    private final StringProperty songName = new SimpleStringProperty("No Track Loaded");
+    private final StringProperty songName = new SimpleStringProperty("no track");
     private final DoubleProperty currentTime = new SimpleDoubleProperty(0.0);
     private final DoubleProperty totalTime = new SimpleDoubleProperty(180.0); // Default 3 minutes
     private final ObjectProperty<float[]> waveform = new SimpleObjectProperty<>();

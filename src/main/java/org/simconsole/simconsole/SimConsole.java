@@ -26,10 +26,7 @@ public class SimConsole extends Application {
 		});
 		stage.show();
 
-		// --- INIZIO AREA TEST (DA RIMUOVERE IN FUTURO QUANDO CI SARA' IL CARICAMENTO DA UI) ---
-		Tracks trackC = new Tracks("/home/mara/Downloads/td.wav");
-		Tracks trackD = new Tracks("/home/mara/Downloads/pit.mp3");
-		// --- FINE AREA TEST ---
+		// --- AREA TEST RIMOSSA ---
 
 		
 		//t1
@@ -48,8 +45,8 @@ public class SimConsole extends Application {
 		AudioProcessor processor2 = new AudioProcessor(d2);
 		processor2.startPlayback();
 
-		d1.loadTrack(trackD);
-		d2.loadTrack(trackC);
+		// d1.loadTrack(trackD);
+		// d2.loadTrack(trackC);
 
         consoleController.setDecks(d1, d2);
 	}
