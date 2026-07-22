@@ -4,8 +4,6 @@
     -fx-effect: innershadow(gaussian, rgba(0,0,0,0.8), 15, 0, 0, 5);
     -fx-padding: 0.75em;
 }
-
-
 .controls-card {
     -fx-background-color: transparent;
     -fx-effect: none;

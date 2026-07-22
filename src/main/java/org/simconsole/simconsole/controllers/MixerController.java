@@ -1,29 +1,21 @@
 package org.simconsole.simconsole.controllers;
-
 import org.simconsole.simconsole.components.LineKnob;
 import org.simconsole.simconsole.models.Deck;
 import org.simconsole.simconsole.components.MasterSlider;
 import org.simconsole.simconsole.models.AudioProcessor;
 import org.simconsole.simconsole.models.Crossfader;
 import org.simconsole.simconsole.components.DynamicSlider;
-
 import javafx.fxml.FXML;
-
 public class MixerController {
-
     @FXML private DynamicSlider leftVolumeSlider;
     @FXML private DynamicSlider rightVolumeSlider;
-    
     @FXML private LineKnob leftPanKnob;
     @FXML private LineKnob rightPanKnob;
-
     @FXML private MasterSlider masterVolumeSlider;
     @FXML private MasterSlider crossfaderSlider;
-
     private Deck leftDeck;
     private Deck rightDeck;
     private Crossfader crossfader;
-
     @FXML
     public void initialize() {
         if (masterVolumeSlider != null) {
@@ -45,7 +37,6 @@ public class MixerController {
                 }
             });
         }
-        
         if (rightVolumeSlider != null) {
             rightVolumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
                 if (rightDeck != null) {
@@ -68,25 +59,19 @@ public class MixerController {
             });
         }
     }
-    
     public void setDecks(Deck leftDeck, Deck rightDeck) {
         this.leftDeck = leftDeck;
         this.rightDeck = rightDeck;
-        
         this.crossfader = new Crossfader(
             leftDeck != null ? leftDeck.getControls() : null,
             rightDeck != null ? rightDeck.getControls() : null
         );
-        
-        // Inizializza i valori correnti (dal range 0.0-1.0 al range slider 0-100)
         if (masterVolumeSlider != null) {
             masterVolumeSlider.setValue(AudioProcessor.masterVolume * 100.0);
         }
-        
         if (crossfaderSlider != null) {
             crossfaderSlider.setValue(0.0);
         }
-        
         if (this.leftDeck != null) {
             if (leftVolumeSlider != null) leftVolumeSlider.setValue(this.leftDeck.getControls().getVolume() * 100.0);
             if (leftPanKnob != null) leftPanKnob.setValue(-this.leftDeck.getControls().getPan());

@@ -1,28 +1,23 @@
 package org.simconsole.simconsole.models;
-
 public class Tracks {
     public enum TrackState {
-        LOCAL,             // Local-only files, no download needed
-        DOWNLOAD_PENDING,  // Added from search API, waiting to start
-        DOWNLOADING,       // Currently downloading the MP3 file
-        CONVERTING,        // Decoding MP3 to PCM and generating waveform
-        READY,             // Fully downloaded, decoded, and ready to play instantly
-        FAILED             // Failed during download or conversion
+        LOCAL,
+        DOWNLOAD_PENDING,
+        DOWNLOADING,
+        CONVERTING,
+        READY,
+        FAILED
     }
-
     private String filePath;
     private double[] audioData;
     private long durationMs;
     private int sampleRate;
     private float[] waveformPreview;
-
-    // API metadata (null for local-only tracks)
     private String artist;
     private String title;
     private String previewUrl;
     private boolean fromApi;
     private TrackState state = TrackState.LOCAL;
-
     /** Constructor for local files. */
     public Tracks(String filePath) {
         this.filePath = filePath;
@@ -31,9 +26,7 @@ public class Tracks {
         parseArtistAndTitleFromFilename(filePath);
         extractMetadata();
     }
-
     private void parseArtistAndTitleFromFilename(String filePath) {
-        // Try to parse Artist - Title from filename
         String nameWithoutExt = new java.io.File(filePath).getName();
         int dotIdx = nameWithoutExt.lastIndexOf('.');
         if (dotIdx > 0) {
@@ -48,7 +41,6 @@ public class Tracks {
             this.artist = "Autore locale";
         }
     }
-
     /** Factory for tracks coming from the iTunes API (no local file). */
     public static Tracks fromApi(String artist, String title, String previewUrl, long durationMs) {
         Tracks t = new Tracks();
@@ -61,19 +53,13 @@ public class Tracks {
         t.state      = TrackState.DOWNLOAD_PENDING;
         return t;
     }
-
     private Tracks() {}
-
-    // --- Getters ---
-
     public TrackState getState() { return state; }
     public void setState(TrackState state) { this.state = state; }
-
     public void setFilePath(String filePath) {
         this.filePath = filePath;
         extractMetadata();
     }
-
     public String getFilePath()   { return filePath; }
     public String getArtist()     { return artist; }
     public String getTitle()      { return title; }
@@ -81,27 +67,23 @@ public class Tracks {
     public boolean isFromApi()    { return fromApi; }
     public long getDurationMs()   { return durationMs; }
     public int getSampleRate()    { return sampleRate; }
-
     public double[] getAudioData() {
         if (audioData == null && filePath != null) {
             audioData = AudioDecoder.readWavFileAsDoubles(filePath);
         }
         return audioData;
     }
-
     public float[] getWaveformPreview() {
         if (waveformPreview == null) {
             generateWaveformPreview();
         }
         return waveformPreview;
     }
-
     /** Display name: "Artist – Title" for API tracks, filename for local tracks. */
     @Override
     public String toString() {
         boolean hasArtist = artist != null && !artist.isBlank();
         boolean hasTitle = title != null && !title.isBlank();
-        
         if (hasArtist && hasTitle) {
             return artist + " – " + title;
         } else if (hasTitle) {
@@ -111,24 +93,18 @@ public class Tracks {
         }
         return "Unknown";
     }
-
     private void generateWaveformPreview() {
         double[] data = getAudioData();
         if (data == null || data.length == 0) {
             waveformPreview = new float[0];
             return;
         }
-
-        // 1000 buckets — enough detail, no extra smoothing
         int numBuckets = 1000;
         waveformPreview = new float[numBuckets];
-
         int samplesPerBucket = Math.max(1, data.length / numBuckets);
-
         for (int i = 0; i < numBuckets; i++) {
             int start = i * samplesPerBucket;
             int end = Math.min(start + samplesPerBucket, data.length);
-            // RMS: perceived energy
             double sumSq = 0;
             for (int j = start; j < end; j++) {
                 sumSq += data[j] * data[j];
@@ -136,7 +112,6 @@ public class Tracks {
             waveformPreview[i] = (float) Math.sqrt(sumSq / (end - start));
         }
     }
-
     private void extractMetadata() {
         try {
             java.io.File file = new java.io.File(filePath);

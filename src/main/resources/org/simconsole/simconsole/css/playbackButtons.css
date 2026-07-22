@@ -2,50 +2,36 @@
     -fx-background-color: transparent;
     -fx-padding: 0;
 }
-
 .control-button:hover {
     -fx-background-color: rgba(255, 255, 255, 0.1);
 }
-
 .control-button:pressed {
     -fx-background-color: rgba(0, 122, 255, 0.2);
 }
-
 .play-button {
     -fx-background-color: #007aff;
 }
-
 .play-button:hover {
     -fx-background-color: #3395ff;
 }
-
 .play-button:pressed {
     -fx-background-color: #005bb5;
 }
-
 .icon {
-    /*-fx-background-color: #a0a0a0;*/
-    /*-fx-background-color: #ffffff;*/
     -fx-background-color: #000000;
 }
-
 .play-button .icon {
     -fx-background-color: #ffffff;
 }
-
 .control-button:hover .icon {
     -fx-background-color: #ffffff;
 }
-
 .control-button:pressed .icon {
-    /*-fx-background-color: #007aff;*/
     -fx-background-color: #a0a0a0;
 }
-
 .play-button:pressed .icon {
     -fx-background-color: #ffffff;
 }
-
 .icon-unskip {
     -fx-shape: "M 14 0 L 4 7 L 14 14 Z M 0 0 H 3 V 14 H 0 Z";
 }

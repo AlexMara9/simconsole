@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -9,9 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import org.simconsole.simconsole.components.DynamicDeck?>
-
-<!-- Import Custom Components -->
-
 <GridPane fx:id="grid" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="496.0" styleClass="main-container" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.controllers.ConsoleController">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="8.0" />
@@ -30,7 +26,6 @@
     </rowConstraints>
     <children>
       <fx:include fx:id="mixer" minHeight="0.0" minWidth="0.0" source="master.fxml" GridPane.columnIndex="2" GridPane.columnSpan="4" />
-      <!-- Left Deck -->
       <DynamicDeck fx:id="deckLeft" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="1" />
       <StackPane fx:id="playbackContainer" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/card.css" GridPane.columnSpan="4" GridPane.rowIndex="1">
          <children>
@@ -54,11 +49,7 @@
       </StackPane>
       <fx:include fx:id="effectsLeft" minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <fx:include fx:id="pitchLeft" minHeight="0.0" minWidth="0.0" source="pitch.fxml" />
-
-      <!-- Center Playlist and Search -->
       <fx:include fx:id="playlist" minHeight="0.0" minWidth="0.0" source="playlist.fxml" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2" />
-
-      <!-- Right Deck -->
       <DynamicDeck fx:id="deckRight" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/deck.css, @../css/card.css" GridPane.columnIndex="6" GridPane.rowIndex="0" />
       <StackPane fx:id="playbackContainer1" minHeight="0.0" minWidth="0.0" styleClass="card" stylesheets="@../css/card.css" GridPane.columnIndex="4" GridPane.columnSpan="4" GridPane.rowIndex="1">
          <children>
@@ -82,6 +73,5 @@
       </StackPane>
       <fx:include fx:id="effectsRight" minHeight="0.0" minWidth="0.0" source="effects.fxml" GridPane.columnIndex="6" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <fx:include fx:id="pitchRight" minHeight="0.0" minWidth="0.0" source="pitch.fxml" GridPane.columnIndex="7" />
-
     </children>
 </GridPane>

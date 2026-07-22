@@ -1,5 +1,4 @@
 package org.simconsole.simconsole.controllers;
-
 import org.simconsole.simconsole.models.Flanger;
 import org.simconsole.simconsole.models.Deck;
 import org.simconsole.simconsole.models.DeckControls;
@@ -8,51 +7,34 @@ import org.simconsole.simconsole.models.Reverb;
 import org.simconsole.simconsole.components.LedButton;
 import org.simconsole.simconsole.models.Echo;
 import org.simconsole.simconsole.components.DynamicSlider;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-
 public class EffectsController {
-
     private Deck deck;
     private DeckControls deckControls;
-
-    // EQ Knobs
     @FXML private LedKnob eqLowKnob;
     @FXML private LedKnob eqMidKnob;
     @FXML private LedKnob eqHighKnob;
-
-    // EQ Enable/Kill Buttons
     @FXML private LedButton eqLowEnableBtn;
     @FXML private LedButton eqMidEnableBtn;
     @FXML private LedButton eqHighEnableBtn;
-
-    // EQ Reset Buttons
     @FXML private LedButton eqLowResetBtn;
     @FXML private LedButton eqMidResetBtn;
     @FXML private LedButton eqHighResetBtn;
-
-    // Flanger
     @FXML private LedButton flangerBtn;
     @FXML private DynamicSlider flangerKnob;
     @FXML private Label fx1Label;
     @FXML private Label flangerValLabel;
-
-    // Reverb
     @FXML private LedButton reverbBtn;
     @FXML private DynamicSlider reverbKnob;
     @FXML private Label fx2Label;
     @FXML private Label reverbValLabel;
-
-    // Echo
     @FXML private LedButton ecoBtn;
     @FXML private DynamicSlider ecoKnob;
     @FXML private Label fx3Label;
     @FXML private Label ecoValLabel;
-
     @FXML
     public void initialize() {
-        // Reset Buttons
         if (eqLowResetBtn != null) {
             eqLowResetBtn.setOnAction(e -> {
                 if (eqLowKnob != null) eqLowKnob.setValue(0.0);
@@ -68,8 +50,6 @@ public class EffectsController {
                 if (eqHighKnob != null) eqHighKnob.setValue(0.0);
             });
         }
-
-        // Enable Buttons (Kill switches)
         if (eqLowEnableBtn != null) {
             eqLowEnableBtn.setSelected(true);
             eqLowEnableBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
@@ -100,39 +80,30 @@ public class EffectsController {
                 }
             });
         }
-
-        // Effects UI initialization
         updateLabelColor(fx3Label, false);
         updateLabelColor(fx1Label, false);
         updateLabelColor(fx2Label, false);
-        
         updateSliderIdleState(ecoKnob, false);
         updateSliderIdleState(flangerKnob, false);
         updateSliderIdleState(reverbKnob, false);
-
         if (ecoValLabel != null && ecoKnob != null) ecoValLabel.setText(String.format("%.0f%%", ecoKnob.getValue() * 100));
         if (flangerValLabel != null && flangerKnob != null) flangerValLabel.setText(String.format("%.0f%%", flangerKnob.getValue() * 100));
         if (reverbValLabel != null && reverbKnob != null) reverbValLabel.setText(String.format("%.0f%%", reverbKnob.getValue() * 100));
-
         if (ecoValLabel != null) ecoValLabel.setOpacity(0.4);
         if (flangerValLabel != null) flangerValLabel.setOpacity(0.4);
         if (reverbValLabel != null) reverbValLabel.setOpacity(0.4);
-
         setupListeners();
     }
-
     private DeckControls getActiveControls() {
         if (deckControls != null) return deckControls;
         if (deck != null) return deck.getControls();
         return null;
     }
-
     private void updateLabelColor(Label label, boolean isOn) {
         if (label == null) return;
         String color = isOn ? "#90ee90" : "#ffffff";
         label.setStyle("-fx-background-color: transparent; -fx-text-fill: " + color + "; -fx-font-weight: bold;");
     }
-
     private void updateSliderIdleState(DynamicSlider slider, boolean isOn) {
         if (slider == null) return;
         slider.setDisable(!isOn);
@@ -144,30 +115,24 @@ public class EffectsController {
             slider.setOpacity(0.4);
         }
     }
-
     private void updateKnobIdleState(LedKnob knob, boolean isOn) {
         if (knob == null) return;
         knob.setLedsEnabled(isOn);
     }
-
     public void setDeckControls(DeckControls controls) {
         this.deckControls = controls;
         if (controls != null) {
             if (eqLowKnob != null) eqLowKnob.setValue(controls.getEqLow());
             if (eqMidKnob != null) eqMidKnob.setValue(controls.getEqMid());
             if (eqHighKnob != null) eqHighKnob.setValue(controls.getEqHigh());
-            
             if (flangerBtn != null) flangerBtn.setSelected(controls.isFlangerEnabled());
             if (flangerKnob != null) flangerKnob.setValue(controls.getFlangerWet());
-            
             if (reverbBtn != null) reverbBtn.setSelected(controls.isReverbEnabled());
             if (reverbKnob != null) reverbKnob.setValue(controls.getReverbWet());
-            
             if (ecoBtn != null) ecoBtn.setSelected(controls.isEcoEnabled());
             if (ecoKnob != null) ecoKnob.setValue(controls.getEcoWet());
         }
     }
-
     public void setDeck(Deck deck) {
         this.deck = deck;
         if (deck != null) {
@@ -177,13 +142,11 @@ public class EffectsController {
                 if (eqMidKnob != null) eqMidKnob.setValue(controls.getEqMid());
                 if (eqHighKnob != null) eqHighKnob.setValue(controls.getEqHigh());
             }
-
             if (eqLowEnableBtn != null) eqLowEnableBtn.setSelected(true);
             if (eqMidEnableBtn != null) eqMidEnableBtn.setSelected(true);
             if (eqHighEnableBtn != null) eqHighEnableBtn.setSelected(true);
         }
     }
-
     private void setupListeners() {
         if (eqLowKnob != null) {
             eqLowKnob.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -209,7 +172,6 @@ public class EffectsController {
                 }
             });
         }
-
         if (ecoBtn != null) {
             ecoBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
                 updateLabelColor(fx3Label, newVal);
@@ -226,7 +188,6 @@ public class EffectsController {
                 if (dc != null) dc.setEcoWet(newVal.doubleValue());
             });
         }
-
         if (flangerBtn != null) {
             flangerBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
                 updateLabelColor(fx1Label, newVal);
@@ -243,7 +204,6 @@ public class EffectsController {
                 if (dc != null) dc.setFlangerWet(newVal.doubleValue());
             });
         }
-
         if (reverbBtn != null) {
             reverbBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
                 updateLabelColor(fx2Label, newVal);

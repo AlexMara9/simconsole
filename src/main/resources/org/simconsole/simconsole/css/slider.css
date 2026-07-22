@@ -2,52 +2,42 @@
     -track-filled: #00d4ff;
     -track-empty: #1a1a1a;
 }
-
 .slider .track {
     -fx-background-color: #1a1a1a;
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
-
 .slider .thumb {
     -fx-background-color: #111111, #262626, linear-gradient(from 0% 0% to 100% 100%, #f4f4f4 0%, #9e9e9e 25%, #e2e2e2 50%, #828282 85%, #cfcfcf 100%);
     -fx-border-color: transparent;
     -fx-border-width: 0;
     -fx-padding: 0;
 }
-
 .slider .thumb:hover {
     -fx-background-color: #111111, #262626, linear-gradient(from 0% 0% to 100% 100%, #ffffff 0%, #a8a8a8 25%, #ececec 50%, #8c8c8c 85%, #d9d9d9 100%);
 }
-
 .slider .thumb:pressed {
     -fx-background-color: #111111, #262626, linear-gradient(from 0% 0% to 100% 100%, #e0e0e0 0%, #8f8f8f 25%, #d0d0d0 50%, #757575 85%, #bebebe 100%);
 }
-
 .slider .axis {
     -fx-tick-length: 0.6em;
     -fx-minor-tick-length: 0.4em;
 }
-
-/* --- Graphic Slider Styles --- */
 .graphic-slider-container {
     -fx-background-color: #0d0d0d;
     -fx-border-color: #333333;
     -fx-border-width: 1px;
 }
-
 .graphic-slider-playhead {
     -fx-stroke: #ff0000;
     -fx-stroke-width: 2px;
 }
-
 .graphic-slider-title {
     -fx-fill: rgba(255, 255, 255, 0.5);
     -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;
     -fx-font-weight: bold;
     -fx-font-size: 14px;
 }
-
 .graphic-slider-time {
     -fx-fill: rgba(255, 255, 255, 0.6);
     -fx-font-family: "Inter", "Roboto", "Segoe UI", sans-serif;

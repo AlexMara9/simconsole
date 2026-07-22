@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import java.lang.String?>
 <?import java.net.URL?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import org.simconsole.simconsole.components.LedButton?>
 <?import org.simconsole.simconsole.components.PlayButton?>
-
 <HBox fx:id="buttonsContainer" alignment="CENTER" minHeight="0.0" minWidth="0.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.controllers.PlaybackController">
    <children>
       <LedButton fx:id="rewindButton" layoutBias="VERTICAL" minHeight="0.0" minWidth="0.0" roundShape="true" textSizeRatio="0.3">

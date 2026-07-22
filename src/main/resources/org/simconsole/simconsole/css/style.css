@@ -1,83 +1,65 @@
-/* ── Root & Base Layout ──────────────────────────────────────── */
 .root {
     -fx-background-color: #212121;
     -fx-font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
 }
-
 .main-container {
     -fx-padding: 20;
     -fx-hgap: 15;
     -fx-vgap: 15;
 }
-
-/* ── Typography ──────────────────────────────────────────────── */
 .section-label {
     -fx-text-fill: #ffffff;
     -fx-padding: 0.5em;
     -fx-font-weight: bold;
     -fx-font-size: 1.2em;
 }
-
-/* ── ListView ────────────────────────────────────────────────── */
 .list-view {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-font-size: 1em;
 }
-
 .list-view .list-cell {
     -fx-background-color: transparent;
     -fx-text-fill: #cccccc;
     -fx-padding: 0.5em;
     -fx-font-size: 1em;
 }
-
 .list-view .list-cell:empty {
     -fx-background-color: transparent;
 }
-
 .list-view .list-cell:hover {
     -fx-background-color: #2a2a2a;
     -fx-text-fill: #ffffff;
 }
-
 .list-view .list-cell:selected {
     -fx-background-color: #007aff;
     -fx-text-fill: #ffffff;
 }
-
-/* ── ScrollBar ───────────────────────────────────────────────── */
 .scroll-bar {
     -fx-background-color: transparent;
 }
-
 .scroll-bar:vertical {
     -fx-background-color: transparent;
     -fx-pref-width: 8px;
 }
-
 .scroll-bar .track,
 .scroll-bar .track-background {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
-
 .scroll-bar:vertical .thumb {
     -fx-background-color: #555555;
     -fx-background-radius: 4px;
 }
-
 .scroll-bar:vertical .thumb:hover {
     -fx-background-color: #777777;
 }
-
 .scroll-bar:horizontal {
     -fx-opacity: 0;
     -fx-pref-height: 0;
     -fx-padding: 0;
     -fx-max-height: 0;
 }
-
 .scroll-bar .increment-button,
 .scroll-bar .decrement-button {
     -fx-background-color: transparent;
@@ -86,68 +68,53 @@
     -fx-max-height: 0;
     -fx-min-height: 0;
 }
-
 .scroll-bar .increment-arrow,
 .scroll-bar .decrement-arrow {
     -fx-shape: " ";
     -fx-padding: 0;
     -fx-pref-height: 0;
 }
-
-
-
-/* ── TableView ───────────────────────────────────────────────── */
 .table-view {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-font-size: 1em;
 }
-
 .table-view .column-header-background {
     -fx-background-color: #1a1a1a;
 }
-
 .table-view .column-header, .table-view .filler {
     -fx-background-color: #1a1a1a;
     -fx-border-color: rgba(255, 255, 255, 0.08);
     -fx-border-width: 0 0 1px 0;
 }
-
 .table-view .column-header .label {
     -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
     -fx-padding: 0.4em;
     -fx-font-size: 1em;
 }
-
 .table-row-cell {
     -fx-background-color: transparent;
     -fx-text-fill: #cccccc;
 }
-
 .table-row-cell:empty {
     -fx-background-color: transparent;
 }
-
 .table-row-cell:hover {
     -fx-background-color: transparent;
 }
-
 .table-row-cell:selected {
     -fx-background-color: transparent;
 }
-
 .table-row-cell .table-cell {
     -fx-text-fill: #cccccc;
     -fx-border-color: transparent;
     -fx-font-size: 1em;
     -fx-padding: 0.2em 0.5em;
 }
-
 .table-row-cell:selected .table-cell {
     -fx-text-fill: #cccccc;
 }
-
 .deck-button {
     -fx-background-color: transparent;
     -fx-text-fill: white;
@@ -155,12 +122,10 @@
     -fx-border-radius: 3;
     -fx-cursor: hand;
 }
-
 .deck-button:hover {
     -fx-border-color: #007aff;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 122, 255, 0.8), 10, 0.5, 0, 0);
 }
-
 .deck-button-active {
     -fx-background-color: #007aff;
     -fx-text-fill: white;
@@ -169,16 +134,12 @@
     -fx-cursor: hand;
     -fx-effect: none;
 }
-
-/* ── Icons ───────────────────────────────────────────────────── */
 .svg-icon {
     -fx-background-color: white;
 }
-
 .icon-search {
     -fx-shape: "M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z";
 }
-
 .icon-folder {
     -fx-shape: "M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z";
 }

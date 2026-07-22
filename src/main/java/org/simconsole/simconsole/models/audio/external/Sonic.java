@@ -1,25 +1,10 @@
-/* Sonic library
-   Copyright 2010, 2011
-   Bill Cox
-   This file is part of the Sonic Library.
-
-   This file is licensed under the Apache 2.0 license.
-*/
-
 package org.simconsole.simconsole.models.audio.external;
-
 public class Sonic {
-
     private static final int SONIC_MIN_PITCH = 65;
     private static final int SONIC_MAX_PITCH = 400;
-    // This is used to down-sample some inputs to improve speed
     private static final int SONIC_AMDF_FREQ = 4000;
-    // The number of points to use in the sinc FIR filter for resampling.
     private static final int SINC_FILTER_POINTS = 12;
     private static final int SINC_TABLE_SIZE = 601;
-
-    // Lookup table for windowed sinc function of SINC_FILTER_POINTS points.
-    // The code to generate this is in the header comment of sonic.c.
     private static final short sincTable[] = {
         0, 0, 0, 0, 0, 0, 0, -1, -1, -2, -2, -3, -4, -6, -7, -9, -10, -12, -14,
         -17, -19, -21, -24, -26, -29, -32, -34, -37, -40, -42, -44, -47, -48, -50,
@@ -67,11 +52,9 @@ public class Sonic {
         369, 363, 357, 348, 339, 328, 317, 304, 291, 276, 262, 247, 231, 215, 200,
         184, 168, 152, 137, 121, 107, 92, 79, 65, 53, 41, 29, 19, 9, 0, -8, -16,
         -22, -29, -34, -39, -43, -46, -48, -50, -52, -53, -53, -53, -52, -51, -50,
-
 -48, -47, -44, -42, -40, -37, -34, -32, -29, -26, -24, -21, -19, -17, -14,
         -12, -10, -9, -7, -6, -4, -3, -2, -2, -1, -1, 0, 0, 0, 0, 0, 0, 0
     };
-
     private short inputBuffer[];
     private short outputBuffer[];
     private short pitchBuffer[];
@@ -100,8 +83,6 @@ public class Sonic {
     private int prevMinDiff;
     private int minDiff;
     private int maxDiff;
-
-    // Resize the array.
     private short[] resize(
         short[] oldArray,
         int newLength)
@@ -109,12 +90,9 @@ public class Sonic {
         newLength *= numChannels;
         short[]        newArray = new short[newLength];
         int length = oldArray.length <= newLength? oldArray.length : newLength;
-
         System.arraycopy(oldArray, 0, newArray, 0, length);
         return newArray;
     }
-
-    // Move samples from one array to another.  May move samples down within an array, but not up.
     private void move(
         short dest[],
         int destPos,
@@ -124,21 +102,16 @@ public class Sonic {
     {
         System.arraycopy(source, sourcePos*numChannels, dest, destPos*numChannels, numSamples*numChannels);
     }
-
-    // Scale the samples by the factor.
     private void scaleSamples(
         short samples[],
         int position,
         int numSamples,
         float volume)
     {
-        // Convert volume to fixed-point, with a 12 bit fraction.
         int fixedPointVolume = (int)(volume*4096.0f);
         int start = position*numChannels;
         int stop = start + numSamples*numChannels;
-
         for(int xSample = start; xSample < stop; xSample++) {
-            // Convert back from fixed point to 16-bit integer.
             int value = (samples[xSample]*fixedPointVolume) >> 12;
             if(value > 32767) {
                 value = 32767;
@@ -148,40 +121,28 @@ public class Sonic {
             samples[xSample] = (short)value;
         }
     }
-
-    // Get the speed of the stream.
     public float getSpeed()
     {
         return speed;
     }
-
-    // Set the speed of the stream.
     public void setSpeed(
         float speed)
     {
         this.speed = speed;
     }
-
-    // Get the pitch of the stream.
     public float getPitch()
     {
         return pitch;
     }
-
-    // Set the pitch of the stream.
     public void setPitch(
         float pitch)
     {
         this.pitch = pitch;
     }
-
-    // Get the rate of the stream.
     public float getRate()
     {
         return rate;
     }
-
-    // Set the playback rate of the stream. This scales pitch and speed at the same time.
     public void setRate(
         float rate)
     {
@@ -189,47 +150,33 @@ public class Sonic {
         this.oldRatePosition = 0;
         this.newRatePosition = 0;
     }
-
-    // Get the vocal chord pitch setting.
     public boolean getChordPitch()
     {
         return useChordPitch;
     }
-
-    // Set the vocal chord mode for pitch computation.  Default is off.
     public void setChordPitch(
         boolean useChordPitch)
     {
         this.useChordPitch = useChordPitch;
     }
-
-    // Get the quality setting.
     public int getQuality()
     {
         return quality;
     }
-
-    // Set the "quality".  Default 0 is virtually as good as 1, but very much faster.
     public void setQuality(
         int quality)
     {
         this.quality = quality;
     }
-
-    // Get the scaling factor of the stream.
     public float getVolume()
     {
         return volume;
     }
-
-    // Set the scaling factor of the stream.
     public void setVolume(
         float volume)
     {
         this.volume = volume;
     }
-
-    // Allocate stream buffers.
     private void allocateStreamBuffers(
         int sampleRate,
         int numChannels)
@@ -238,7 +185,6 @@ public class Sonic {
         maxPeriod = sampleRate/SONIC_MIN_PITCH;
         maxRequired = 2*maxPeriod;
         inputBufferSize = maxRequired;
-
 inputBuffer = new short[maxRequired*numChannels];
         outputBufferSize = maxRequired;
         outputBuffer = new short[maxRequired*numChannels];
@@ -251,8 +197,6 @@ inputBuffer = new short[maxRequired*numChannels];
         newRatePosition = 0;
         prevPeriod = 0;
     }
-
-    // Create a sonic stream.
     public Sonic(
         int sampleRate,
         int numChannels)
@@ -267,34 +211,24 @@ inputBuffer = new short[maxRequired*numChannels];
         useChordPitch = false;
         quality = 0;
     }
-
-    // Get the sample rate of the stream.
     public int getSampleRate()
     {
         return sampleRate;
     }
-
-    // Set the sample rate of the stream.  This will cause samples buffered in the stream to be lost.
     public void setSampleRate(
         int sampleRate)
     {
         allocateStreamBuffers(sampleRate, numChannels);
     }
-
-    // Get the number of channels.
     public int getNumChannels()
     {
         return numChannels;
     }
-
-    // Set the num channels of the stream.  This will cause samples buffered in the stream to be lost.
     public void setNumChannels(
         int numChannels)
     {
         allocateStreamBuffers(sampleRate, numChannels);
     }
-
-    // Enlarge the output buffer if needed.
     private void enlargeOutputBufferIfNeeded(
         int numSamples)
     {
@@ -303,8 +237,6 @@ inputBuffer = new short[maxRequired*numChannels];
             outputBuffer = resize(outputBuffer, outputBufferSize);
         }
     }
-
-    // Enlarge the input buffer if needed.
     private void enlargeInputBufferIfNeeded(
         int numSamples)
     {
@@ -313,8 +245,6 @@ inputBuffer = new short[maxRequired*numChannels];
             inputBuffer = resize(inputBuffer, inputBufferSize);
         }
     }
-
-    // Add the input samples to the input buffer.
     private void addFloatSamplesToInputBuffer(
         float samples[],
         int numSamples)
@@ -329,8 +259,6 @@ inputBuffer = new short[maxRequired*numChannels];
         }
         numInputSamples += numSamples;
     }
-
-    // Add the input samples to the input buffer.
     private void addShortSamplesToInputBuffer(
         short samples[],
         int numSamples)
@@ -342,31 +270,25 @@ inputBuffer = new short[maxRequired*numChannels];
         move(inputBuffer, numInputSamples, samples, 0, numSamples);
         numInputSamples += numSamples;
     }
-
-    // Add the input samples to the input buffer.
     private void addUnsignedByteSamplesToInputBuffer(
         byte samples[],
         int numSamples)
     {
         short sample;
-
         enlargeInputBufferIfNeeded(numSamples);
         int xBuffer = numInputSamples*numChannels;
         for(int xSample = 0; xSample < numSamples*numChannels; xSample++) {
-                sample = (short)((samples[xSample] & 0xff) - 128); // Convert from unsigned to signed
+                sample = (short)((samples[xSample] & 0xff) - 128);
             inputBuffer[xBuffer++] = (short) (sample << 8);
         }
         numInputSamples += numSamples;
     }
-
-    // Add the input samples to the input buffer.  They must be 16-bit little-endian encoded in a byte array.
     private void addBytesToInputBuffer(
         byte inBuffer[],
         int numBytes)
     {
             int numSamples = numBytes/(2*numChannels);
         short sample;
-
         enlargeInputBufferIfNeeded(numSamples);
         int xBuffer = numInputSamples*numChannels;
         for(int xByte = 0; xByte + 1 < numBytes; xByte += 2) {
@@ -375,18 +297,13 @@ inputBuffer = new short[maxRequired*numChannels];
         }
         numInputSamples += numSamples;
     }
-
-    // Remove input samples that we have already processed.
     private void removeInputSamples(
         int position)
     {
         int remainingSamples = numInputSamples - position;
-
 move(inputBuffer, 0, inputBuffer, position, remainingSamples);
         numInputSamples = remainingSamples;
     }
-
-    // Just copy from the array to the output buffer
     private void copyToOutput(
         short samples[],
         int position,
@@ -396,13 +313,10 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
         move(outputBuffer, numOutputSamples, samples, position, numSamples);
         numOutputSamples += numSamples;
     }
-
-    // Just copy from the input buffer to the output buffer.  Return num samples copied.
     private int copyInputToOutput(
         int position)
     {
         int numSamples = remainingInputToCopy;
-
         if(numSamples > maxRequired) {
             numSamples = maxRequired;
         }
@@ -410,16 +324,12 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
         remainingInputToCopy -= numSamples;
         return numSamples;
     }
-
-    // Read data out of the stream.  Sometimes no data will be available, and zero
-    // is returned, which is not an error condition.
     public int readFloatFromStream(
         float samples[],
         int maxSamples)
     {
         int numSamples = numOutputSamples;
         int remainingSamples = 0;
-
         if(numSamples == 0) {
             return 0;
         }
@@ -434,16 +344,12 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
         numOutputSamples = remainingSamples;
         return numSamples;
     }
-
-    // Read short data out of the stream.  Sometimes no data will be available, and zero
-    // is returned, which is not an error condition.
     public int readShortFromStream(
         short samples[],
         int maxSamples)
     {
         int numSamples = numOutputSamples;
         int remainingSamples = 0;
-
         if(numSamples == 0) {
             return 0;
         }
@@ -456,16 +362,12 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
         numOutputSamples = remainingSamples;
         return numSamples;
     }
-
-    // Read unsigned byte data out of the stream.  Sometimes no data will be available, and zero
-    // is returned, which is not an error condition.
     public int readUnsignedByteFromStream(
         byte samples[],
         int maxSamples)
     {
         int numSamples = numOutputSamples;
         int remainingSamples = 0;
-
         if(numSamples == 0) {
             return 0;
         }
@@ -480,9 +382,6 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
         numOutputSamples = remainingSamples;
         return numSamples;
     }
-
-    // Read unsigned byte data out of the stream.  Sometimes no data will be available, and zero
-    // is returned, which is not an error condition.
     public int readBytesFromStream(
         byte outBuffer[],
         int maxBytes)
@@ -490,7 +389,6 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
             int maxSamples = maxBytes/(2*numChannels);
         int numSamples = numOutputSamples;
         int remainingSamples = 0;
-
         if(numSamples == 0 || maxSamples == 0) {
             return 0;
         }
@@ -507,44 +405,29 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
         numOutputSamples = remainingSamples;
         return 2*numSamples*numChannels;
     }
-
-    // Force the sonic stream to generate output using whatever data it currently
-    // has.  No extra delay will be added to the output, but flushing in the middle of
-
-// words could introduce distortion.
     public void flushStream()
     {
         int remainingSamples = numInputSamples;
         float s = speed/pitch;
         float r = rate*pitch;
         int expectedOutputSamples = numOutputSamples + (int)((remainingSamples/s + numPitchSamples)/r + 0.5f);
-
-        // Add enough silence to flush both input and pitch buffers.
         enlargeInputBufferIfNeeded(remainingSamples + 2*maxRequired);
         for(int xSample = 0; xSample < 2*maxRequired*numChannels; xSample++) {
             inputBuffer[remainingSamples*numChannels + xSample] = 0;
         }
         numInputSamples += 2*maxRequired;
         writeShortToStream(null, 0);
-        // Throw away any extra samples we generated due to the silence we added.
         if(numOutputSamples > expectedOutputSamples) {
             numOutputSamples = expectedOutputSamples;
         }
-        // Empty input and pitch buffers.
         numInputSamples = 0;
         remainingInputToCopy = 0;
         numPitchSamples = 0;
     }
-
-    // Return the number of samples in the output buffer
     public int samplesAvailable()
     {
         return numOutputSamples;
     }
-
-    // If skip is greater than one, average skip samples together and write them to
-    // the down-sample buffer.  If numChannels is greater than one, mix the channels
-    // together as we down sample.
     private void downSampleInput(
         short samples[],
         int position,
@@ -553,7 +436,6 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
         int numSamples = maxRequired/skip;
         int samplesPerValue = numChannels*skip;
         int value;
-
         position *= numChannels;
         for(int i = 0; i < numSamples; i++) {
             value = 0;
@@ -564,9 +446,6 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
             downSampleBuffer[i] = (short)value;
         }
     }
-
-    // Find the best frequency match in the range, and given a sample skip multiple.
-    // For now, just find the pitch of the first channel.
     private int findPitchPeriodInRange(
         short samples[],
         int position,
@@ -575,7 +454,6 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
     {
         int bestPeriod = 0, worstPeriod = 255;
         int minDiff = 1, maxDiff = 0;
-
         position *= numChannels;
         for(int period = minPeriod; period <= maxPeriod; period++) {
             int diff = 0;
@@ -584,9 +462,6 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
                 short pVal = samples[position + period + i];
                 diff += sVal >= pVal? sVal - pVal : pVal - sVal;
             }
-            /* Note that the highest number of samples we add into diff will be less
-               than 256, since we skip samples.  Thus, diff is a 24 bit number, and
-               we can safely multiply by numSamples without overflow */
             if(diff*bestPeriod < minDiff*period) {
                 minDiff = diff;
                 bestPeriod = period;
@@ -598,12 +473,8 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
         }
         this.minDiff = minDiff/bestPeriod;
         this.maxDiff = maxDiff/worstPeriod;
-
         return bestPeriod;
     }
-
-    // At abrupt ends of voiced words, we can have pitch periods that are better
-    // approximated by the previous pitch period estimate.  Try to detect this case.
     private boolean prevPeriodBetter(
         int minDiff,
         int maxDiff,
@@ -614,11 +485,9 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
         }
         if(preferNewPeriod) {
             if(maxDiff > minDiff*3) {
-                // Got a reasonable match this period
                 return false;
             }
             if(minDiff*2 <= prevMinDiff*3) {
-                // Mismatch is not that much greater this period
                 return false;
             }
         } else {
@@ -628,20 +497,13 @@ move(inputBuffer, 0, inputBuffer, position, remainingSamples);
         }
         return true;
     }
-
-    // Find the pitch period.  This is a critical step, and we may have to try
-    // multiple ways to get a good answer.  This version uses AMDF.  To improve
-    // speed, we down sample by an integer factor get in the 11KHz range, and then
-    // do it again with a narrower frequency range without down sampling
     private int findPitchPeriod(
         short samples[],
-
 int position,
         boolean preferNewPeriod)
     {
         int period, retPeriod;
         int skip = 1;
-
         if(sampleRate > SONIC_AMDF_FREQ && quality == 0) {
             skip = sampleRate/SONIC_AMDF_FREQ;
         }
@@ -678,9 +540,6 @@ int position,
         prevPeriod = period;
         return retPeriod;
     }
-
-    // Overlap two sound segments, ramp the volume of one down, while ramping the
-    // other one from zero up, and add them, storing the result at the output.
     private void overlapAdd(
         int numSamples,
         int numChannels,
@@ -703,9 +562,6 @@ int position,
             }
         }
     }
-
-    // Overlap two sound segments, ramp the volume of one down, while ramping the
-    // other one from zero up, and add them, storing the result at the output.
     private void overlapAddWithSeparation(
         int numSamples,
         int numChannels,
@@ -737,13 +593,10 @@ int position,
             }
         }
     }
-
-    // Just move the new samples in the output buffer to the pitch buffer
     private void moveNewSamplesToPitchBuffer(
         int originalNumOutputSamples)
     {
         int numSamples = numOutputSamples - originalNumOutputSamples;
-
         if(numPitchSamples + numSamples > pitchBufferSize) {
             pitchBufferSize += (pitchBufferSize >> 1) + numSamples;
             pitchBuffer = resize(pitchBuffer, pitchBufferSize);
@@ -752,27 +605,20 @@ int position,
         numOutputSamples = originalNumOutputSamples;
         numPitchSamples += numSamples;
     }
-
-    // Remove processed samples from the pitch buffer.
     private void removePitchSamples(
         int numSamples)
     {
         if(numSamples == 0) {
             return;
         }
-
 move(pitchBuffer, 0, pitchBuffer, numSamples, numPitchSamples - numSamples);
         numPitchSamples -= numSamples;
     }
-
-    // Change the pitch.  The latency this introduces could be reduced by looking at
-    // past samples to determine pitch, rather than future.
     private void adjustPitch(
         int originalNumOutputSamples)
     {
         int period, newPeriod, separation;
         int position = 0;
-
         if(numOutputSamples == originalNumOutputSamples) {
             return;
         }
@@ -794,8 +640,6 @@ move(pitchBuffer, 0, pitchBuffer, numSamples, numPitchSamples - numSamples);
         }
         removePitchSamples(position);
     }
-
-    // Approximate the sinc function times a Hann window from the sinc table.
     private int findSincCoefficient(int i, int ratio, int width) {
         int lobePoints = (SINC_TABLE_SIZE-1)/SINC_FILTER_POINTS;
         int left = i*lobePoints + (ratio*lobePoints)/width;
@@ -803,23 +647,17 @@ move(pitchBuffer, 0, pitchBuffer, numSamples, numPitchSamples - numSamples);
         int position = i*lobePoints*width + ratio*lobePoints - left*width;
         int leftVal = sincTable[left];
         int rightVal = sincTable[right];
-
         return ((leftVal*(width - position) + rightVal*position) << 1)/width;
     }
-
-    // Return 1 if value >= 0, else -1.  This represents the sign of value.
     private int getSign(int value) {
         return value >= 0? 1 : -1;
     }
-
-    // Interpolate the new output sample.
     private short interpolate(
         short in[],
-        int inPos,  // Index to first sample which already includes channel offset.
+        int inPos,
         int oldSampleRate,
         int newSampleRate)
     {
-        // Compute N-point sinc FIR-filter here.  Clip rather than overflow.
         int i;
         int total = 0;
         int position = newRatePosition*oldSampleRate;
@@ -830,19 +668,15 @@ move(pitchBuffer, 0, pitchBuffer, numSamples, numPitchSamples - numSamples);
         int weight, value;
         int oldSign;
         int overflowCount = 0;
-
         for (i = 0; i < SINC_FILTER_POINTS; i++) {
             weight = findSincCoefficient(i, ratio, width);
-            /* printf("%u %f\n", i, weight); */
             value = in[inPos + i*numChannels]*weight;
             oldSign = getSign(total);
             total += value;
             if (oldSign != getSign(total) && getSign(value) == oldSign) {
-                /* We must have overflowed.  This can happen with a sinc filter. */
                 overflowCount += oldSign;
             }
         }
-        /* It is better to clip than to wrap if there was a overflow. */
         if (overflowCount > 0) {
             return Short.MAX_VALUE;
         } else if (overflowCount < 0) {
@@ -850,8 +684,6 @@ move(pitchBuffer, 0, pitchBuffer, numSamples, numPitchSamples - numSamples);
         }
         return (short)(total >> 16);
     }
-
-    // Change the rate.
     private void adjustRate(
         float rate,
         int originalNumOutputSamples)
@@ -860,8 +692,6 @@ move(pitchBuffer, 0, pitchBuffer, numSamples, numPitchSamples - numSamples);
         int oldSampleRate = sampleRate;
         int position;
         int N = SINC_FILTER_POINTS;
-
-        // Set these values to help with the integer math
         while(newSampleRate > (1 << 14) || oldSampleRate > (1 << 14)) {
             newSampleRate >>= 1;
             oldSampleRate >>= 1;
@@ -870,11 +700,9 @@ move(pitchBuffer, 0, pitchBuffer, numSamples, numPitchSamples - numSamples);
             return;
         }
         moveNewSamplesToPitchBuffer(originalNumOutputSamples);
-        // Leave at least N pitch samples in the buffer
         for(position = 0; position < numPitchSamples - N; position++) {
             while((oldRatePosition + 1)*newSampleRate > newRatePosition*oldSampleRate) {
                 enlargeOutputBufferIfNeeded(1);
-
 for(int i = 0; i < numChannels; i++) {
                     outputBuffer[numOutputSamples*numChannels + i] = interpolate(pitchBuffer,
                             position*numChannels + i, oldSampleRate, newSampleRate);
@@ -894,9 +722,6 @@ for(int i = 0; i < numChannels; i++) {
         }
         removePitchSamples(position);
     }
-
-
-    // Skip over a pitch period, and copy period/speed samples to the output
     private int skipPitchPeriod(
         short samples[],
         int position,
@@ -904,7 +729,6 @@ for(int i = 0; i < numChannels; i++) {
         int period)
     {
         int newSamples;
-
         if(speed >= 2.0f) {
             newSamples = (int)(period/(speed - 1.0f));
         } else {
@@ -917,8 +741,6 @@ for(int i = 0; i < numChannels; i++) {
         numOutputSamples += newSamples;
         return newSamples;
     }
-
-    // Insert a pitch period, and determine how much input to copy directly.
     private int insertPitchPeriod(
         short samples[],
         int position,
@@ -926,7 +748,6 @@ for(int i = 0; i < numChannels; i++) {
         int period)
     {
         int newSamples;
-
         if(speed < 0.5f) {
             newSamples = (int)(period*speed/(1.0f - speed));
         } else {
@@ -940,15 +761,11 @@ for(int i = 0; i < numChannels; i++) {
         numOutputSamples += period + newSamples;
         return newSamples;
     }
-
-    // Resample as many pitch periods as we have buffered on the input.  Return 0 if
-    // we fail to resize an input or output buffer.  Also scale the output by the volume.
     private void changeSpeed(
         float speed)
     {
         int numSamples = numInputSamples;
         int position = 0, period, newSamples;
-
         if(numInputSamples < maxRequired) {
             return;
         }
@@ -969,14 +786,11 @@ for(int i = 0; i < numChannels; i++) {
         } while(position + maxRequired <= numSamples);
         removeInputSamples(position);
     }
-
-    // Resample as many pitch periods as we have buffered on the input.  Scale the output by the volume.
     private void processStreamInput()
     {
         int originalNumOutputSamples = numOutputSamples;
         float s = speed/pitch;
         float r = rate;
-
         if(!useChordPitch) {
             r *= pitch;
         }
@@ -994,23 +808,17 @@ for(int i = 0; i < numChannels; i++) {
             adjustRate(r, originalNumOutputSamples);
         }
         if(volume != 1.0f) {
-            // Adjust output volume.
             scaleSamples(outputBuffer, originalNumOutputSamples, numOutputSamples - originalNumOutputSamples,
                 volume);
         }
     }
-
-    // Write floating point data to the input buffer and process it.
     public void writeFloatToStream(
         float samples[],
-
 int numSamples)
     {
         addFloatSamplesToInputBuffer(samples, numSamples);
         processStreamInput();
     }
-
-    // Write the data to the input stream, and process it.
     public void writeShortToStream(
         short samples[],
         int numSamples)
@@ -1018,9 +826,6 @@ int numSamples)
         addShortSamplesToInputBuffer(samples, numSamples);
         processStreamInput();
     }
-
-    // Simple wrapper around sonicWriteFloatToStream that does the unsigned byte to short
-    // conversion for you.
     public void writeUnsignedByteToStream(
         byte samples[],
         int numSamples)
@@ -1028,8 +833,6 @@ int numSamples)
         addUnsignedByteSamplesToInputBuffer(samples, numSamples);
         processStreamInput();
     }
-
-    // Simple wrapper around sonicWriteBytesToStream that does the byte to 16-bit LE conversion.
     public void writeBytesToStream(
         byte inBuffer[],
         int numBytes)
@@ -1037,8 +840,6 @@ int numSamples)
         addBytesToInputBuffer(inBuffer, numBytes);
         processStreamInput();
     }
-
-    // This is a non-stream oriented interface to just change the speed of a sound sample
     public static int changeFloatSpeed(
         float samples[],
         int numSamples,
@@ -1051,7 +852,6 @@ int numSamples)
         int numChannels)
     {
         Sonic stream = new Sonic(sampleRate, numChannels);
-
         stream.setSpeed(speed);
         stream.setPitch(pitch);
         stream.setRate(rate);
@@ -1063,8 +863,6 @@ int numSamples)
         stream.readFloatFromStream(samples, numSamples);
         return numSamples;
     }
-
-    /* This is a non-stream oriented interface to just change the speed of a sound sample */
     public int sonicChangeShortSpeed(
         short samples[],
         int numSamples,
@@ -1077,7 +875,6 @@ int numSamples)
         int numChannels)
     {
         Sonic stream = new Sonic(sampleRate, numChannels);
-
         stream.setSpeed(speed);
         stream.setPitch(pitch);
         stream.setRate(rate);
@@ -1090,4 +887,3 @@ int numSamples)
         return numSamples;
     }
 }
-

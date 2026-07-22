@@ -1,10 +1,8 @@
 package org.simconsole.simconsole.controllers;
-
 import org.simconsole.simconsole.models.TrackList;
 import org.simconsole.simconsole.models.MusicApiService;
 import org.simconsole.simconsole.models.Deck;
 import org.simconsole.simconsole.models.Tracks;
-
 import javafx.fxml.FXML;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,9 +15,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
 public class PlaylistController {
-
 	@FXML private TextField searchField;
 	@FXML private Button searchButton;
 	@FXML private Button clearSearchButton;
@@ -34,20 +30,15 @@ public class PlaylistController {
 	@FXML private TableColumn<Tracks, String> colState;
 	@FXML private TableColumn<Tracks, Tracks> colLeft;
 	@FXML private TableColumn<Tracks, Tracks> colRight;
-
 	private TrackList trackList = new TrackList("Main Playlist");
 	private java.util.Set<String> addedTrackUrls = new java.util.HashSet<>();
-	
 	private Deck leftDeck;
 	private Deck rightDeck;
-
 	@FXML
 	public void initialize(){
 		initPlaylistUI();
 	}
-
 	private void initPlaylistUI() {
-		// Bind placeholder visibility and size
 		if (placeholderBox != null && searchList != null) {
 			placeholderBox.visibleProperty().bind(javafx.beans.binding.Bindings.isEmpty(searchList.getItems()));
 			placeholderBox.managedProperty().bind(placeholderBox.visibleProperty());
@@ -56,8 +47,6 @@ public class PlaylistController {
 			placeholderImage.fitWidthProperty().bind(searchList.widthProperty().multiply(0.4));
 			placeholderImage.fitHeightProperty().bind(searchList.heightProperty().multiply(0.4));
 		}
-
-		// Search UI enhancements
 		searchField.focusedProperty().addListener((obs, oldVal, newVal) -> {
 			if (newVal) {
 				searchField.setStyle("-fx-background-color: #2a2a2a; -fx-text-fill: white; -fx-border-color: #007aff; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 4 25 4 8; -fx-effect: dropshadow(three-pass-box, rgba(0,122,255,0.6), 8, 0, 0, 0);");
@@ -65,17 +54,14 @@ public class PlaylistController {
 				searchField.setStyle("-fx-background-color: #2a2a2a; -fx-text-fill: white; -fx-border-color: #555555; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 4 25 4 8; -fx-effect: none;");
 			}
 		});
-
 		searchField.textProperty().addListener((obs, oldVal, newVal) -> {
 			clearSearchButton.setVisible(newVal != null && !newVal.isEmpty());
 		});
-
 		clearSearchButton.setOnAction(e -> {
 			searchField.clear();
 			searchField.requestFocus();
 			searchList.getItems().clear();
 		});
-
 		localButton.hoverProperty().addListener((obs, oldVal, newVal) -> {
 			if (newVal) {
 				localButton.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-family: 'Segoe UI', 'Inter', sans-serif; -fx-font-weight: bold; -fx-border-color: #007aff; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 8 15; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,122,255,0.6), 8, 0, 0, 0);");
@@ -83,8 +69,6 @@ public class PlaylistController {
 				localButton.setStyle("-fx-background-color: #222222; -fx-text-fill: white; -fx-font-family: 'Segoe UI', 'Inter', sans-serif; -fx-font-weight: bold; -fx-border-color: #555555; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 8 15; -fx-cursor: hand; -fx-effect: none;");
 			}
 		});
-
-		// Table Columns setup
 		colTitle.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTitle()));
 		colDuration.setCellValueFactory(data -> {
 			long ms = data.getValue().getDurationMs();
@@ -121,7 +105,6 @@ public class PlaylistController {
 				}
 			}
 		});
-
 		colLeft.setCellValueFactory(data -> new javafx.beans.property.SimpleObjectProperty<>(data.getValue()));
 		colLeft.setCellFactory(col -> new javafx.scene.control.TableCell<>() {
 			private final Button btn = new Button("L");
@@ -145,7 +128,6 @@ public class PlaylistController {
 							pulse.setCycleCount(javafx.animation.Animation.INDEFINITE);
 							pulse.play();
 							btn.setDisable(true);
-
 							CompletableFuture.runAsync(() -> {
 								leftDeck.loadTrack(t);
 								Platform.runLater(() -> {
@@ -181,7 +163,6 @@ public class PlaylistController {
 				}
 			}
 		});
-
 		colRight.setCellValueFactory(data -> new javafx.beans.property.SimpleObjectProperty<>(data.getValue()));
 		colRight.setCellFactory(col -> new javafx.scene.control.TableCell<>() {
 			private final Button btn = new Button("R");
@@ -205,7 +186,6 @@ public class PlaylistController {
 							pulse.setCycleCount(javafx.animation.Animation.INDEFINITE);
 							pulse.play();
 							btn.setDisable(true);
-
 							CompletableFuture.runAsync(() -> {
 								rightDeck.loadTrack(t);
 								Platform.runLater(() -> {
@@ -241,28 +221,21 @@ public class PlaylistController {
 				}
 			}
 		});
-
-		// Bind columns perfectly to table width to act like a photo
 		colTitle.prefWidthProperty().bind(playlistTable.widthProperty().multiply(0.42));
 		colDuration.prefWidthProperty().bind(playlistTable.widthProperty().multiply(0.15));
 		colState.prefWidthProperty().bind(playlistTable.widthProperty().multiply(0.17));
 		colLeft.prefWidthProperty().bind(playlistTable.widthProperty().multiply(0.12));
 		colRight.prefWidthProperty().bind(playlistTable.widthProperty().multiply(0.12));
-
-		// Font size exactly proportional to table width
 		playlistTable.styleProperty().bind(
 				javafx.beans.binding.Bindings.createStringBinding(() ->
 								String.format(java.util.Locale.US, "-fx-font-size: %.2fpx;", playlistTable.getWidth() / 32.0),
 						playlistTable.widthProperty()
 				)
 		);
-
 		playlistTable.setItems(trackList.getObservableTracks());
 		javafx.scene.control.Label placeholder = new javafx.scene.control.Label("add a song");
 		placeholder.setStyle("-fx-text-fill: #a0a0a0; -fx-font-size: 1em;");
 		playlistTable.setPlaceholder(placeholder);
-
-		// Search functionality
 		Runnable performSearch = () -> {
 			String query = searchField.getText();
 			if (query != null && !query.isBlank()) {
@@ -282,10 +255,8 @@ public class PlaylistController {
 				});
 			}
 		};
-
 		searchField.setOnAction(e -> performSearch.run());
 		searchButton.setOnAction(e -> performSearch.run());
-
 		searchList.setCellFactory(lv -> new javafx.scene.control.ListCell<Tracks>() {
 			{
 				prefWidthProperty().bind(lv.widthProperty().subtract(20));
@@ -324,7 +295,6 @@ public class PlaylistController {
 				}
 			}
 		});
-
 		searchList.setOnMouseClicked(e -> {
 			if (e.getClickCount() == 1) {
 				Tracks selected = searchList.getSelectionModel().getSelectedItem();
@@ -337,13 +307,9 @@ public class PlaylistController {
 				}
 			}
 		});
-
-		// Load tracks to decks on click
 		playlistTable.setOnMouseClicked(e -> {
 			Tracks selected = playlistTable.getSelectionModel().getSelectedItem();
 			if (selected != null && (selected.getState() == Tracks.TrackState.READY || selected.getState() == Tracks.TrackState.LOCAL)) {
-				// We use double click for the left deck to allow normal single-click row selection, 
-				// and single right-click for the right deck.
 				if (e.getButton() == javafx.scene.input.MouseButton.PRIMARY && e.getClickCount() == 2) {
 					if (leftDeck != null) leftDeck.loadTrack(selected);
 				} else if (e.getButton() == javafx.scene.input.MouseButton.SECONDARY) {
@@ -351,8 +317,6 @@ public class PlaylistController {
 				}
 			}
 		});
-
-		// Add local track button
 		localButton.setOnAction(e -> {
 			FileChooser fc = new FileChooser();
 			fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Audio Files", "*.wav", "*.mp3"));
@@ -363,19 +327,15 @@ public class PlaylistController {
 			}
 		});
 	}
-
 	private void addTrackFromApi(Tracks track) {
 		trackList.addTrack(track);
-		
 		CompletableFuture.runAsync(() -> {
 			try {
 				track.setState(Tracks.TrackState.DOWNLOADING);
 				Platform.runLater(playlistTable::refresh);
-				
 				String localPath = MusicApiService.downloadTrack(track);
 				track.setFilePath(localPath);
 				track.setState(Tracks.TrackState.READY);
-				
 				Platform.runLater(playlistTable::refresh);
 			} catch (Exception ex) {
 				track.setState(Tracks.TrackState.FAILED);
@@ -384,7 +344,6 @@ public class PlaylistController {
 			}
 		});
 	}
-
 	public void setDecks(Deck d1, Deck d2) {
 		this.leftDeck = d1;
 		this.rightDeck = d2;

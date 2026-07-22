@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableView?>
@@ -15,7 +14,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import java.lang.String?>
 <?import javafx.scene.layout.Region?>
-
 <GridPane styleClass="card" minWidth="0.0" minHeight="0.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.controllers.PlaylistController">
     <columnConstraints>
         <ColumnConstraints percentWidth="42.0" />
@@ -25,7 +23,6 @@
         <RowConstraints vgrow="ALWAYS" />
     </rowConstraints>
     <children>
-        <!-- Left Side: Search -->
         <VBox alignment="TOP_CENTER" spacing="5" style="-fx-padding: 0 5 0 0;" GridPane.columnIndex="0" minWidth="0.0">
             <children>
                 <HBox alignment="CENTER" spacing="5" minWidth="0.0">
@@ -70,8 +67,6 @@
                 </Button>
             </children>
         </VBox>
-        
-        <!-- Right Side: Playlist -->
         <VBox alignment="TOP_CENTER" style="-fx-padding: 0 0 0 5; -fx-border-color: #333333; -fx-border-width: 0 0 0 1px;" GridPane.columnIndex="1" minWidth="0.0" minHeight="0.0">
             <children>
                 <TableView fx:id="playlistTable" VBox.vgrow="ALWAYS" minWidth="0.0" minHeight="0.0" maxWidth="Infinity">
