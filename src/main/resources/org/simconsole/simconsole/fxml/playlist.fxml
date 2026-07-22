@@ -16,7 +16,7 @@
 <?import java.lang.String?>
 <?import javafx.scene.layout.Region?>
 
-<GridPane styleClass="card" minWidth="0.0" minHeight="0.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.PlaylistController">
+<GridPane styleClass="card" minWidth="0.0" minHeight="0.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.controllers.PlaylistController">
     <columnConstraints>
         <ColumnConstraints percentWidth="42.0" />
         <ColumnConstraints percentWidth="58.0" />

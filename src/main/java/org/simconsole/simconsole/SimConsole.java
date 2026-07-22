@@ -1,5 +1,10 @@
 package org.simconsole.simconsole;
 
+import org.simconsole.simconsole.models.AudioProcessor;
+import org.simconsole.simconsole.controllers.ConsoleController;
+import org.simconsole.simconsole.models.DeckControls;
+import org.simconsole.simconsole.models.Deck;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

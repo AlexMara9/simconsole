@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import org.simconsole.simconsole.DynamicSlider?>
-<?import org.simconsole.simconsole.LineKnob?>
-<?import org.simconsole.simconsole.MasterSlider?>
+<?import org.simconsole.simconsole.components.DynamicSlider?>
+<?import org.simconsole.simconsole.components.LineKnob?>
+<?import org.simconsole.simconsole.components.MasterSlider?>
 
-<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.MixerController">
+<StackPane minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.controllers.MixerController">
    <children>
       <GridPane minHeight="0.0" minWidth="0.0">
          <columnConstraints>

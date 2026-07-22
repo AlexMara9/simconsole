@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
-<?import org.simconsole.simconsole.DynamicDeck?>
+<?import org.simconsole.simconsole.components.DynamicDeck?>
 
 <!-- Import Custom Components -->
 
-<GridPane fx:id="grid" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="496.0" styleClass="main-container" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.ConsoleController">
+<GridPane fx:id="grid" minHeight="0.0" minWidth="0.0" prefHeight="450.0" prefWidth="496.0" styleClass="main-container" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.controllers.ConsoleController">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="8.0" />
         <ColumnConstraints hgrow="ALWAYS" minWidth="0.0" percentWidth="17.0" />
