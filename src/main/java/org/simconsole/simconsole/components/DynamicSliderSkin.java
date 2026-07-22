@@ -8,6 +8,10 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Custom JavaFX skin for {@link DynamicSlider} providing dynamic track gradients and custom tick mark rendering.
+ */
 public class DynamicSliderSkin extends SliderSkin {
     private Node track;
     private Node thumb;

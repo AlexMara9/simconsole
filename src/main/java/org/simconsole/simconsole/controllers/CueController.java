@@ -4,6 +4,10 @@ import org.simconsole.simconsole.components.CueButton;
 import org.simconsole.simconsole.models.Deck;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
+
+/**
+ * Controller for managing hot cue points and bookmarks associated with an audio deck and graphic slider.
+ */
 public class CueController {
     @FXML private HBox buttonsContainer;
     @FXML private CueButton cue1;

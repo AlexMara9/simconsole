@@ -9,6 +9,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+
+/**
+ * Custom JavaFX skin for {@link LineKnob} rendering a rotary knob with a line pointer and radial tick marks.
+ */
 public class LineKnobSkin extends SkinBase<LineKnob> {
     private final Circle outerRing = new Circle();
     private final Circle middleRing = new Circle();

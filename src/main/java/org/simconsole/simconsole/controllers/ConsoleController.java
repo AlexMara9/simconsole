@@ -5,7 +5,8 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 /**
- * Controller that connects the UI to the app logic
+ * Main controller for the DJ console application, managing deck instances and delegating
+ * UI events and state synchronizations to specialized child controllers.
  */
 public class ConsoleController {
 	private static final int MIN_FONT_SIZE = 0;

@@ -8,6 +8,10 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Custom JavaFX skin for {@link MasterSlider} rendering a studio mixing console fader.
+ */
 public class MasterSliderSkin extends SliderSkin {
     private Node track;
     private Node thumb;

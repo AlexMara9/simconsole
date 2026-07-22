@@ -1,4 +1,7 @@
 package org.simconsole.simconsole.models.audio.external;
+/**
+ * External audio processing engine supporting pitch scaling, time stretching, rate adjustment, and speed modifications using SOLA/AMDF algorithms.
+ */
 public class Sonic {
     private static final int SONIC_MIN_PITCH = 65;
     private static final int SONIC_MAX_PITCH = 400;

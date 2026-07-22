@@ -8,6 +8,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+
+/**
+ * Custom JavaFX skin for {@link LedKnob} that renders a rotary knob with surrounding LED dot indicators.
+ */
 public class LedKnobSkin extends SkinBase<LedKnob> {
     private final Circle outerRing = new Circle();
     private final Circle middleRing = new Circle();

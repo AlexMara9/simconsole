@@ -1,4 +1,7 @@
 package org.simconsole.simconsole.models;
+/**
+ * Stereo algorithmic reverberation audio effect simulating room acoustics using multiple parallel comb delay lines with damping.
+ */
 public class Reverb {
     private final double[] delayL1, delayL2, delayL3, delayL4;
     private final double[] delayR1, delayR2, delayR3, delayR4;

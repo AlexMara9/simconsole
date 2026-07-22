@@ -1,4 +1,7 @@
 package org.simconsole.simconsole.models;
+/**
+ * Represents a virtual DJ turntable/deck managing track state, playback status, playhead position, and audio sample buffer.
+ */
 public class Deck {
     private DeckControls controls;
     private double[] audioData;

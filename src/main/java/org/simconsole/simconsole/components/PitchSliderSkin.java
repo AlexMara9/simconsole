@@ -8,6 +8,10 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Custom JavaFX skin for {@link PitchSlider} rendering a DJ pitch fader control.
+ */
 public class PitchSliderSkin extends SliderSkin {
     private Node track;
     private Node thumb;

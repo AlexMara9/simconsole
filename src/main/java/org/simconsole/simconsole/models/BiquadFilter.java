@@ -1,4 +1,7 @@
 package org.simconsole.simconsole.models;
+/**
+ * Digital biquad filter implementation supporting low-shelf, peaking, and high-shelf equalization filters.
+ */
 public class BiquadFilter {
     public enum FilterType {
         LOW_SHELF,

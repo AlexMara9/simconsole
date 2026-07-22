@@ -3,6 +3,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.io.File;
 import java.util.Comparator;
+/**
+ * Manages a named collection of music tracks backed by an observable list for UI binding, sorting, and shuffling.
+ */
 public class TrackList {
     private String name;
     private ObservableList<Tracks> tracks;

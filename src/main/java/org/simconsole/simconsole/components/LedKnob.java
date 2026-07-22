@@ -2,6 +2,10 @@ package org.simconsole.simconsole.components;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.Skin;
+
+/**
+ * Rotary knob control featuring LED dot indicators around its perimeter.
+ */
 public class LedKnob extends KnobBase {
     private final BooleanProperty ledsEnabled = new SimpleBooleanProperty(true);
     public BooleanProperty ledsEnabledProperty() { return ledsEnabled; }

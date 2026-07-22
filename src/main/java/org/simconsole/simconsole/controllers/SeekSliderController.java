@@ -4,6 +4,10 @@ import org.simconsole.simconsole.models.Deck;
 import org.simconsole.simconsole.models.Tracks;
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+
+/**
+ * Controller for the graphic seek slider displaying track waveform, current playback time, and overall progress.
+ */
 public class SeekSliderController {
 	@FXML private GraphicSlider seekSlider;
 	private boolean isUpdatingFromBackend = false;

@@ -7,6 +7,10 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.transform.Rotate;
 import java.util.Objects;
+
+/**
+ * Custom JavaFX skin for {@link DynamicDeck} that renders an interactive CDJ-style vinyl platter.
+ */
 public class CDJDeckSkin extends SkinBase<DynamicDeck> {
     private final ImageView vinylView;
     private final Rotate rotateTransform;

@@ -1,4 +1,7 @@
 package org.simconsole.simconsole.models;
+/**
+ * Audio effect processor providing delay and feedback-based echo calculations for stereo audio channels.
+ */
 public class Echo {
     private final double[] delayBufferL;
     private final double[] delayBufferR;

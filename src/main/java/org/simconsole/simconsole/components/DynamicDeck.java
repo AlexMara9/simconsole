@@ -5,6 +5,10 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.control.Control;
 import javafx.scene.control.Skin;
+
+/**
+ * Custom JavaFX control representing an interactive CDJ-style turntable deck.
+ */
 public class DynamicDeck extends Control {
     private final BooleanProperty scrubbing = new SimpleBooleanProperty(this, "scrubbing", false);
     private final DoubleProperty rotationAngle = new SimpleDoubleProperty(this, "rotationAngle", 0.0);

@@ -5,9 +5,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.Control;
 /**
- * Classe base astratta per tutte le manopole (Knobs).
- * Contiene la logica di stato (valore, min, max, label) e i vincoli di resize,
- * separandoli completamente dalla rappresentazione grafica (Skin).
+ * Abstract base control for rotary knob components.
+ * Manages value state, range constraints, and label properties independent of visual rendering.
  */
 public abstract class KnobBase extends Control {
     private final DoubleProperty value = new SimpleDoubleProperty(0.0);

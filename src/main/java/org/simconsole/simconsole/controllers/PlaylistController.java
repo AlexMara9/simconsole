@@ -15,6 +15,10 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+
+/**
+ * Controller for managing track search, playlist display, local file imports, and loading tracks to decks.
+ */
 public class PlaylistController {
 	@FXML private TextField searchField;
 	@FXML private Button searchButton;

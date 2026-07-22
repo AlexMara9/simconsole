@@ -1,4 +1,7 @@
 package org.simconsole.simconsole.models;
+/**
+ * Data model representing a music track, supporting local files and API tracks, metadata parsing, status tracking, and waveform preview generation.
+ */
 public class Tracks {
     public enum TrackState {
         LOCAL,

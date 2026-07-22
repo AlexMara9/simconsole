@@ -1,4 +1,7 @@
 package org.simconsole.simconsole.models;
+/**
+ * Handles crossfading operations between two DJ deck controls using constant power curve calculations.
+ */
 public class Crossfader {
     private DeckControls deckAControls;
     private DeckControls deckBControls;

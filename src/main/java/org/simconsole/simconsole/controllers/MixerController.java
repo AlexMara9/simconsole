@@ -6,6 +6,10 @@ import org.simconsole.simconsole.models.AudioProcessor;
 import org.simconsole.simconsole.models.Crossfader;
 import org.simconsole.simconsole.components.DynamicSlider;
 import javafx.fxml.FXML;
+
+/**
+ * Controller for managing deck volume levels, channel panning, master output volume, and crossfader dynamics.
+ */
 public class MixerController {
     @FXML private DynamicSlider leftVolumeSlider;
     @FXML private DynamicSlider rightVolumeSlider;

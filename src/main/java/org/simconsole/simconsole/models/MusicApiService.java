@@ -8,9 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * Client for the Audius Search API.
- * Free, no API key required, provides FULL tracks.
- * */
+ * Client service for searching and downloading tracks via the Audius Search API.
+ */
 public class MusicApiService {
     private static final String HOST = "https://discoveryprovider.audius.co";
     private static final String APP_NAME = "simconsole";

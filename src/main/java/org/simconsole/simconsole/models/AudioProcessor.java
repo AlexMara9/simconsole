@@ -5,6 +5,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 import org.simconsole.simconsole.models.audio.external.Sonic;
+/**
+ * Real-time audio engine responsible for deck playback, audio processing pipeline, track scratching/scrubbing, equalizer, and dynamic sound effects.
+ */
 public class AudioProcessor {
     private Deck deck;
     private SourceDataLine speakerLine;

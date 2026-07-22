@@ -7,6 +7,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+
+/**
+ * Controller for rendering the signal graph visualization canvas responsive to window resizing.
+ */
 public class SignalGraphController {
     @FXML private StackPane signalGraphContainer;
     @FXML private Canvas signalGraph;

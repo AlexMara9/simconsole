@@ -3,6 +3,10 @@ import org.simconsole.simconsole.components.PitchSlider;
 import org.simconsole.simconsole.components.LedButton;
 import org.simconsole.simconsole.models.Deck;
 import javafx.fxml.FXML;
+
+/**
+ * Controller for adjusting audio pitch, playback speed, and key lock settings for a deck.
+ */
 public class PitchController {
     @FXML private PitchSlider pitchSlider;
     @FXML private LedButton keyLockButton;

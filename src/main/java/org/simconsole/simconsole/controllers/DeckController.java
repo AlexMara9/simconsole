@@ -9,7 +9,7 @@ import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 /**
- * Deck UI controller
+ * Controller for managing interactive DJ deck turntable graphics and user rotation inputs.
  */
 public class DeckController {
 	private static final double VINYL_SIZE_FACTOR = 0.45;

@@ -2,6 +2,9 @@ package org.simconsole.simconsole.models;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import java.io.File;
+/**
+ * Utility class for reading and decoding WAV audio files into normalized floating-point audio sample arrays.
+ */
 public class AudioDecoder {
     public static double[] readWavFileAsDoubles(String filePath) {
         try {

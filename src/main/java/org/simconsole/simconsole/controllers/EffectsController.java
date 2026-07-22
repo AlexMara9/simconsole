@@ -6,6 +6,10 @@ import org.simconsole.simconsole.components.LedButton;
 import org.simconsole.simconsole.components.DynamicSlider;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+
+/**
+ * Controller for managing audio equalizer settings and sound effects controls for a DJ deck.
+ */
 public class EffectsController {
     private Deck deck;
     private DeckControls deckControls;

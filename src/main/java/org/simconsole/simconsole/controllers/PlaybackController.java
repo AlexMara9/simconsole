@@ -3,6 +3,10 @@ import org.simconsole.simconsole.components.LedButton;
 import org.simconsole.simconsole.components.PlayButton;
 import org.simconsole.simconsole.models.Deck;
 import javafx.fxml.FXML;
+
+/**
+ * Controller for controlling audio playback state such as play, pause, and track rewinding.
+ */
 public class PlaybackController {
     @FXML private PlayButton playButton;
     @FXML private LedButton rewindButton;

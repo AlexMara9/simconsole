@@ -1,4 +1,7 @@
 package org.simconsole.simconsole.models;
+/**
+ * Holds control state parameters for a DJ deck including volume, pan, pitch/tempo, key lock, equalizer gains, and audio effect toggles.
+ */
 public class DeckControls {
     private volatile double volume = 0.2;
     private volatile double crossfaderGain = 1.0;

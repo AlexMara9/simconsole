@@ -1,4 +1,7 @@
 package org.simconsole.simconsole.models;
+/**
+ * Audio effect processor implementing a flanger effect with low-frequency oscillation (LFO), delay buffer, and optional peaking bell filter.
+ */
 public class Flanger {
     private final double[] delayBuffer;
     private int writeIndex;
