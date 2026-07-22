@@ -22,12 +22,14 @@
 .list-view {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
+    -fx-font-size: 1em;
 }
 
 .list-view .list-cell {
     -fx-background-color: transparent;
     -fx-text-fill: #cccccc;
-    -fx-padding: 8;
+    -fx-padding: 0.5em;
+    -fx-font-size: 1em;
 }
 
 .list-view .list-cell:empty {
@@ -98,6 +100,7 @@
 .table-view {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
+    -fx-font-size: 1em;
 }
 
 .table-view .column-header-background {
@@ -113,7 +116,8 @@
 .table-view .column-header .label {
     -fx-text-fill: #ffffff;
     -fx-font-weight: bold;
-    -fx-padding: 5;
+    -fx-padding: 0.4em;
+    -fx-font-size: 1em;
 }
 
 .table-row-cell {
@@ -136,6 +140,8 @@
 .table-row-cell .table-cell {
     -fx-text-fill: #cccccc;
     -fx-border-color: transparent;
+    -fx-font-size: 1em;
+    -fx-padding: 0.2em 0.5em;
 }
 
 .table-row-cell:selected .table-cell {

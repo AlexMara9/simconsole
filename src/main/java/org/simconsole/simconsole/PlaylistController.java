@@ -122,7 +122,8 @@ public class PlaylistController {
 			private final Button btn = new Button("L");
 			{
 				btn.getStyleClass().add("deck-button");
-				btn.setPrefWidth(45);
+				btn.setMaxWidth(Double.MAX_VALUE);
+				btn.setMaxHeight(Double.MAX_VALUE);
 				btn.setOnAction(e -> {
 					Tracks t = getItem();
 					if (t != null && (t.getState() == Tracks.TrackState.READY || t.getState() == Tracks.TrackState.LOCAL)) {
@@ -181,7 +182,8 @@ public class PlaylistController {
 			private final Button btn = new Button("R");
 			{
 				btn.getStyleClass().add("deck-button");
-				btn.setPrefWidth(45);
+				btn.setMaxWidth(Double.MAX_VALUE);
+				btn.setMaxHeight(Double.MAX_VALUE);
 				btn.setOnAction(e -> {
 					Tracks t = getItem();
 					if (t != null && (t.getState() == Tracks.TrackState.READY || t.getState() == Tracks.TrackState.LOCAL)) {
@@ -235,10 +237,24 @@ public class PlaylistController {
 			}
 		});
 
-		playlistTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		// Bind columns perfectly to table width to act like a photo
+		colTitle.prefWidthProperty().bind(playlistTable.widthProperty().multiply(0.42));
+		colDuration.prefWidthProperty().bind(playlistTable.widthProperty().multiply(0.15));
+		colState.prefWidthProperty().bind(playlistTable.widthProperty().multiply(0.17));
+		colLeft.prefWidthProperty().bind(playlistTable.widthProperty().multiply(0.12));
+		colRight.prefWidthProperty().bind(playlistTable.widthProperty().multiply(0.12));
+
+		// Font size exactly proportional to table width
+		playlistTable.styleProperty().bind(
+				javafx.beans.binding.Bindings.createStringBinding(() ->
+								String.format(java.util.Locale.US, "-fx-font-size: %.2fpx;", playlistTable.getWidth() / 32.0),
+						playlistTable.widthProperty()
+				)
+		);
+
 		playlistTable.setItems(trackList.getObservableTracks());
 		javafx.scene.control.Label placeholder = new javafx.scene.control.Label("add a song");
-		placeholder.setStyle("-fx-text-fill: #a0a0a0; -fx-font-size: 14px;");
+		placeholder.setStyle("-fx-text-fill: #a0a0a0; -fx-font-size: 1em;");
 		playlistTable.setPlaceholder(placeholder);
 
 		// Search functionality

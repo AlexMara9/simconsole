@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
-<GridPane styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.PlaylistController">
+<GridPane styleClass="card" minWidth="0.0" minHeight="0.0" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.PlaylistController">
     <columnConstraints>
         <ColumnConstraints percentWidth="42.0" />
         <ColumnConstraints percentWidth="58.0" />
@@ -28,12 +28,12 @@
             <children>
                 <HBox alignment="CENTER" spacing="5" minWidth="0.0">
                     <StackPane minWidth="0.0">
-                        <Button fx:id="searchButton" text="🔍" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-cursor: hand;" />
+                        <Button fx:id="searchButton" text="🔍" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 1em; -fx-cursor: hand;" />
                         <ProgressIndicator fx:id="searchProgress" visible="false" managed="false" prefWidth="16" prefHeight="16" />
                     </StackPane>
                     <StackPane HBox.hgrow="ALWAYS" minWidth="0.0">
-                        <TextField fx:id="searchField" minWidth="0.0" promptText="search song" style="-fx-background-color: #2a2a2a; -fx-text-fill: white; -fx-border-color: #555555; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 4 25 4 8;" />
-                        <Button fx:id="clearSearchButton" text="✕" visible="false" StackPane.alignment="CENTER_RIGHT" style="-fx-background-color: transparent; -fx-text-fill: #aaaaaa; -fx-cursor: hand; -fx-font-weight: bold;" />
+                        <TextField fx:id="searchField" minWidth="0.0" promptText="search song" style="-fx-background-color: #2a2a2a; -fx-text-fill: white; -fx-border-color: #555555; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0.3em 1.5em 0.3em 0.6em; -fx-font-size: 1em;" />
+                        <Button fx:id="clearSearchButton" text="✕" visible="false" StackPane.alignment="CENTER_RIGHT" style="-fx-background-color: transparent; -fx-text-fill: #aaaaaa; -fx-cursor: hand; -fx-font-weight: bold; -fx-font-size: 1em;" />
                     </StackPane>
                 </HBox>
                 <StackPane VBox.vgrow="ALWAYS">
@@ -43,26 +43,26 @@
                                 <javafx.scene.image.Image url="@../img/search_placeholder_processed.png" />
                             </image>
                         </javafx.scene.image.ImageView>
-                        <Label text="Search your music..." style="-fx-text-fill: #555555; -fx-font-size: 14px; -fx-font-weight: bold;" />
+                        <Label text="Search your music..." style="-fx-text-fill: #555555; -fx-font-size: 1em; -fx-font-weight: bold;" />
                     </VBox>
                     <ListView fx:id="searchList" style="-fx-background-color: transparent;" />
                 </StackPane>
-                <Button fx:id="localButton" text="📁 LOCAL" maxWidth="Infinity" style="-fx-background-color: #222222; -fx-text-fill: white; -fx-font-family: 'Segoe UI', 'Inter', sans-serif; -fx-font-weight: bold; -fx-border-color: #555555; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 8 15; -fx-cursor: hand;" />
+                <Button fx:id="localButton" text="📁 LOCAL" maxWidth="Infinity" style="-fx-background-color: #222222; -fx-text-fill: white; -fx-font-family: 'Segoe UI', 'Inter', sans-serif; -fx-font-weight: bold; -fx-border-color: #555555; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 0.6em 1em; -fx-cursor: hand; -fx-font-size: 1em;" />
             </children>
         </VBox>
         
         <!-- Right Side: Playlist -->
-        <VBox alignment="TOP_CENTER" style="-fx-padding: 0 0 0 5; -fx-border-color: #333333; -fx-border-width: 0 0 0 1px;" GridPane.columnIndex="1">
+        <VBox alignment="TOP_CENTER" style="-fx-padding: 0 0 0 5; -fx-border-color: #333333; -fx-border-width: 0 0 0 1px;" GridPane.columnIndex="1" minWidth="0.0" minHeight="0.0">
             <children>
-                <TableView fx:id="playlistTable" VBox.vgrow="ALWAYS">
+                <TableView fx:id="playlistTable" VBox.vgrow="ALWAYS" minWidth="0.0" minHeight="0.0" maxWidth="Infinity">
                     <columns>
-                        <TableColumn fx:id="colTitle" text="Title" prefWidth="200" style="-fx-alignment: CENTER_LEFT;" />
-                        <TableColumn fx:id="colDuration" text="Time" prefWidth="70" minWidth="70" maxWidth="70" resizable="false" style="-fx-alignment: CENTER;" />
-                        <TableColumn fx:id="colState" text="State" prefWidth="80" minWidth="80" maxWidth="80" resizable="false" style="-fx-alignment: CENTER;" />
-                        <TableColumn text="Deck" resizable="false">
+                        <TableColumn fx:id="colTitle" text="Title" prefWidth="200" minWidth="0" style="-fx-alignment: CENTER_LEFT;" />
+                        <TableColumn fx:id="colDuration" text="Time" prefWidth="70" minWidth="0" style="-fx-alignment: CENTER;" />
+                        <TableColumn fx:id="colState" text="State" prefWidth="80" minWidth="0" style="-fx-alignment: CENTER;" />
+                        <TableColumn text="Deck">
                             <columns>
-                                <TableColumn fx:id="colLeft" text="L" prefWidth="55" minWidth="55" maxWidth="55" resizable="false" style="-fx-alignment: CENTER;" />
-                                <TableColumn fx:id="colRight" text="R" prefWidth="55" minWidth="55" maxWidth="55" resizable="false" style="-fx-alignment: CENTER;" />
+                                <TableColumn fx:id="colLeft" text="L" prefWidth="55" minWidth="0" style="-fx-alignment: CENTER;" />
+                                <TableColumn fx:id="colRight" text="R" prefWidth="55" minWidth="0" style="-fx-alignment: CENTER;" />
                             </columns>
                         </TableColumn>
                     </columns>
