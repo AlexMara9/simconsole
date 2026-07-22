@@ -12,6 +12,7 @@
 <?import org.simconsole.simconsole.DynamicSlider?>
 <?import org.simconsole.simconsole.LedButton?>
 <?import org.simconsole.simconsole.LedKnob?>
+<?import javafx.scene.control.ToggleButton?>
 <?import org.simconsole.simconsole.ResponsiveLabel?>
 
 <StackPane fx:id="rootPane" minHeight="0.0" minWidth="0.0" styleClass="card" xmlns="http://javafx.com/javafx/21.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.simconsole.simconsole.EffectsController">

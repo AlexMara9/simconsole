@@ -145,13 +145,7 @@
 }
 .cue-button.pad-lit.cue4 .round-button-text { -fx-fill: #ffffff; }
 
-#ecoBtn .round-button-led-ring, #flangerBtn .round-button-led-ring, #reverbBtn .round-button-led-ring {
-    -fx-fill: #225522;
-}
 
-#ecoBtn .round-button-led-ring.pressed, #flangerBtn .round-button-led-ring.pressed, #reverbBtn .round-button-led-ring.pressed {
-    -fx-fill: #90ee90;
-}
 
 .power-btn {
     -fx-background-color: linear-gradient(to bottom, #f0f0f0, #c0c0c0);
