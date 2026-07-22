@@ -31,7 +31,7 @@ public class CueController {
     private void setupCue(CueButton btn, String id, javafx.scene.paint.Color color) {
 
         btn.setOnMouseClicked(e -> {
-            if (slider == null || deck == null) return;
+            if (slider == null || deck == null || deck.getCurrentTrack() == null) return;
 
             if (e.getButton() == javafx.scene.input.MouseButton.SECONDARY || e.isShiftDown()) {
                 // Tasto destro o Shift+Click: Rimuovi CUE
@@ -57,5 +57,15 @@ public class CueController {
                 }
             }
         });
+    }
+
+    public void clearCues() {
+        cue1.setHasBookmark(false);
+        cue2.setHasBookmark(false);
+        cue3.setHasBookmark(false);
+        cue4.setHasBookmark(false);
+        if (slider != null) {
+            slider.clearAllCues();
+        }
     }
 }

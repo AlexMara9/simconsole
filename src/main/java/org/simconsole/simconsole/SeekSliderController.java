@@ -7,8 +7,13 @@ public class SeekSliderController {
 	@FXML private GraphicSlider seekSlider;
 
 	private boolean isUpdatingFromBackend = false;
+	private Runnable onTrackChanged;
 
 	public GraphicSlider getGraphicSlider() { return seekSlider; }
+
+	public void setOnTrackChanged(Runnable action) {
+		this.onTrackChanged = action;
+	}
 
 	@FXML void initialize(){
 	}
@@ -36,6 +41,9 @@ public class SeekSliderController {
 				// Se la traccia è cambiata (o appena impostata)
 				if (currentTrack != lastTrack) {
 					lastTrack = currentTrack;
+					if (onTrackChanged != null) {
+						onTrackChanged.run();
+					}
 					if (currentTrack != null) {
 						String title = currentTrack.getTitle();
 						seekSlider.setSongName(title != null ? title : "Unknown");

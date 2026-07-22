@@ -90,9 +90,11 @@ public class ConsoleController {
         
         if (cueLeftController != null && seekLeftController != null) {
             cueLeftController.setDeckAndSlider(leftDeck, seekLeftController.getGraphicSlider());
+            seekLeftController.setOnTrackChanged(() -> cueLeftController.clearCues());
         }
         if (cueRightController != null && seekRightController != null) {
             cueRightController.setDeckAndSlider(rightDeck, seekRightController.getGraphicSlider());
+            seekRightController.setOnTrackChanged(() -> cueRightController.clearCues());
         }
         
         if (mixerController != null) {

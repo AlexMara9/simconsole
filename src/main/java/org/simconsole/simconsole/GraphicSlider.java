@@ -98,6 +98,10 @@ public class GraphicSlider extends Control {
         cuePoints.remove(id);
     }
 
+    public void clearAllCues() {
+        cuePoints.clear();
+    }
+
     public void jumpToCue(String id) {
         CuePoint cue = cuePoints.get(id);
         if (cue != null) {
