@@ -29,7 +29,7 @@
             <RowConstraints minHeight="0.0" percentHeight="58.0" valignment="CENTER" />
         </rowConstraints>
          <children>
-            <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2" style="-fx-padding: 0.5em;" vgap="5">
+            <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="2" style="-fx-padding: 0.5em;" vgap="12">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="100.0" />
                </columnConstraints>
@@ -39,7 +39,7 @@
                   <RowConstraints minHeight="0.0" percentHeight="33.4" valignment="CENTER" />
                </rowConstraints>
                <children>
-                  <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #222222; -fx-background-radius: 0.5em; -fx-border-color: #000000; -fx-border-radius: 0.5em; -fx-padding: 0.5em;" GridPane.rowIndex="0">
+                  <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" hgap="8" style="-fx-background-color: #222222; -fx-background-radius: 0.5em; -fx-border-color: #000000; -fx-border-radius: 0.5em; -fx-padding: 0.5em;" GridPane.rowIndex="0">
                      <columnConstraints>
                         <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="15.0" />
                         <ColumnConstraints halignment="LEFT" minWidth="0.0" percentWidth="25.0" />
@@ -63,7 +63,7 @@
                          </HBox>
                      </children>
                   </GridPane>
-                  <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #222222; -fx-background-radius: 0.5em; -fx-border-color: #000000; -fx-border-radius: 0.5em; -fx-padding: 0.5em;" GridPane.rowIndex="1">
+                  <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" hgap="8" style="-fx-background-color: #222222; -fx-background-radius: 0.5em; -fx-border-color: #000000; -fx-border-radius: 0.5em; -fx-padding: 0.5em;" GridPane.rowIndex="1">
                      <columnConstraints>
                         <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="15.0" />
                         <ColumnConstraints halignment="LEFT" minWidth="0.0" percentWidth="25.0" />
@@ -87,7 +87,7 @@
                          </HBox>
                      </children>
                   </GridPane>
-                  <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #222222; -fx-background-radius: 0.5em; -fx-border-color: #000000; -fx-border-radius: 0.5em; -fx-padding: 0.5em;" GridPane.rowIndex="2">
+                  <GridPane alignment="CENTER" minHeight="0.0" minWidth="0.0" hgap="8" style="-fx-background-color: #222222; -fx-background-radius: 0.5em; -fx-border-color: #000000; -fx-border-radius: 0.5em; -fx-padding: 0.5em;" GridPane.rowIndex="2">
                      <columnConstraints>
                         <ColumnConstraints halignment="CENTER" minWidth="0.0" percentWidth="15.0" />
                         <ColumnConstraints halignment="LEFT" minWidth="0.0" percentWidth="25.0" />
