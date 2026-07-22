@@ -62,26 +62,32 @@ public class EffectsController {
 
         // Enable Buttons (Kill switches)
         if (eqLowEnableBtn != null) {
+            eqLowEnableBtn.setSelected(true);
             eqLowEnableBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
+                updateKnobIdleState(eqLowKnob, newVal);
                 DeckControls dc = getActiveControls();
                 if (dc != null && eqLowKnob != null) {
-                    dc.setEqLow(!newVal ? eqLowKnob.getValue() : -40.0);
+                    dc.setEqLow(newVal ? eqLowKnob.getValue() : -40.0);
                 }
             });
         }
         if (eqMidEnableBtn != null) {
+            eqMidEnableBtn.setSelected(true);
             eqMidEnableBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
+                updateKnobIdleState(eqMidKnob, newVal);
                 DeckControls dc = getActiveControls();
                 if (dc != null && eqMidKnob != null) {
-                    dc.setEqMid(!newVal ? eqMidKnob.getValue() : -40.0);
+                    dc.setEqMid(newVal ? eqMidKnob.getValue() : -40.0);
                 }
             });
         }
         if (eqHighEnableBtn != null) {
+            eqHighEnableBtn.setSelected(true);
             eqHighEnableBtn.selectedProperty().addListener((obs, oldVal, newVal) -> {
+                updateKnobIdleState(eqHighKnob, newVal);
                 DeckControls dc = getActiveControls();
                 if (dc != null && eqHighKnob != null) {
-                    dc.setEqHigh(!newVal ? eqHighKnob.getValue() : -40.0);
+                    dc.setEqHigh(newVal ? eqHighKnob.getValue() : -40.0);
                 }
             });
         }
@@ -130,6 +136,11 @@ public class EffectsController {
         }
     }
 
+    private void updateKnobIdleState(LedKnob knob, boolean isOn) {
+        if (knob == null) return;
+        knob.setLedsEnabled(isOn);
+    }
+
     public void setDeckControls(DeckControls controls) {
         this.deckControls = controls;
         if (controls != null) {
@@ -158,9 +169,9 @@ public class EffectsController {
                 if (eqHighKnob != null) eqHighKnob.setValue(controls.getEqHigh());
             }
 
-            if (eqLowEnableBtn != null) eqLowEnableBtn.setSelected(false);
-            if (eqMidEnableBtn != null) eqMidEnableBtn.setSelected(false);
-            if (eqHighEnableBtn != null) eqHighEnableBtn.setSelected(false);
+            if (eqLowEnableBtn != null) eqLowEnableBtn.setSelected(true);
+            if (eqMidEnableBtn != null) eqMidEnableBtn.setSelected(true);
+            if (eqHighEnableBtn != null) eqHighEnableBtn.setSelected(true);
         }
     }
 
@@ -168,7 +179,7 @@ public class EffectsController {
         if (eqLowKnob != null) {
             eqLowKnob.valueProperty().addListener((obs, oldVal, newVal) -> {
                 DeckControls dc = getActiveControls();
-                if (dc != null && (eqLowEnableBtn == null || !eqLowEnableBtn.isSelected())) {
+                if (dc != null && (eqLowEnableBtn == null || eqLowEnableBtn.isSelected())) {
                     dc.setEqLow(newVal.doubleValue());
                 }
             });
@@ -176,7 +187,7 @@ public class EffectsController {
         if (eqMidKnob != null) {
             eqMidKnob.valueProperty().addListener((obs, oldVal, newVal) -> {
                 DeckControls dc = getActiveControls();
-                if (dc != null && (eqMidEnableBtn == null || !eqMidEnableBtn.isSelected())) {
+                if (dc != null && (eqMidEnableBtn == null || eqMidEnableBtn.isSelected())) {
                     dc.setEqMid(newVal.doubleValue());
                 }
             });
@@ -184,7 +195,7 @@ public class EffectsController {
         if (eqHighKnob != null) {
             eqHighKnob.valueProperty().addListener((obs, oldVal, newVal) -> {
                 DeckControls dc = getActiveControls();
-                if (dc != null && (eqHighEnableBtn == null || !eqHighEnableBtn.isSelected())) {
+                if (dc != null && (eqHighEnableBtn == null || eqHighEnableBtn.isSelected())) {
                     dc.setEqHigh(newVal.doubleValue());
                 }
             });

@@ -78,6 +78,7 @@ public class LedKnobSkin extends SkinBase<LedKnob> {
         control.valueProperty().addListener((obs, old, val) -> updateIndicator(control));
         control.minProperty().addListener((obs, old, val) -> updateIndicator(control));
         control.maxProperty().addListener((obs, old, val) -> updateIndicator(control));
+        control.ledsEnabledProperty().addListener((obs, old, val) -> updateIndicator(control));
     }
 
     private void updateLayout(double w, double h) {
@@ -145,6 +146,8 @@ public class LedKnobSkin extends SkinBase<LedKnob> {
         indicatorPane.setRotate(angle);
 
         int activeDots = (int) Math.round(percentage * (dots.length - 1));
+        if (!control.isLedsEnabled()) activeDots = -1; // Turn off all LED dots
+
         for (int i = 0; i < dots.length; i++) {
             if (i <= activeDots) {
                 if (!dots[i].getStyleClass().contains("knob-dot-active")) {
