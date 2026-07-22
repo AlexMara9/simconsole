@@ -1,11 +1,8 @@
 package org.simconsole.simconsole.controllers;
-import org.simconsole.simconsole.models.Flanger;
 import org.simconsole.simconsole.models.Deck;
 import org.simconsole.simconsole.models.DeckControls;
 import org.simconsole.simconsole.components.LedKnob;
-import org.simconsole.simconsole.models.Reverb;
 import org.simconsole.simconsole.components.LedButton;
-import org.simconsole.simconsole.models.Echo;
 import org.simconsole.simconsole.components.DynamicSlider;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
