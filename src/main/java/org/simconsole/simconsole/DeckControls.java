@@ -19,7 +19,7 @@ public class DeckControls {
     private static final double MIN_EQ_GAIN_DB = -26.0;
 
     public void setPitch(double pitch) {
-        this.pitch = Math.max(0.1, Math.min(3.0, pitch)); // Range 10% - 300%
+        this.pitch = Math.max(0.5, Math.min(2.0, pitch)); // Range 50% - 200%
     }
 
     // --- Nuovi Effetti: Flanger e Reverb ---

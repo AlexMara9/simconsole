@@ -11,7 +11,7 @@ public class PitchController {
 
     @FXML
     public void initialize() {
-        // Configuriamo lo slider per riflettere il vero valore del pitch (0.25 -> 3.0)
+        // Configuriamo lo slider per riflettere il vero valore del pitch (0.5 -> 2.0)
         pitchSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             if (deck != null) {
                 deck.getControls().setPitch(newVal.doubleValue());

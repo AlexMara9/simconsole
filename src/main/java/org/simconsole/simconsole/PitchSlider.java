@@ -10,7 +10,7 @@ import javafx.scene.control.Skin;
 public class PitchSlider extends Slider {
 
     public PitchSlider() {
-        super(0.25, 3.0, 1.0);
+        super(0.5, 2.0, 1.0);
         this.getStyleClass().add("pitch-slider");
     }
 
