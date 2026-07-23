@@ -51,13 +51,7 @@ public class PlaylistController {
 			placeholderImage.fitWidthProperty().bind(searchList.widthProperty().multiply(0.4));
 			placeholderImage.fitHeightProperty().bind(searchList.heightProperty().multiply(0.4));
 		}
-		searchField.focusedProperty().addListener((obs, oldVal, newVal) -> {
-			if (newVal) {
-				searchField.setStyle("-fx-background-color: #2a2a2a; -fx-text-fill: white; -fx-border-color: #007aff; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 4 25 4 8; -fx-effect: dropshadow(three-pass-box, rgba(0,122,255,0.6), 8, 0, 0, 0);");
-			} else {
-				searchField.setStyle("-fx-background-color: #2a2a2a; -fx-text-fill: white; -fx-border-color: #555555; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 4 25 4 8; -fx-effect: none;");
-			}
-		});
+
 		searchField.textProperty().addListener((obs, oldVal, newVal) -> {
 			clearSearchButton.setVisible(newVal != null && !newVal.isEmpty());
 		});
@@ -66,13 +60,7 @@ public class PlaylistController {
 			searchField.requestFocus();
 			searchList.getItems().clear();
 		});
-		localButton.hoverProperty().addListener((obs, oldVal, newVal) -> {
-			if (newVal) {
-				localButton.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-family: 'Segoe UI', 'Inter', sans-serif; -fx-font-weight: bold; -fx-border-color: #007aff; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 8 15; -fx-cursor: hand; -fx-effect: dropshadow(three-pass-box, rgba(0,122,255,0.6), 8, 0, 0, 0);");
-			} else {
-				localButton.setStyle("-fx-background-color: #222222; -fx-text-fill: white; -fx-font-family: 'Segoe UI', 'Inter', sans-serif; -fx-font-weight: bold; -fx-border-color: #555555; -fx-border-radius: 6; -fx-background-radius: 6; -fx-padding: 8 15; -fx-cursor: hand; -fx-effect: none;");
-			}
-		});
+
 		colTitle.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTitle()));
 		colDuration.setCellValueFactory(data -> {
 			long ms = data.getValue().getDurationMs();

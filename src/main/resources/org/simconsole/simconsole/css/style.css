@@ -143,3 +143,35 @@
 .icon-folder {
     -fx-shape: "M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z";
 }
+.search-field {
+    -fx-background-color: #2a2a2a;
+    -fx-text-fill: white;
+    -fx-border-color: #555555;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 0.3em 1.5em 0.3em 0.6em;
+    -fx-font-size: 1em;
+}
+.search-field:focused {
+    -fx-border-color: #007aff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 122, 255, 0.6), 8, 0, 0, 0);
+}
+.local-button {
+    -fx-background-color: #222222;
+    -fx-text-fill: white;
+    -fx-font-family: 'Segoe UI', 'Inter', sans-serif;
+    -fx-font-weight: bold;
+    -fx-border-color: #555555;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 0.6em 1em;
+    -fx-cursor: hand;
+    -fx-font-size: 1em;
+    -fx-alignment: CENTER;
+    -fx-graphic-text-gap: 0.5em;
+}
+.local-button:hover {
+    -fx-background-color: #333333;
+    -fx-border-color: #007aff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 122, 255, 0.6), 8, 0, 0, 0);
+}
